@@ -2,7 +2,7 @@ require 'nokogiri'
 require 'sinatra'
 
 # Bottom to top layer
-DEFAULT_PARTS_ORDER = [
+DEFAULT_STACKING_ORDER = [
   :head,
   :cheeks,
   :mouth,
@@ -42,7 +42,7 @@ get '/' do
       base_file.add_child(get_part_from_file(key, value).to_s) unless value.nil?
     end
   else
-    DEFAULT_PARTS_ORDER.each do |key|
+    DEFAULT_STACKING_ORDER.each do |key|
       value = params[key]
       base_file.add_child(get_part_from_file(key, value).to_s) unless value.nil?
     end
@@ -54,7 +54,7 @@ end
 private
 
 def validate_and_symbolize
-  valid_params = [DEFAULT_PARTS_ORDER, :order].flatten
+  valid_params = [DEFAULT_STACKING_ORDER, :order].flatten
   Hash[
     params.map do |(k,v)|
       [k.to_sym,v]
