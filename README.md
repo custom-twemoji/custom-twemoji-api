@@ -1,5 +1,11 @@
 # Twemoji Mashup API
 
+## Endpoints
+
+- `/xml`
+- `/svg`
+- `/png`
+
 ## Parameters
 
 ### Basics
