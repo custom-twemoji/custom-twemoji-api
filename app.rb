@@ -1,65 +1,43 @@
-require 'nokogiri'
+# frozen_string_literal: true
+
 require 'sinatra'
 
-# Bottom to top layer
-DEFAULT_STACKING_ORDER = [
-  :head,
-  :cheeks,
-  :mouth,
-  :nose,
-  :eyes,
-  :eyewear,
-  :other
-]
+require_relative 'emoji'
 
-get '/' do
+get '/xml' do
   params = validate_and_symbolize
   return if params.empty?
 
-  base_file = get_file('base').at(:svg)
+  Emoji.new(params).xml
+end
 
-  if params[:order] == 'manual'
-    params.except(:order).each do |key, value|
-      next if value.nil?
-      base_file.add_child(get_part_from_file(key, value).to_s)
-    end
-  else
-    DEFAULT_STACKING_ORDER.each do |key|
-      value = params[key]
-      next if value.nil?
-      base_file.add_child(get_part_from_file(key, value).to_s)
-    end
-  end
+get '/svg' do
+  params = validate_and_symbolize
+  return if params.empty?
 
-  output_svg(base_file)
+  content_type 'application/octet-stream'
+  xml = Emoji.new(params).xml
+  xml.bytes.to_a.pack('C*').force_encoding('utf-8')
+end
+
+get '/png' do
+  params = validate_and_symbolize
+  return if params.empty?
+
+  content_type 'image/png'
+
+  Emoji.new(params).png
 end
 
 private
 
 def validate_and_symbolize
-  valid_params = [DEFAULT_STACKING_ORDER, :order].flatten
+  params[:time] = Time.now.getutc.to_i
+
+  valid_params = [DEFAULT_STACKING_ORDER, :order, :time].flatten
   Hash[
     params.map do |(k,v)|
       [ k.to_sym, v ]
     end
   ].select { |key, value| valid_params.include?(key) }
-end
-
-def get_file(id)
-  File.open("assets/#{id}.svg") { |f| Nokogiri::XML(f) }
-end
-
-def get_part_from_file(part, file_name)
-  file = get_file(file_name)
-  file.at_css("[id='#{part}']")
-end
-
-def output_svg(file)
-  xml = file.to_xml
-
-  File.open("tmp/out.svg", "w") do |f|
-    f.write(xml)
-  end
-
-  xml
 end
