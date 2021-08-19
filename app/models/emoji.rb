@@ -8,7 +8,7 @@ require 'tempfile'
 require 'uri'
 require 'yaml'
 
-require_relative 'helper'
+require_relative '../helper'
 
 # Bottom to top layer
 DEFAULT_FEATURE_STACKING_ORDER = [
@@ -96,7 +96,7 @@ class Emoji
 
   def get_emoji(name)
     github_url =
-        'https://radw.githubusercontent.com/twitter/twemoji/'\
+        'https://raw.githubusercontent.com/twitter/twemoji/'\
         "v#{@twemoji_version}/assets/svg/#{name}.svg"
 
     uri = URI.parse(github_url)
@@ -124,7 +124,7 @@ class Emoji
   # Adds a feature of an emoji file to a template file
   def add_feature(template_file, feature_name, file_name)
     emoji_file = get_emoji(file_name)
-    yml_file = "twemoji/#{@twemoji_version}/faces.yml"
+    yml_file = "app/models/twemoji/#{@twemoji_version}/faces.yml"
     faces = YAML.load(File.read(yml_file))
 
     layers_to_add = faces.dig(file_name, feature_name.to_s)

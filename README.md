@@ -46,4 +46,4 @@ Your request will look like this:
 
 #### Customize
 
-If you want to specify your own stacking order, pass in `order=manual` anywhere in the request. The order of the rest of your parameters will be how the output is stacked, with the first parameter being at the bottom.
+If you want to specify your own stacking order, pass in the key-value pair `order=manual` anywhere in the request. The order of the rest of your parameters will be how the output is stacked, with the first parameter being at the bottom.

@@ -4,7 +4,7 @@ require 'logger'
 require 'sinatra'
 require 'sinatra/custom_logger'
 
-require_relative 'emoji'
+require_relative '../models/emoji'
 
 set :logger, Logger.new(STDOUT)
 
