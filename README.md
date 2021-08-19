@@ -24,7 +24,7 @@ Passed in as key-value pairs (`?key=value`) separated by an ampersand (`&`).
 
   <br>
 
-  Each feature is a layer and the order in which they're stacked impacts what will be seen or hidden in the output emoji. This is the default stacking order from bottom to top.
+  Each feature is a layer and the order in which they're stacked impacts what will be seen or hidden in the output emoji. This is the list of features in default stacking order from bottom to top.
 
   1. head
   1. headwear
