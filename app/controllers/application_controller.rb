@@ -8,27 +8,31 @@ require_relative '../models/emoji'
 
 set :logger, Logger.new(STDOUT)
 
-get '/faces/:type' do
-  case @params[:type]
-  when 'xml'
-    params = validate_and_symbolize
-    return if params.empty?
+get '/faces/:file_format' do
+  file_format = @params[:file_format]
 
-    Emoji.new(params).xml
+  case file_format
   when 'svg'
     params = validate_and_symbolize
     return if params.empty?
 
-    content_type 'application/octet-stream'
-    xml = Emoji.new(params).xml
-    xml.bytes.to_a.pack('C*').force_encoding('utf-8')
+    emoji = Emoji.new(params)
+
+    content_type 'image/svg+xml'
+    set_content_disposition(emoji, file_format)
+
+    # emoji.xml.bytes.to_a.pack('C*').force_encoding('utf-8')
+    emoji.xml
   when 'png'
     params = validate_and_symbolize
     return if params.empty?
 
-    content_type 'image/png'
+    emoji = Emoji.new(params)
 
-    Emoji.new(params).png
+    content_type 'image/png'
+    set_content_disposition(emoji, file_format)
+
+    emoji.png
   else
     message = "File format not supported: #{@params[:type]} | Valid file formats: xml, svg, png"
     error 405, { error: message }.to_json
@@ -47,6 +51,16 @@ end
 
 private
 
+def set_content_disposition(emoji, file_extension)
+  if params[:download] == 'true'
+    filename = params[:filename].presence || emoji.to_s
+    full_filename = "#{filename}.#{file_extension}"
+
+    # Good explanation on this: https://stackoverflow.com/a/20509354/5988852
+    headers['Content-Disposition'] = "attachment;filename=\"#{full_filename}\""
+  end
+end
+
 def validate_and_symbolize
   params[:time] = Time.now.getutc.to_i
 
@@ -54,6 +68,8 @@ def validate_and_symbolize
     [
       DEFAULT_FEATURE_STACKING_ORDER,
       :order,
+      :download,
+      :filename,
       :time,
       :twemoji_version
     ].flatten
