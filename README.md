@@ -15,80 +15,95 @@ The available endpoints correspond to the supported file formats.
 
 Passed in as key-value pairs (`?key=value`) separated by an ampersand (`&`).
 
-#### Facial Features
+- <details>
+  <summary><b>Facial Features</b></summary>
+  <br>
 
-- Key: facial feature
-- Value: emoji
+    - Key: facial feature
+    - Value: emoji
 
-Each feature is a layer and the order in which they're stacked impacts what will be seen or hidden in the output emoji. This is the default stacking order from bottom to top.
+  <br>
 
-1. head
-1. headwear
-1. cheeks
-1. mouth
-1. nose
-1. eyes
-1. eyewear
-1. other
+  Each feature is a layer and the order in which they're stacked impacts what will be seen or hidden in the output emoji. This is the default stacking order from bottom to top.
 
-If you want to specify your own stacking order, pass in the key-value pair `order=manual` anywhere in the request. The stacking will follow the order you pass in parameters, with the first parameter being at the bottom.
+  1. head
+  1. headwear
+  1. cheeks
+  1. mouth
+  1. nose
+  1. eyes
+  1. eyewear
+  1. other
 
-##### Example
+  <br>
 
-If you want...
+  If you want to specify your own stacking order, pass in the key-value pair `order=manual` anywhere in the request. The stacking will follow the order you pass in parameters, with the first parameter being at the bottom.
 
-- the eyes of [263a](https://unicode-table.com/en/263A) ☺️
-- the mouth of [2639](https://unicode-table.com/en/2639/) ☹️
-- the eyewear of [1f978](https://unicode-table.com/en/1F978/) 🥸
+  ##### Example
 
-Your request will look like this:
+  If you want...
 
-```txt
-/faces/png?eyes=263a&mouth=2639&eyewear=1f978
+  - the eyes of [263a](https://unicode-table.com/en/263A) ☺️
+  - the mouth of [2639](https://unicode-table.com/en/2639/) ☹️
+  - the eyewear of [1f978](https://unicode-table.com/en/1F978/) 🥸
 
-# Spaced out for easy reading
-/faces /png ? eyes=263a & mouth=2639 & eyewear=1f978
-```
+  <br>
 
-If you want the eyes to be above the eyewear, add in `order=manual` and move eyes in front of eyewear:
+  Your request will look like this:
 
-```txt
-/faces/png?mouth=2639&eyewear=1f978&eyes=263a&order=manual
+  ```txt
+  /faces/png?eyes=263a&mouth=2639&eyewear=1f978
 
-# Spaced out for easy reading
-/faces /png ? mouth=2639 & eyewear=1f978 & eyes=263a & order=manual
-```
+  # Spaced out for easy reading
+  /faces /png ? eyes=263a & mouth=2639 & eyewear=1f978
+  ```
 
-#### Downloading
+  If you want the eyes to be above the eyewear, add in `order=manual` and move eyes in front of eyewear:
 
-By default the output emoji is displayed. Pass in the key-value pair `download=true` anywhere in the request if you want a file to download instead.
+  ```txt
+  /faces/png?mouth=2639&eyewear=1f978&eyes=263a&order=manual
 
-The default name of the file returned is a modified version of your request parameters. The equals signs (`=`) and ampersands (`&`) are replaced with a minus sign (`-`) and these characters `_-_`.
+  # Spaced out for easy reading
+  /faces /png ? mouth=2639 & eyewear=1f978 & eyes=263a & order=manual
+  ```
 
-##### Example
+- <details>
+  <summary><b>Downloading</b></summary>
+  <br>
 
-Request:
+  By default the output emoji is displayed. Pass in the key-value pair `download=true` anywhere in the request if you want a file to download instead.
 
-```txt
-/faces/png?eyes=263a&mouth=2639&eyewear=1f978&download=true
-```
+  The default name of the file returned is a modified version of your request parameters. The equals signs (`=`) and ampersands (`&`) are replaced with a minus sign (`-`) and these characters `_-_`.
 
-File returned:
+  ##### Example
 
-```txt
-eyes-263a_-_mouth-2639_-_eyewear-1f978.png
-```
+  Request:
 
-#### Filename
+  ```txt
+  /faces/png?eyes=263a&mouth=2639&eyewear=1f978&download=true
+  ```
 
-If you want to name your download file, pass in `filename=` with a value of your choosing.
+  File returned:
 
-##### Example
+  ```txt
+  eyes-263a_-_mouth-2639_-_eyewear-1f978.png
+  ```
 
-Request:
+</details>
 
-```txt
-/faces/png?eyes=263a&mouth=2639&eyewear=1f978&download=true&filename=amazing_emoji.png
-```
+- <details>
+  <summary><b>Filename</b></summary>
+  <br>
 
-File returned: `amazing_emoji.png`
+  If you want to name your download file, pass in `filename=` with a value of your choosing.
+
+  ##### Example
+
+  Request:
+
+  ```txt
+  /faces/png?eyes=263a&mouth=2639&eyewear=1f978&download=true&filename=amazing_emoji.png
+  ```
+
+  File returned: `amazing_emoji.png`
+</details>
