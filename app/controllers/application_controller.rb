@@ -11,12 +11,10 @@ set :logger, Logger.new(STDOUT)
 get '/faces/:type' do
   case @params[:type]
   when 'xml'
-    get '/xml' do
-      params = validate_and_symbolize
-      return if params.empty?
+    params = validate_and_symbolize
+    return if params.empty?
 
-      Emoji.new(params).xml
-    end
+    Emoji.new(params).xml
   when 'svg'
     params = validate_and_symbolize
     return if params.empty?
