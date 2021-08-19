@@ -95,7 +95,8 @@ class Emoji
   end
 
   def get_emoji(name)
-    github_url = 'https://raw.githubusercontent.com/twitter/twemoji/'\
+    github_url =
+        'https://radw.githubusercontent.com/twitter/twemoji/'\
         "v#{@twemoji_version}/assets/svg/#{name}.svg"
 
     uri = URI.parse(github_url)
