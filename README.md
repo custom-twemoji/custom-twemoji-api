@@ -1,23 +1,23 @@
 # Twemoji Mashup API
 
-## Endpoints
+## Faces (`GET /faces`)
 
-### Faces (`GET /faces`)
+### Endpoints
 
-#### File Fomats
+The available endpoints correspond to the supported file formats.
 
-  - [XML](https://www.w3schools.com/XML/xml_whatis.asp): `/xml`
-  - [SVG](https://www.w3schools.com/graphics/svg_intro.asp): `/svg`
-  - [PNG](https://www.lifewire.com/png-file-2622803): `/png`
+- [XML](https://www.w3schools.com/XML/xml_whatis.asp): `/xml`
+- [SVG](https://www.w3schools.com/graphics/svg_intro.asp): `/svg`
+- [PNG](https://www.lifewire.com/png-file-2622803): `/png`
 
-#### URL Parameters
+### URL Parameters
 
 Pass in a parameter for each facial feature you want to add as a key-value pair (`?key=value`) separated by an ampersand (`&`).
 
 - Key: facial feature
 - Value: emoji
 
-##### Facial Features
+#### Facial Features
 
 1. head
 1. headwear
@@ -30,7 +30,7 @@ Pass in a parameter for each facial feature you want to add as a key-value pair 
 
 Each feature is a layer and the order in which they're stacked impacts what is seen or hidden. This is the stacking order from bottom to top.
 
-##### Example
+#### Example
 
 If you want...
 
@@ -44,6 +44,6 @@ Your request will look like this:
 ?cheeks=263a&mouth=2639&eyewear=1f978
 ```
 
-##### Customize
+#### Customize
 
 If you want to specify your own stacking order, pass in `order=manual` anywhere in the request. The order of the rest of your parameters will be how the output is stacked, with the first parameter being at the bottom.
