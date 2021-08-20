@@ -2,4 +2,3 @@ runtime: ruby27
 
 entrypoint: bundle exec ruby app/controllers/application_controller.rb
 
-secure: always
