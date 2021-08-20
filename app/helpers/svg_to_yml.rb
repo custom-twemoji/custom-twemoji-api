@@ -13,7 +13,7 @@ remove_elements.each do |e|
   svg_files.delete(e)
 end
 
-filename = 'faces'
+filename = 'face'
 yml_file = "app/models/twemoji/13.1.0/#{filename}.yml"
 
 File.open(yml_file, 'w') do |f|

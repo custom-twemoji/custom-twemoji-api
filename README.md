@@ -7,14 +7,21 @@
   An API that let's you combine <a href="https://twemoji.twitter.com">Twitter's emojis<a/>.
 </p>
 
-## Face Emojis (`GET /faces`)
+## Endpoints
 
-### Endpoints
+### Face Twemojis
+
+- `GET /faces`
+  - Returns JSON list of all faces and their layers by feature
+- `GET /faces/svg`
+- `GET /faces/png`
+- `GET /faces/{emoji_id}/svg`
+- `GET /faces/{emoji_id}/png`
 
 The available endpoints correspond to the supported file formats.
 
-- [SVG](https://www.w3schools.com/graphics/svg_intro.asp): `/svg`
-- [PNG](https://www.lifewire.com/png-file-2622803): `/png`
+- [SVG](https://www.w3schools.com/graphics/svg_intro.asp)
+- [PNG](https://www.lifewire.com/png-file-2622803)
 
 You can optionally specify a "base" emoji by passing an ID before the file format. This saves from having to type out more URL parameters than is necessary.
 
@@ -22,12 +29,12 @@ You can optionally specify a "base" emoji by passing an ID before the file forma
 GET /faces/263a/svg
 ```
 
-### URL Parameters
+#### URL Parameters
 
 After the endpoint, pass in URL parameters as key-value pairs (`?key=value`) separated by ampersands (`&`).
 
 - <details>
-  <summary><b>Facial Features</b></summary>
+  <summary><b>Required - Facial Features</b></summary>
   <br>
 
     - Key: facial feature
@@ -79,44 +86,33 @@ After the endpoint, pass in URL parameters as key-value pairs (`?key=value`) sep
   ```
 
 - <details>
-  <summary><b>Downloading</b></summary>
+  <summary><b>Optional - Output</b></summary>
   <br>
 
-  By default the output emoji is displayed. Pass in the key-value pair `download=true` anywhere in the request if you want a file to download instead.
+  By default the output emoji is displayed as an image for easy viewing. If you want to specify another option put it anywhere in your request.
 
-  The default name of the file returned is a modified version of your request parameters. The equals signs (`=`) and ampersands (`&`) are replaced with a minus sign (`-`) and these characters `_-_`.
+  ##### JSON (`output=json`)
 
-  ##### Example
+  File format is returned as `resource` and also includes licensing information. PNGs are returned as [Base64](https://developer.mozilla.org/en-US/docs/Glossary/Base64).
 
-  Request:
+  ##### Download (`output=download`)
 
-  ```txt
-  /faces/png?eyes=263a&mouth=2639&eyewear=1f978&download=true
-  ```
+  The default name of the file returned is a modified version of your request parameters. The equals signs (`=`) and ampersands (`&`) are replaced with a minus sign (`-`) and these characters `_-_`
 
-  File returned:
-
-  ```txt
-  eyes-263a_-_mouth-2639_-_eyewear-1f978.png
-  ```
-
-</details>
-
-- <details>
-  <summary><b>Filename</b></summary>
-  <br>
+  ##### Filename
 
   If you want to name your download file, pass in `filename=` with a value of your choosing.
 
-  ##### Example
+  ###### Example
 
   Request:
 
   ```txt
-  /faces/png?eyes=263a&mouth=2639&eyewear=1f978&download=true&filename=amazing_emoji.png
+  /faces/263a/png?download=true&filename=amazing_emoji
   ```
 
   File returned: `amazing_emoji.png`
+
 </details>
 
 ## Contributing
