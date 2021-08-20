@@ -2,7 +2,7 @@
 
 # Helper file to
 
-svg_files = Dir.entries("app/assets/processing/core")
+svg_files = Dir.entries('app/assets/processing/core')
 
 remove_elements = [
   '.DS_Store',
@@ -16,7 +16,7 @@ end
 filename = 'faces'
 yml_file = "app/models/twemoji/13.1.0/#{filename}.yml"
 
-File.open(yml_file , 'w') do |f|
+File.open(yml_file, 'w') do |f|
   svg_files.sort.each do |i|
     i.slice!('.svg')
     f.write "'#{i}':\n"
@@ -32,5 +32,5 @@ File.open(yml_file , 'w') do |f|
 end
 
 puts
-puts "Success"
+puts 'Success'
 puts

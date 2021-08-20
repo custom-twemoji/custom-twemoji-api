@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Adds some ActiveSupport methods that are useful
 class Object
   # File activesupport/lib/active_support/core_ext/object/blank.rb, line 18
   def blank?

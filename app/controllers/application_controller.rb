@@ -7,93 +7,100 @@ require 'sinatra/multi_route'
 
 require_relative '../models/emoji'
 
-set :logger, Logger.new(STDOUT)
+set :logger, Logger.new($stdout)
+
+VALID_PARAMS = [
+  DEFAULT_FEATURE_STACKING_ORDER,
+  :base_emoji_id,
+  :order,
+  :output,
+  :filename,
+  :time,
+  :twemoji_version
+].flatten.freeze
 
 get '/' do
   redirect 'https://github.com/blakegearin/custom-twemoji-api'
 end
 
 get '/faces/:file_format', '/faces/:base_emoji_id/:file_format' do
-  file_format = @params[:file_format]
-
-  case file_format
-  when 'svg'
-    params = validate_and_symbolize
+  case @params[:file_format]
+  when 'svg', 'png'
+    params = validate_params(symbolize_params)
     return if params.empty?
 
-    emoji = Emoji.new(params)
-
-    content_type 'image/svg+xml'
-    set_content_disposition(emoji, file_format)
-
-    resource = emoji.xml
-  when 'png'
-    params = validate_and_symbolize
-    return if params.empty?
-
-    emoji = Emoji.new(params)
-
-    content_type 'image/png'
-    set_content_disposition(emoji, file_format)
-
-    resource = emoji.png
+    resource = get_resource_by_file_format(@params[:file_format], Emoji.new(params))
   else
-    message = "File format not supported: #{@params[:type]} | Valid file formats: xml, svg, png"
+    message = "File format not supported: #{@params[:type]} | Valid file formats: svg, png"
     error 405, { error: message }.to_json
   end
 
-  if params[:output] == 'json'
-    {
-      success: true,
-      emoji: resource.to_s
-    }.to_json
-  else
-    resource
-  end
-rescue => e
+  params[:output] == 'json' ? json(resource) : resource
+rescue StandardError => e
   logger.error(e.message)
-  error 500,
-      {
-        success: false,
-        error: e.message
-      }.to_json
+  response = {
+    success: false,
+    error: e.message
+  }
+  error 500, response.to_json
 end
 
 not_found do
   message =
-      "Endpoint not found: #{request.request_method} #{request.path_info}"\
-      ' | Valid endpoints: GET /faces'
+    "Endpoint not found: #{request.request_method} #{request.path_info}"\
+    ' | Valid endpoints: GET /faces'
   error 404, { error: message }.to_json
 end
 
 private
 
-def set_content_disposition(emoji, file_extension)
-  if params[:output] == 'download'
-    filename = params[:filename].presence || emoji.to_s
-    full_filename = "#{filename}.#{file_extension}"
+def symbolize_params
+  Hash[
+    params.map do |(k, v)|
+      [k.to_sym, v]
+    end
+  ]
+end
 
-    # Good explanation on this: https://stackoverflow.com/a/20509354/5988852
-    headers['Content-Disposition'] = "attachment;filename=\"#{full_filename}\""
+def validate_params(params)
+  # Add time parameter to track request
+  params[:time] = Time.now.getutc.to_i
+  params.select { |key, _| VALID_PARAMS.include?(key) }
+end
+
+def set_content_disposition(emoji, file_extension)
+  return unless params[:output] == 'download'
+
+  filename = params[:filename].presence || emoji.to_s
+  full_filename = "#{filename}.#{file_extension}"
+
+  # Good explanation on this: https://stackoverflow.com/a/20509354/5988852
+  headers['Content-Disposition'] = "attachment;filename=\"#{full_filename}\""
+end
+
+def get_resource_by_file_format(file_format, emoji)
+  case @params[:file_format]
+  when 'svg'
+    content_type 'image/svg+xml'
+    set_content_disposition(emoji, file_format)
+
+    emoji.xml
+  when 'png'
+    content_type 'image/png'
+    set_content_disposition(emoji, file_format)
+
+    emoji.png
   end
 end
 
-def validate_and_symbolize
-  params[:time] = Time.now.getutc.to_i
-
-  valid_params =
-    [
-      DEFAULT_FEATURE_STACKING_ORDER,
-      :base_emoji_id,
-      :order,
-      :output,
-      :filename,
-      :time,
-      :twemoji_version
-    ].flatten
-  Hash[
-    params.map do |(k,v)|
-      [ k.to_sym, v ]
-    end
-  ].select { |key, value| valid_params.include?(key) }
+def json(resource)
+  content_type 'application/json'
+  {
+    success: true,
+    emoji: resource.to_s,
+    license: {
+      name: 'CC-BY 4.0',
+      url: 'https://creativecommons.org/licenses/by/4.0'
+    }
+  }.to_json
 end
