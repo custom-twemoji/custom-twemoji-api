@@ -1,8 +1,13 @@
-# Twemoji Mashup API
+<p align="center">
+  <img
+    src="assets/header.png"
+    alt="Custom Twemoji API logo"
+    title="Custom Twemoji API logo"
+  />
+  An API that let's you combine <a href="https://twemoji.twitter.com">Twitter's emojis<a/>.
+</p>
 
-An API that let's you combine [Twitter's emojis](https://twemoji.twitter.com/).
-
-## Faces (`GET /faces`)
+## Face Emojis (`GET /faces`)
 
 ### Endpoints
 
@@ -11,16 +16,22 @@ The available endpoints correspond to the supported file formats.
 - [SVG](https://www.w3schools.com/graphics/svg_intro.asp): `/svg`
 - [PNG](https://www.lifewire.com/png-file-2622803): `/png`
 
+You can optionally specify a "base" emoji by passing an ID before the file format. This saves from having to type out more URL parameters than is necessary.
+
+```txt
+GET /faces/263a/svg
+```
+
 ### URL Parameters
 
-Passed in as key-value pairs (`?key=value`) separated by an ampersand (`&`).
+After the endpoint, pass in URL parameters as key-value pairs (`?key=value`) separated by ampersands (`&`).
 
 - <details>
   <summary><b>Facial Features</b></summary>
   <br>
 
     - Key: facial feature
-    - Value: emoji
+    - Value: emoji ID
 
   <br>
 

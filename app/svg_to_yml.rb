@@ -2,7 +2,7 @@
 
 # Helper file to
 
-svg_files = Dir.entries("/Users/blake/Repos/personal/emojis/twemoji-mashup-api/assets/processing/core")
+svg_files = Dir.entries("app/assets/processing/core")
 
 remove_elements = [
   '.DS_Store',
@@ -14,7 +14,7 @@ remove_elements.each do |e|
 end
 
 filename = 'faces'
-yml_file = "/Users/blake/Repos/personal/emojis/twemoji-mashup-api/app/models/twemoji/13.1.0/#{filename}.yml"
+yml_file = "app/models/twemoji/13.1.0/#{filename}.yml"
 
 File.open(yml_file , 'w') do |f|
   svg_files.sort.each do |i|

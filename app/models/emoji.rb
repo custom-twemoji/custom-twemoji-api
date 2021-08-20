@@ -29,6 +29,7 @@ class Emoji
   def initialize(params)
     @params = params
     template_file = File.open("assets/template.svg") { |f| Nokogiri::XML(f) }.at(:svg)
+    @base_emoji_id = @params[:base_emoji_id]
 
     @time = @params[:time]
     @twemoji_version = @params[:twemoji_version].presence || DEFAULT_TWEMOJI_VERSION
@@ -36,17 +37,13 @@ class Emoji
     if @params[:order] == 'manual'
       features = get_feature_params
 
-      features.each do |feature_name, file_name|
-        next if file_name.nil?
-
-        add_feature(template_file, feature_name, file_name)
+      features.each do |feature_name, emoji_id|
+        add_feature(template_file, feature_name, emoji_id)
       end
     else
       DEFAULT_FEATURE_STACKING_ORDER.each do |feature_name|
-        file_name = @params[feature_name]
-        next if file_name.nil?
-
-        add_feature(template_file, feature_name, file_name)
+        emoji_id = @params[feature_name]
+        add_feature(template_file, feature_name, emoji_id)
       end
     end
 
@@ -122,12 +119,18 @@ class Emoji
   end
 
   # Adds a feature of an emoji file to a template file
-  def add_feature(template_file, feature_name, file_name)
-    emoji_file = get_emoji(file_name)
+  def add_feature(template_file, feature_name, emoji_id)
+    if emoji_id.nil?
+      return if @base_emoji_id.nil?
+
+      emoji_id = @base_emoji_id
+    end
+
+    emoji_file = get_emoji(emoji_id)
     yml_file = "app/models/twemoji/#{@twemoji_version}/faces.yml"
     faces = YAML.load(File.read(yml_file))
 
-    layers_to_add = faces.dig(file_name, feature_name.to_s)
+    layers_to_add = faces.dig(emoji_id, feature_name.to_s)
 
     invalid_data_message = "Invalid data in YML file: #{yml_file}"
 
