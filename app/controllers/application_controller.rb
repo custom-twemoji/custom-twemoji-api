@@ -28,7 +28,7 @@ get '/faces' do
   json(Face.all(params[:twemoji_version].presence))
 end
 
-get '/faces/:file_format', '/faces/:base_emoji_id/:file_format' do
+get '/faces/:base_emoji_id/:file_format', '/faces/:file_format' do
   @output = params[:output]
   case @params[:file_format]
   when 'svg', 'png'
@@ -87,7 +87,7 @@ end
 def svg(resource)
   unless @output == 'json'
     content_type 'image/svg+xml'
-    set_content_disposition(resource, file_format)
+    set_content_disposition(resource, __method__.to_s)
   end
 
   resource.xml
@@ -97,7 +97,7 @@ def png(resource)
   return Base64.encode64(resource.png).gsub(/\n/, '') if @output == 'json'
 
   content_type 'image/png'
-  set_content_disposition(resource, file_format)
+  set_content_disposition(resource, __method__.to_s)
 
   resource.png
 end
