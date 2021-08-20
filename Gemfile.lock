@@ -5,9 +5,13 @@ GEM
     eventmachine (1.2.7)
     logger (1.4.3)
     mini_magick (4.11.0)
+    mini_portile2 (2.6.1)
     multi_json (1.15.0)
     mustermann (1.1.1)
       ruby2_keywords (~> 0.0.1)
+    nokogiri (1.12.3)
+      mini_portile2 (~> 2.6.1)
+      racc (~> 1.4)
     nokogiri (1.12.3-x86_64-darwin)
       racc (~> 1.4)
     nokogiri (1.12.3-x86_64-linux)
@@ -36,6 +40,7 @@ GEM
     tilt (2.0.10)
 
 PLATFORMS
+  ruby
   x86_64-darwin-20
   x86_64-linux
 
@@ -49,7 +54,7 @@ DEPENDENCIES
   thin
 
 RUBY VERSION
-   ruby 3.0.2p107
+   ruby 2.7.4p191
 
 BUNDLED WITH
    2.2.22
