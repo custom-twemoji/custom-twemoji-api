@@ -12,10 +12,11 @@ set :logger, Logger.new($stdout)
 
 VALID_PARAMS = [
   CustomFace::DEFAULT_FEATURE_STACKING_ORDER,
-  :base_emoji_id,
+  :emoji_id,
+  :file_format,
+  :filename,
   :order,
   :output,
-  :filename,
   :time,
   :twemoji_version
 ].flatten.freeze
@@ -24,24 +25,24 @@ get '/' do
   redirect 'https://github.com/blakegearin/custom-twemoji-api'
 end
 
-get '/faces' do
+get '/faces', '/faces/' do
   json(Face.all(params[:twemoji_version].presence))
 end
 
-get '/faces/:base_emoji_id/:file_format', '/faces/:file_format' do
+get '/faces/:emoji_id' do
   @output = params[:output]
-  case @params[:file_format]
-  when 'svg', 'png'
+  @file_format = @params[:file_format]
+  case @file_format
+  when nil, 'svg', 'png'
     params = validate_params(symbolize_params)
     return if params.empty?
 
-    resource = get_resource_by_file_format(@params[:file_format], CustomFace.new(params))
+    resource = get_resource(CustomFace.new(params))
+    @output == 'json' ? json(resource) : resource
   else
     message = "File format not supported: #{@params[:type]} | Valid file formats: svg, png"
     error 405, { error: message }.to_json
   end
-
-  params[:output] == 'json' ? json(resource) : resource
 rescue StandardError => e
   logger.error(e.message)
   response = {
@@ -54,7 +55,7 @@ end
 not_found do
   message =
     "Endpoint not found: #{request.request_method} #{request.path_info}"\
-    ' | Valid endpoints: GET /faces'
+    ' | Valid endpoints: GET /faces, GET /faces/{emoji_id}'
   error 404, { error: message }.to_json
 end
 
@@ -102,9 +103,9 @@ def png(resource)
   resource.png
 end
 
-def get_resource_by_file_format(file_format, resource)
-  case file_format
-  when 'svg'
+def get_resource(resource)
+  case @file_format
+  when nil, 'svg'
     svg(resource)
   when 'png'
     png(resource)

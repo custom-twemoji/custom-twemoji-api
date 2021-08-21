@@ -12,7 +12,7 @@ class CustomEmoji
   def initialize(params)
     @params = params
     @time = @params[:time]
-    @base_emoji_id = @params[:base_emoji_id]
+    @emoji_id = @params[:emoji_id]
     @xml_template = File.open('assets/template.svg') { |f| Nokogiri::XML(f) }.at(:svg)
     @twemoji_version = @params[:twemoji_version].presence || Twemoji::DEFAULT_VERSION
   end
@@ -75,6 +75,7 @@ class CustomEmoji
   def convert_svg_to_png(svg_filepath, png_filepath)
     MiniMagick::Tool::Convert.new do |convert|
       convert.background('none')
+      convert.size('37x37')
       convert << svg_filepath
       convert << png_filepath
     end

@@ -33,17 +33,13 @@ class CustomFace < CustomEmoji
   end
 
   # Adds a feature of a Twemoji's XML to an XML template
-  def add_feature(feature_name, emoji_id)
-    if emoji_id.nil?
-      return if @base_emoji_id.nil?
+  def add_feature(feature_name, emoji_id_for_feature)
+    emoji_id_for_feature = @emoji_id if emoji_id_for_feature.nil?
 
-      emoji_id = @base_emoji_id
-    end
-
-    twemoji_xml = Twemoji.new(@twemoji_version, emoji_id).xml
+    twemoji_xml = Twemoji.new(@twemoji_version, emoji_id_for_feature).xml
 
     faces = Face.all(@twemoji_version)
-    layers_to_add = faces.dig(emoji_id, feature_name.to_s)
+    layers_to_add = faces.dig(emoji_id_for_feature, feature_name.to_s)
     add_all_feature_layers(layers_to_add, twemoji_xml)
   end
 
@@ -59,8 +55,8 @@ class CustomFace < CustomEmoji
       end
     else
       DEFAULT_FEATURE_STACKING_ORDER.each do |feature_name|
-        emoji_id = @params[feature_name]
-        add_feature(feature_name, emoji_id)
+        emoji_id_for_feature = @params[feature_name]
+        add_feature(feature_name, emoji_id_for_feature)
       end
     end
   end

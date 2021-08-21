@@ -1,3 +1,11 @@
+# Google Cloud configuration
+# Documentation: https://cloud.google.com/appengine/docs/standard/ruby/config/appref
+
 runtime: ruby27
 
-entrypoint: bundle exec ruby app/controllers/application_controller.rb
+entrypoint: bundle exec ruby app/controllers/application_controller.rb -o $PORT
+
+handlers:
+- url: /.*
+  script: auto
+  secure: always
