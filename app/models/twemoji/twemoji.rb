@@ -44,27 +44,29 @@ class Twemoji
   end
 
   def convert_to_absolute_commands(xml)
-    xml.children.each_with_index do |child, index|
+    xml.children.each_with_index do |child, _index|
       next unless child.name == 'path'
+
       d = child.attributes['d'].value
       next if d.nil?
+
       abs_d = SvgPath.new(d).abs.to_s
 
-      if abs_d != d
-        path_commands = abs_d.split("M").reject(&:empty?)
+      next unless abs_d != d
 
-        if path_commands.length == 1
-          child.attributes['d'].value = abs_d
-        else
-          child_dup = child.dup
-          child.remove
+      path_commands = abs_d.split('M').reject(&:empty?)
 
-          path_commands.each do |path_command|
-            new_child = child_dup.dup
-            new_child.attributes['d'].value = "M" + path_command
+      if path_commands.length == 1
+        child.attributes['d'].value = abs_d
+      else
+        child_dup = child.dup
+        child.remove
 
-            xml.add_child(new_child)
-          end
+        path_commands.each do |path_command|
+          new_child = child_dup.dup
+          new_child.attributes['d'].value = "M#{path_command}"
+
+          xml.add_child(new_child)
         end
       end
     end
@@ -81,16 +83,17 @@ class Twemoji
         feature = nil
         fill = nil
 
-        if layers[index].is_a?(String)
+        case layers[index]
+        when String
           feature = layers[index].to_sym
-        elsif layers[index].is_a?(Hash)
+        when Hash
           feature = layers[index]['name'].to_sym
           fill = layers[index]['fill']
         end
 
         feature_number = features[feature].index(index)
 
-        child[:id] = feature.to_s << (feature_number == 0 ? '' : feature_number.to_s)
+        child[:id] = feature.to_s << (feature_number.zero? ? '' : feature_number.to_s)
         child[:class] = feature
         child[:fill] = fill unless fill.nil?
       end

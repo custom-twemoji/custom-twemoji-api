@@ -8,6 +8,7 @@ require 'sinatra/multi_route'
 
 require_relative '../models/custom_face'
 
+# Defines the top-level application
 class ApplicationController < Sinatra::Base
   register Sinatra::MultiRoute
   helpers Sinatra::CustomLogger
@@ -46,9 +47,7 @@ class ApplicationController < Sinatra::Base
     case @file_format
     when nil, 'svg', 'png'
       params = validate_params(symbolize_params)
-      if params.empty?
-        raise 'No valid parameters detected'
-      end
+      raise 'No valid parameters detected' if params.empty?
 
       resource = get_resource(CustomFace.new(params))
       case @output
@@ -155,5 +154,5 @@ class ApplicationController < Sinatra::Base
     }.to_json
   end
 
-  run! if app_file == $0
+  run! if app_file == $PROGRAM_NAME
 end

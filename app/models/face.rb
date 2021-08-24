@@ -13,6 +13,6 @@ class Face
   end
 
   def self.find(id)
-    self.all.dig(id)
+    all[id]
   end
 end

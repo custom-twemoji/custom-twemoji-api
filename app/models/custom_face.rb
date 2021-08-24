@@ -65,7 +65,7 @@ class CustomFace < CustomEmoji
   # Adds all features to an XML template
   def add_features
     if @params[:order] == 'manual'
-      features.each do |_, emoji_id|
+      features.each do |_, feature_xml|
         add_all_feature_layers(feature_xml)
       end
     else
@@ -81,6 +81,9 @@ class CustomFace < CustomEmoji
       out[value.to_sym] ||= []
       out[value.to_sym] << key
     end
+  end
+
+  def fetch_twemojis
   end
 
   def features
@@ -109,7 +112,7 @@ class CustomFace < CustomEmoji
 
       # Get nodes by feature (class)
       layers_for_feature = xml.css("[class=#{feature_name}]") unless xml.nil?
-      all_features[feature_name] = layers_for_feature if layers_for_feature.length > 0
+      all_features[feature_name] = layers_for_feature unless layers_for_feature.empty?
     end
 
     all_features

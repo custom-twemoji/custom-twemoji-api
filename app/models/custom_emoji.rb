@@ -63,8 +63,6 @@ class CustomEmoji
   #     @xml_template.add_child(layer)
   #   end
 
-
-
   #   # case layers
   #   # when Integer
   #   #   # Feature is an integer corresponding to only one layer
