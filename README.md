@@ -7,6 +7,8 @@
   An API that let's you combine <a href="https://twemoji.twitter.com">Twitter's emojis<a/>.
 </p>
 
+🚧 WIP - Beta 🚧
+
 ## Endpoints
 
 ### Face Twemojis
