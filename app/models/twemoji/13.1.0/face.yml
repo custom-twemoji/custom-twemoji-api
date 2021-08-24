@@ -1,1044 +1,814 @@
 '1f383':
-  head: 0
-  headwear: 1
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other: 2
+  0: 'head'
+  1: 'headwear'
+  2: 'nose'
+  3: 'mouth'
+  4: 'eyes'
+  5: 'eyes'
 '1f479':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f47b':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: 'head'
+  1: 'eyes'
+  2: 'eyes'
+  3: 'eyes'
+  4: 'mouth'
 '1f47d':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: 'head'
+  1: 'eyes'
+  2: 'eyes'
+  3: 'mouth'
 '1f47f':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: 'head'
+  1: 'head'
+  2: 'head'
+  3: 'eyes'
+  4: 'eyes'
+  5: 'mouth'
 '1f480':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f600':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f601':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f602':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f603':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f604':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f605':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f606':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f607':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f608':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f609':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f60a':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: 'head'
+  1: 'cheeks'
+  2: 'cheeks'
+  3: 'mouth'
+  4: 'eyes'
+  5: 'eyes'
 '1f60b':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: 'head'
+  1: 'mouth'
+  2: 'mouth'
+  3: 'eyes'
+  4: 'eyes'
+  5: 'mouth'
 '1f60c':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: 'head'
+  1: 'eyes'
+  2: 'eyes'
+  3: 'eyes'
+  4: 'eyes'
+  5: 'mouth'
 '1f60d':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f60e':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f60f':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f610':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f611':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f612':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f613':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f614':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f615':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f616':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f617':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f618':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f619':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f61a':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f61b':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f61c':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f61d':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f61e':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f61f':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f620':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f621':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f622':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f623':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f624':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f625':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f626':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f627':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f628':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f629':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f62a':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f62b':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f62c':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f62d':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f62e-200d-1f4a8':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f62e':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f62f':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f630':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f631':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f632':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f633':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f634':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f635-200d-1f4ab':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f635':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f636-200d-1f32b-fe0f':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f636':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f637':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f638':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f639':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f63a':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f63b':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f63c':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f63d':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f63e':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f63f':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f640':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f641':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f642':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f643':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f644':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f648':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f649':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f64a':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f910':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f911':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f912':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f913':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f914':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f915':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f916':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f917':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f920':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f921':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f922':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f923':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f924':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f925':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f927':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f928':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f929':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f92a':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f92b':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f92c':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f92d':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f92e':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f92f':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f970':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f971':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f972':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f973':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f974':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f975':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f976':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f978':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f97a':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''
 '1f9d0':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: 'head'
+  1: 'eyes'
+  2: '' # Stacked too low to be visible
+  3: 'eyes'
+  4: 'eyewear'
+  5: 'mouth'
+  6: 'eyewear'
+  7: { # Glass of the eyeglass
+    name: 'eyewear',
+    fill: '#F4F7F9'
+  }
+  8: 'eyewear'
+  9: 'eyewear'
 '2639':
-  head: 0
-  headwear:
-  cheeks:
-  mouth: 3
-  nose:
-  eyes: [1, 2]
-  eyewear:
-  other:
+  0: 'head'
+  1: 'eyes'
+  2: 'eyes'
+  3: 'mouth'
 '263a':
-  head:
-  headwear:
-  cheeks:
-  mouth:
-  nose:
-  eyes:
-  eyewear:
-  other:
+  0: ''
+  1: ''
+  2: ''
+  3: ''
+  4: ''
+  5: ''

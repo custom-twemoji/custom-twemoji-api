@@ -2,14 +2,17 @@
 
 require 'yaml'
 
-require_relative 'twemoji'
+require_relative 'twemoji/twemoji'
 
 # Defines an emoji face
 class Face
   # Retrieves all faces
-  def self.all(twemoji_version)
-    twemoji_version = Twemoji::DEFAULT_VERSION if twemoji_version.nil?
+  def self.all(twemoji_version = Twemoji.latest)
     yml_file = "app/models/twemoji/#{twemoji_version}/face.yml"
     YAML.safe_load(File.read(yml_file))
+  end
+
+  def self.find(id)
+    self.all.dig(id)
   end
 end
