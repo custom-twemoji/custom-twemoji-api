@@ -30,7 +30,7 @@ After the endpoint, pass in URL parameters as key-value pairs (`?key=value`) sep
   <br>
 
     - Key: facial feature
-    - Value: emoji ID
+    - Value: emoji
 
   <br>
 
@@ -52,29 +52,30 @@ After the endpoint, pass in URL parameters as key-value pairs (`?key=value`) sep
   #### Example
 
   If you want...
-
+  
   - the eyes of [263a](https://unicode-table.com/en/263A) ☺️
   - the mouth of [2639](https://unicode-table.com/en/2639/) ☹️
   - the eyewear of [1f978](https://unicode-table.com/en/1F978/) 🥸
+  - everything else of [1f47f](https://unicode-table.com/en/1F47F/) 👿
 
   <br>
 
   Your request will look like this:
 
   ```txt
-  /faces/png?eyes=263a&mouth=2639&eyewear=1f978
+  /faces/1f47f?eyes=263a&mouth=2639&eyewear=1f978
 
   # Spaced out for easy reading
-  /faces /png ? eyes=263a & mouth=2639 & eyewear=1f978
+  /faces /1f47f ? eyes=263a & mouth=2639 & eyewear=1f978
   ```
 
   If you want the eyes to be above the eyewear, add in `order=manual` and move eyes in front of eyewear:
 
   ```txt
-  /faces/png?mouth=2639&eyewear=1f978&eyes=263a&order=manual
+  /faces/1f47f?mouth=2639&eyewear=1f978&eyes=263a&order=manual
 
   # Spaced out for easy reading
-  /faces /png ? mouth=2639 & eyewear=1f978 & eyes=263a & order=manual
+  /faces /1f47f ? mouth=2639 & eyewear=1f978 & eyes=263a & order=manual
   ```
 
 </details>
