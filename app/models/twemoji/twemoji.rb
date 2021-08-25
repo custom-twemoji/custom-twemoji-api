@@ -4,7 +4,6 @@ require 'mini_magick'
 require 'net/http'
 require 'nokogiri'
 require 'uri'
-require 'yaml'
 
 require_relative '../svgpath/svgpath'
 

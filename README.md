@@ -15,28 +15,20 @@
 
 - `GET /faces`
   - Returns JSON list of all faces and their layers by feature
-- `GET /faces/svg`
-- `GET /faces/png`
-- `GET /faces/{emoji_id}/svg`
-- `GET /faces/{emoji_id}/png`
+- `GET /faces/{emoji}`
 
-The available endpoints correspond to the supported file formats.
+Valid emoji formats:
 
-- [SVG](https://www.w3schools.com/graphics/svg_intro.asp)
-- [PNG](https://www.lifewire.com/png-file-2622803)
-
-You can optionally specify a "base" emoji by passing an ID before the file format. This saves from having to type out more URL parameters than is necessary.
-
-```txt
-GET /faces/263a/svg
-```
+- 🙂
+- 1f383
+- U+1f383
 
 #### URL Parameters
 
 After the endpoint, pass in URL parameters as key-value pairs (`?key=value`) separated by ampersands (`&`).
 
 - <details>
-  <summary><b>Required - Facial Features</b></summary>
+  <summary><b>Facial Features</b></summary>
   <br>
 
     - Key: facial feature
@@ -87,8 +79,10 @@ After the endpoint, pass in URL parameters as key-value pairs (`?key=value`) sep
   /faces /png ? mouth=2639 & eyewear=1f978 & eyes=263a & order=manual
   ```
 
+</details>
+
 - <details>
-  <summary><b>Optional - Output</b></summary>
+  <summary><b>Output</b></summary>
   <br>
 
   By default the output emoji is displayed as an image for easy viewing. If you want to specify another option put it anywhere in your request.

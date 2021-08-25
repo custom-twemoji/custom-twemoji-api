@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'yaml'
+require 'unicode/emoji'
 
 require_relative 'custom_emoji'
 require_relative 'face'
@@ -26,6 +26,9 @@ class CustomFace < CustomEmoji
   def initialize(params)
     super
 
+    @emoji_id = validate_emoji_input(@emoji_id, Face)
+    raise "Emoji ID not valid: #{@emoji_id}" if @emoji_id.nil?
+
     base_layers = Face.find(@emoji_id)
     @raw = @params[:raw] == 'true' || false
     @base_twemoji = Twemoji.new(
@@ -41,6 +44,7 @@ class CustomFace < CustomEmoji
       return
     end
 
+    validate_feature_params
     @features = features
     add_features
 
@@ -83,7 +87,22 @@ class CustomFace < CustomEmoji
     end
   end
 
-  def fetch_twemojis
+  def validate_feature_params
+    DEFAULT_FEATURE_STACKING_ORDER.each do |feature_name|
+      value = @params[feature_name]
+      next if value.nil?
+
+      value = validate_emoji_input(value, Face)
+
+      if Face.find(value).nil? || value == @emoji_id
+        # Delete bad or duplicate parameter
+        @params.delete(feature_name)
+      else
+        @params[feature_name] = value
+      end
+    end
+
+    @params
   end
 
   def features
@@ -92,7 +111,7 @@ class CustomFace < CustomEmoji
 
     DEFAULT_FEATURE_STACKING_ORDER.each do |feature_name|
       xml = nil
-      if @params[feature_name.to_sym].nil?
+      if @params[feature_name].nil?
         xml = @base_twemoji
       else
         emoji_id = @params[feature_name].presence
