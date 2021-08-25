@@ -9,9 +9,7 @@
 
 🚧 WIP - Beta 🚧
 
-## Endpoints
-
-### Face Twemojis
+## Face Twemojis
 
 - `GET /faces`
   - Returns JSON list of all faces and their layers by feature
@@ -23,7 +21,7 @@ Valid emoji formats:
 - 1f383
 - U+1f383
 
-#### URL Parameters
+### URL Parameters
 
 After the endpoint, pass in URL parameters as key-value pairs (`?key=value`) separated by ampersands (`&`).
 
@@ -36,7 +34,7 @@ After the endpoint, pass in URL parameters as key-value pairs (`?key=value`) sep
 
   <br>
 
-  Each feature is a layer and the order in which they're stacked impacts what will be seen or hidden in the output emoji. This is the list of features in default stacking order from bottom to top.
+  Each feature is a layer and the order in which they're stacked impacts what will be seen or hidden in the emoji. This is the list of features in default stacking order from bottom to top.
 
   1. head
   1. headwear
@@ -51,7 +49,7 @@ After the endpoint, pass in URL parameters as key-value pairs (`?key=value`) sep
 
   If you want to specify your own stacking order, pass in the key-value pair `order=manual` anywhere in the request. The stacking will follow the order you pass in parameters, with the first parameter being at the bottom.
 
-  ##### Example
+  #### Example
 
   If you want...
 
@@ -82,14 +80,33 @@ After the endpoint, pass in URL parameters as key-value pairs (`?key=value`) sep
 </details>
 
 - <details>
-  <summary><b>Output</b></summary>
+  <summary><b>File Formats & Output</b></summary>
   <br>
 
-  By default the output emoji is displayed as an image for easy viewing. If you want to specify another option put it anywhere in your request.
+  Defaults:
 
-  ##### JSON (`output=json`)
+  - File format: `svg`
+  - Output: MIME type of `image/svg+xml`
+  - Height and width set to `100%`
 
-  File format is returned as `resource` and also includes licensing information. PNGs are returned as [Base64](https://developer.mozilla.org/en-US/docs/Glossary/Base64).
+  ### Size (`size=100`)
+
+  Specify the number of pixels (`px`) for the emoji's height and width.
+
+  ### PNG (`file_format=png`)
+
+  Defaults:
+
+  - Output: MIME type of `image/png`
+  - Height and width set to `36px`
+
+  With `output=json` returns as [Base64](https://developer.mozilla.org/en-US/docs/Glossary/Base64)
+
+  ### Output
+
+  #### JSON (`output=json`)
+
+  File format is returned as `resource` and also includes licensing information.
 
   ##### Download (`output=download`)
 

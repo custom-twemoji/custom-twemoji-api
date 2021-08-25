@@ -90,10 +90,10 @@ class Twemoji
           fill = layers[index]['fill']
         end
 
+        feature_name = "#{@id}-#{feature.to_s}"
         feature_number = features[feature].index(index)
-
-        child[:id] = feature.to_s << (feature_number.zero? ? '' : feature_number.to_s)
-        child[:class] = feature
+        child[:id] = "#{feature_name}#{feature_number.zero? ? '' : feature_number.to_s}"
+        child[:class] = feature_name
         child[:fill] = fill unless fill.nil?
       end
     end

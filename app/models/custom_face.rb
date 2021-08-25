@@ -26,14 +26,14 @@ class CustomFace < CustomEmoji
   def initialize(params)
     super
 
-    @emoji_id = validate_emoji_input(@emoji_id, Face)
-    raise "Emoji ID not valid: #{@emoji_id}" if @emoji_id.nil?
+    @base_emoji_id = validate_emoji_input(@base_emoji_id, Face)
+    raise "Emoji ID not valid: #{@base_emoji_id}" if @base_emoji_id.nil?
 
-    base_layers = Face.find(@emoji_id)
+    base_layers = Face.find(@base_emoji_id)
     @raw = @params[:raw] == 'true' || false
     @base_twemoji = Twemoji.new(
       @twemoji_version,
-      @emoji_id,
+      @base_emoji_id,
       base_layers,
       features_from_layers(base_layers),
       @raw
@@ -94,7 +94,7 @@ class CustomFace < CustomEmoji
 
       value = validate_emoji_input(value, Face)
 
-      if Face.find(value).nil? || value == @emoji_id
+      if Face.find(value).nil? || value == @base_emoji_id
         # Delete bad or duplicate parameter
         @params.delete(feature_name)
       else
@@ -111,8 +111,10 @@ class CustomFace < CustomEmoji
 
     DEFAULT_FEATURE_STACKING_ORDER.each do |feature_name|
       xml = nil
+      emoji_id = nil
       if @params[feature_name].nil?
         xml = @base_twemoji
+        emoji_id = @base_emoji_id
       else
         emoji_id = @params[feature_name].presence
         next if emoji_id.nil?
@@ -123,14 +125,14 @@ class CustomFace < CustomEmoji
           features = features_from_layers(layers)
           xml = Twemoji.new(@twemoji_version, emoji_id, layers, features, false).xml
 
-          twemojis[@emoji_id] = xml
+          twemojis[emoji_id] = xml
         else
-          xml = twemojis[@emoji_id]
+          xml = twemojis[emoji_id]
         end
       end
 
       # Get nodes by feature (class)
-      layers_for_feature = xml.css("[class=#{feature_name}]") unless xml.nil?
+      layers_for_feature = xml.css("[class='#{emoji_id}-#{feature_name}']") unless xml.nil?
       all_features[feature_name] = layers_for_feature unless layers_for_feature.empty?
     end
 

@@ -29,6 +29,7 @@ class ApplicationController < Sinatra::Base
     :order,
     :output,
     :raw,
+    :size,
     :time,
     :twemoji_version
   ].flatten.freeze
@@ -62,13 +63,13 @@ class ApplicationController < Sinatra::Base
       message = "File format not supported: #{@params[:type]} | Valid file formats: svg, png"
       error 405, { error: message }.to_json
     end
-  rescue StandardError => e
-    logger.error(e.message)
-    response = {
-      success: false,
-      error: e.message
-    }
-    error 500, response.to_json
+  # rescue StandardError => e
+  #   logger.error(e.message)
+  #   response = {
+  #     success: false,
+  #     error: e.message
+  #   }
+  #   error 500, response.to_json
   end
 
   not_found do
@@ -104,22 +105,13 @@ class ApplicationController < Sinatra::Base
     headers['Content-Disposition'] = "attachment;filename=\"#{full_filename}\""
   end
 
-  def xml(resource)
-    unless @output == 'json'
-      content_type 'image/svg+xml'
-      set_content_disposition(resource, __method__.to_s)
-    end
-
-    resource.xml
-  end
-
   def svg(resource)
     unless @output == 'json'
       content_type 'image/svg+xml'
       set_content_disposition(resource, __method__.to_s)
     end
 
-    resource.svg
+    @output == 'download' ? resource.svg : resource.xml
   end
 
   def png(resource)
@@ -133,9 +125,7 @@ class ApplicationController < Sinatra::Base
 
   def get_resource(resource)
     case @file_format
-    when nil
-      xml(resource)
-    when 'svg'
+    when nil, 'svg'
       svg(resource)
     when 'png'
       png(resource)
