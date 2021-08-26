@@ -53,7 +53,7 @@ GET /faces/{emoji}?key1=value1&key2=value2
 
   If you want to specify your own stacking order, pass in the key-value pair `order=manual` anywhere in the request. The stacking will follow the order you pass in parameters, with the first parameter being at the bottom.
 
-  Example: If you want...
+  **Example:** If you want...
 
   - the eyes of [263a](https://unicode-table.com/en/263A) ☺️
   - the mouth of [2639](https://unicode-table.com/en/2639/) ☹️
@@ -111,18 +111,18 @@ GET /faces/{emoji}?key1=value1&key2=value2
 
   File format is returned as `resource` and also includes licensing information.
 
-  ##### Download (`output=download`)
+  #### Download (`output=download`)
 
   The default name of the file returned is a modified version of your request parameters. The equals signs (`=`) and ampersands (`&`) are replaced with a minus sign (`-`) and these characters `_-_`
 
-  ##### Filename
+  ##### Filename (`filename={your_name}`)
 
   If you want to name your download file, pass in `filename=` with a value of your choosing.
 
   Example Request:
 
   ```txt
-  /faces/263a/png?download=true&filename=amazing_emoji
+  /faces/263a?file_format=png&download=true&filename=amazing_emoji
   ```
 
   File returned: `amazing_emoji.png`
