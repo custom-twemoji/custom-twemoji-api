@@ -71,7 +71,7 @@ class CustomEmoji
     size = @size.presence || 36
     MiniMagick::Tool::Convert.new do |convert|
       convert.background('none')
-      convert.size("#{@size}x#{@size}")
+      convert.size("#{size}x#{size}")
       convert << svg_filepath
       convert << png_filepath
     end

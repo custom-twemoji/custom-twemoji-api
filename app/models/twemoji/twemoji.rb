@@ -21,7 +21,7 @@ class Twemoji
     when Net::HTTPSuccess
       xml = Nokogiri::XML(response.body).css('svg')[0]
 
-      xml = convert_to_absolute_commands(xml)
+      xml = check_children(xml)
       xml = label_layers_by_feature(xml, layers, features) unless raw == true
 
       @xml = xml
@@ -42,35 +42,70 @@ class Twemoji
     "v#{@version}/assets/svg/#{@id}.svg"
   end
 
-  def convert_to_absolute_commands(xml)
-    xml.children.each_with_index do |child, _index|
-      next unless child.name == 'path'
+  def replace_child(original_child, path_commands, xml)
+    path_commands.each do |path_command|
+      # Preserve the original
+      new_child = original_child.dup
+      new_child.attributes['d'].value = "M#{path_command}"
 
-      d = child.attributes['d'].value
-      next if d.nil?
-
-      abs_d = SvgPath.new(d).abs.to_s
-
-      next unless abs_d != d
-
-      path_commands = abs_d.split('M').reject(&:empty?)
-
-      if path_commands.length == 1
-        child.attributes['d'].value = abs_d
-      else
-        child_dup = child.dup
-        child.remove
-
-        path_commands.each do |path_command|
-          new_child = child_dup.dup
-          new_child.attributes['d'].value = "M#{path_command}"
-
-          xml.add_child(new_child)
-        end
-      end
+      xml.add_child(new_child)
     end
 
     xml
+  end
+
+  def convert_path_to_abs(node, xml)
+    d = node.attributes['d'].value
+    if d.nil?
+      xml.add_child(node)
+      return
+    end
+
+    abs_d = SvgPath.new(d).abs.to_s
+    if abs_d == d
+      xml.add_child(node)
+      return
+    end
+
+    path_commands = abs_d.split('M').reject(&:empty?)
+
+    if path_commands.length == 1
+      node.attributes['d'].value = abs_d
+      xml.add_child(node)
+    else
+      replace_child(node, path_commands, xml)
+    end
+
+    xml
+  end
+
+  def check_children(xml)
+    new_xml = xml.dup
+    new_xml.children.map(&:remove)
+
+    xml.children.each_with_index do |child, child_index|
+      case child.name
+      when 'g'
+        fill = child.attributes['fill'].value unless child.attributes['fill'].nil?
+        child.children.each do |grandchild|
+          grandchild['fill'] = fill unless fill.nil?
+          convert_path_to_abs(grandchild, new_xml)
+        end
+      when 'path'
+        convert_path_to_abs(child, child_index, new_xml)
+      else
+        new_xml.add_child(child)
+      end
+    end
+
+    new_xml
+  end
+
+  def subtract_layers(shape, hole)
+    shape_path = shape.attributes['d'].value
+    hole_path = hole.attributes['d'].value
+    shape.attributes['d'].value = "#{shape_path} #{hole_path}"
+    hole.remove
   end
 
   def label_layers_by_feature(xml, layers, features)
@@ -83,6 +118,9 @@ class Twemoji
         fill = nil
 
         case layers[index]
+        when 'subtract'
+          subtract_layers(xml.children[index - 1], xml.children[index])
+          next
         when String
           feature = layers[index].to_sym
         when Hash
@@ -90,7 +128,7 @@ class Twemoji
           fill = layers[index]['fill']
         end
 
-        feature_name = "#{@id}-#{feature.to_s}"
+        feature_name = "#{@id}-#{feature}"
         feature_number = features[feature].index(index)
         child[:id] = "#{feature_name}#{feature_number.zero? ? '' : feature_number.to_s}"
         child[:class] = feature_name

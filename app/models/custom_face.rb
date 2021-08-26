@@ -27,7 +27,7 @@ class CustomFace < CustomEmoji
     super
 
     @base_emoji_id = validate_emoji_input(@base_emoji_id, Face)
-    raise "Emoji ID not valid: #{@base_emoji_id}" if @base_emoji_id.nil?
+    raise "Emoji not a supported face: #{@params[:emoji_id]}" if @base_emoji_id.nil?
 
     base_layers = Face.find(@base_emoji_id)
     @raw = @params[:raw] == 'true' || false
@@ -90,7 +90,8 @@ class CustomFace < CustomEmoji
   def validate_feature_params
     DEFAULT_FEATURE_STACKING_ORDER.each do |feature_name|
       value = @params[feature_name]
-      next if value.nil?
+      # Permit '' as a means of removing a feature
+      next if value.blank?
 
       value = validate_emoji_input(value, Face)
 

@@ -63,16 +63,18 @@ class ApplicationController < Sinatra::Base
       message = "File format not supported: #{@params[:type]} | Valid file formats: svg, png"
       error 405, { error: message }.to_json
     end
-  # rescue StandardError => e
-  #   logger.error(e.message)
-  #   response = {
-  #     success: false,
-  #     error: e.message
-  #   }
-  #   error 500, response.to_json
+  rescue StandardError => e
+    logger.error(e.message)
+    content_type 'application/json'
+    response = {
+      success: false,
+      error: e.message
+    }
+    error 500, response.to_json
   end
 
   not_found do
+    content_type 'application/json'
     message =
       "Endpoint not found: #{request.request_method} #{request.path_info}"\
       ' | Valid endpoints: GET /faces, GET /faces/{emoji_id}'
