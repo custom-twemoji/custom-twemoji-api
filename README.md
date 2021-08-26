@@ -23,7 +23,11 @@ Valid emoji formats:
 
 ### URL Parameters
 
-After the endpoint, pass in URL parameters as key-value pairs (`?key=value`) separated by ampersands (`&`).
+After the endpoint, you can add a question mark (`?`) and pass in URL parameters as key-value pairs (`key=value`) separated by ampersands (`&`).
+
+```txt
+GET /faces/{emoji}?key1=value1&key2=value2
+```
 
 - <details>
   <summary><b>Facial Features</b></summary>
@@ -49,10 +53,8 @@ After the endpoint, pass in URL parameters as key-value pairs (`?key=value`) sep
 
   If you want to specify your own stacking order, pass in the key-value pair `order=manual` anywhere in the request. The stacking will follow the order you pass in parameters, with the first parameter being at the bottom.
 
-  #### Example
+  Example: If you want...
 
-  If you want...
-  
   - the eyes of [263a](https://unicode-table.com/en/263A) ☺️
   - the mouth of [2639](https://unicode-table.com/en/2639/) ☹️
   - the eyewear of [1f978](https://unicode-table.com/en/1F978/) 🥸
@@ -117,9 +119,7 @@ After the endpoint, pass in URL parameters as key-value pairs (`?key=value`) sep
 
   If you want to name your download file, pass in `filename=` with a value of your choosing.
 
-  ###### Example
-
-  Request:
+  Example Request:
 
   ```txt
   /faces/263a/png?download=true&filename=amazing_emoji
