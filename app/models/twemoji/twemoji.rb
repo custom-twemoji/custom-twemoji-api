@@ -21,7 +21,7 @@ class Twemoji
     when Net::HTTPSuccess
       xml = Nokogiri::XML(response.body).css('svg')[0]
 
-      xml = check_children(xml)
+      xml = convert_children_paths_to_abs(xml)
       xml = label_layers_by_feature(xml, layers, features) unless raw == true
 
       @xml = xml
@@ -79,11 +79,11 @@ class Twemoji
     xml
   end
 
-  def check_children(xml)
+  def convert_children_paths_to_abs(xml)
     new_xml = xml.dup
     new_xml.children.map(&:remove)
 
-    xml.children.each_with_index do |child, child_index|
+    xml.children.each do |child|
       case child.name
       when 'g'
         fill = child.attributes['fill'].value unless child.attributes['fill'].nil?
@@ -92,7 +92,7 @@ class Twemoji
           convert_path_to_abs(grandchild, new_xml)
         end
       when 'path'
-        convert_path_to_abs(child, child_index, new_xml)
+        convert_path_to_abs(child, new_xml)
       else
         new_xml.add_child(child)
       end

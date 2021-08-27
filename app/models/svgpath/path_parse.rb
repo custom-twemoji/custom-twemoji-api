@@ -189,7 +189,10 @@ def scanParam(state)
   if ch == 0x2E # .
     hasDot = true
     index += 1
-    while (isDigit(state.path[index].ord)) do
+    while (
+      !(state.path[index].nil?) &&
+      isDigit(state.path[index].ord)
+    ) do
       index += 1
       hasDecimal = true
     end
