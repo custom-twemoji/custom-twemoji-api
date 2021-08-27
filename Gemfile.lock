@@ -2,9 +2,11 @@ GEM
   remote: https://rubygems.org/
   specs:
     ast (2.4.2)
+    coderay (1.1.3)
     daemons (1.4.0)
     eventmachine (1.2.7)
     logger (1.4.3)
+    method_source (1.0.0)
     mini_magick (4.11.0)
     mini_portile2 (2.6.1)
     multi_json (1.15.0)
@@ -20,12 +22,16 @@ GEM
     parallel (1.20.1)
     parser (3.0.2.0)
       ast (~> 2.4.1)
+    pry (0.14.1)
+      coderay (~> 1.1)
+      method_source (~> 1.0)
     racc (1.5.2)
     rack (2.2.3)
     rack-protection (2.1.0)
       rack
     rainbow (3.0.0)
     regexp_parser (2.1.1)
+    require_all (3.0.0)
     rexml (3.2.5)
     rubocop (1.19.1)
       parallel (~> 1.10)
@@ -71,6 +77,8 @@ DEPENDENCIES
   logger
   mini_magick
   nokogiri
+  pry
+  require_all
   rubocop
   sinatra
   sinatra-contrib
