@@ -13,7 +13,14 @@ class CustomFace < CustomEmoji
 
   # Stacked from bottom to top
   DEFAULT_FEATURE_STACKING_ORDER = %i[
-    head headwear cheeks mouth nose eyes eyewear other
+    head
+    headwear
+    cheeks
+    mouth
+    nose
+    eyes
+    eyewear
+    other
   ].freeze
 
   def initialize(params)

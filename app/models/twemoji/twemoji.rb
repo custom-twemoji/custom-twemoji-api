@@ -28,7 +28,7 @@ class Twemoji
 
   def build_github_url
     'https://raw.githubusercontent.com/twitter/twemoji/'\
-    "v#{@version}/assets/svg/#{@id}.svg"
+      "v#{@version}/assets/svg/#{@id}.svg"
   end
 
   def fetch_from_github

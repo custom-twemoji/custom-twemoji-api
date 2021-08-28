@@ -74,19 +74,15 @@ class FacesController < Sinatra::Base
     case @output
     when 'json'
       json(resource)
-    when 'download'
-      resource
     else
       resource
     end
   end
 
   def symbolize_params
-    Hash[
-      params.map do |(k, v)|
-        [k.to_sym, v]
-      end
-    ]
+    params.map do |(k, v)|
+      [k.to_sym, v]
+    end.to_h
   end
 
   def validate_params(params)
