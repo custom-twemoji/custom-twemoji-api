@@ -5,6 +5,7 @@ AllCops:
 
 Metrics/ClassLength:
   CountAsOne: ['array', 'hash', 'heredoc']
+  Max: 120
 
 Metrics/MethodLength:
   CountAsOne: ['array', 'hash', 'heredoc']

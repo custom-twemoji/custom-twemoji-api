@@ -95,17 +95,32 @@ class AbsoluteTwemoji < Twemoji
 
   def subtract_layers(shape, hole)
     shape.attributes['d'].value = "#{shape.attributes['d'].value} #{hole.attributes['d'].value}"
-    hole.remove
+    hole[:class] = 'hole'
+    nil
+  end
+
+  def find_layer_underneath(layers, current_index, xml)
+    (current_index - 1).downto(0) do |i|
+      return xml.children[i] unless ['', 'subtract'].include?(layers[i])
+    end
+
+    raise "No bottom layer to subtract with layer #{current_index}"
   end
 
   def determine_layer_format(layers, index, xml)
     case layers[index]
     when 'subtract'
-      subtract_layers(xml.children[index - 1], xml.children[index])
+      subtract_layers(find_layer_underneath(layers, index, xml), xml.children[index])
     when String
-      [layers[index].to_sym, nil]
+      [
+        layers[index].to_sym,
+        nil
+      ]
     when Hash
-      [layers[index]['name'].to_sym, layers[index]['fill']]
+      [
+        layers[index]['name'].to_sym,
+        layers[index]['fill']
+      ]
     end
   end
 
@@ -117,21 +132,22 @@ class AbsoluteTwemoji < Twemoji
     node[:fill] = fill unless fill.nil?
   end
 
-  def label_layers_of_feature(xml, layers, node, index)
-    feature, fill = determine_layer_format(layers, index, xml)
-    update_node_attributes(node, feature, index, fill)
+  def label_layers_of_feature(xml, child, layers, node, index)
+    if layers[index].nil?
+      message = "Found missing layer data | emoji: #{@id} , layer: #{index} , xml: #{child}"
+      raise NameError, message
+    else
+      feature, fill = determine_layer_format(layers, index, xml)
+      update_node_attributes(node, feature, index, fill) unless feature.nil?
+    end
   end
 
   def label_layers_by_feature(xml, layers)
     xml.children.each_with_index do |child, index|
-      if layers[index].nil?
-        message = "Found missing layer data | emoji: #{@id} , layer: #{index} , xml: #{child}"
-        raise NameError, message
-      else
-        label_layers_of_feature(xml, layers, child, index)
-      end
+      label_layers_of_feature(xml, child, layers, node, index)
     end
 
+    xml.css("[class='hole']").each(&:remove)
     xml
   end
 end
