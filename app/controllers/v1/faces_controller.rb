@@ -163,7 +163,7 @@ class FacesController < Sinatra::Base
   end
 
   def json(resource)
-    content_type 'application/json'
+    content_type :json
     {
       success: true,
       resource: resource,

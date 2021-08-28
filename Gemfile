@@ -4,6 +4,7 @@ source 'https://rubygems.org'
 
 ruby '~> 2.7.0'
 
+gem 'jwt'
 gem 'logger'
 gem 'mini_magick'
 gem 'nokogiri'
@@ -16,5 +17,6 @@ gem 'thin'
 gem 'unicode-emoji'
 
 group :development, :test do
+  gem 'dotenv'
   gem 'pry'
 end
