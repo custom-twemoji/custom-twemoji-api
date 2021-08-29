@@ -13,6 +13,9 @@
 
 - `GET /faces`
   - Returns JSON list of all faces and their layers by feature
+- `GET /faces/random`
+  - Default is 100% chance of having a head but 50% for all other features
+  - Customize feature probability by passing in a Boolean (true or false) or decimal number between 0 and 1 (e.g. `/faces/random?eyes=0.75&nose=false` has a 75% chance of having eyes and 0% for nose)
 - `GET /faces/{emoji}`
 
 Valid emoji formats:
@@ -41,12 +44,12 @@ GET /faces/{emoji}?key1=value1&key2=value2
   Each feature is a layer and the order in which they're stacked impacts what will be seen or hidden in the emoji. This is the list of features in default stacking order from bottom to top.
 
   1. head
-  1. headwear
   1. cheeks
   1. mouth
   1. nose
   1. eyes
   1. eyewear
+  1. headwear
   1. other
 
   <br>

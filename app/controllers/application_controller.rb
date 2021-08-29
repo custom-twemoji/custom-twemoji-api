@@ -4,14 +4,17 @@ require 'logger'
 require 'sinatra/base'
 require 'sinatra/custom_logger'
 
+LOGGER = Logger.new($stdout).tap do |logger|
+  logger.formatter = proc do |severity, datetime, _progname, msg|
+    "[#{datetime} #{severity}] #{msg}\n"
+  end
+end
+
 # Defines the top-level application
 class ApplicationController < Sinatra::Base
-  set :logger, Logger.new($stdout)
-
   configure :development, :production do
-    logger = Logger.new($stdout)
-    logger.level = Logger::DEBUG if development?
-    set :logger, logger
+    LOGGER.level = Logger::DEBUG if development?
+    set :logger, LOGGER
   end
 
   get '/' do

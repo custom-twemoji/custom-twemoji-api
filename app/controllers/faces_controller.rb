@@ -4,20 +4,13 @@ require 'base64'
 require 'sinatra/base'
 require 'sinatra/multi_route'
 
+require_relative '../helpers/hash'
 require_relative '../models/custom_face'
+require_relative '../models/random_custom_face'
 
 # Defines the Faces endpoints
 class FacesController < Sinatra::Base
   register Sinatra::MultiRoute
-  helpers Sinatra::CustomLogger
-
-  set :logger, Logger.new($stdout)
-
-  configure :development, :production do
-    logger = Logger.new($stdout)
-    logger.level = Logger::DEBUG if development?
-    set :logger, logger
-  end
 
   VALID_PARAMS = [
     CustomFace::DEFAULT_FEATURE_STACKING_ORDER,
@@ -36,27 +29,18 @@ class FacesController < Sinatra::Base
     json(Face.all(params[:twemoji_version].presence))
   end
 
-  get '/faces/:emoji_id' do
-    @output = params[:output]
-    @file_format = @params[:file_format]
-    case @file_format
-    when nil, 'svg', 'png'
-      params = validate_params(symbolize_params)
-      raise 'No valid parameters detected' if params.empty?
-
-      process_valid_request
-    else
-      message = "File format not supported: #{@params[:type]} | Valid file formats: svg, png"
-      error 405, { error: message }.to_json
-    end
+  get '/faces/random' do
+    validate
+    process_valid_request(RandomCustomFace.new(params))
   rescue StandardError => e
-    logger.error(e.message)
-    content_type 'application/json'
-    response = {
-      success: false,
-      error: e.message
-    }
-    error 500, response.to_json
+    runtime_error(e)
+  end
+
+  get '/faces/:emoji_id' do
+    validate
+    process_valid_request(CustomFace.new(params))
+  rescue StandardError => e
+    runtime_error(e)
   end
 
   not_found do
@@ -69,8 +53,31 @@ class FacesController < Sinatra::Base
 
   private
 
-  def process_valid_request
-    resource = get_resource(CustomFace.new(params))
+  def runtime_error(error)
+    LOGGER.error(error.message)
+    content_type 'application/json'
+    response = {
+      success: false,
+      error: error.message
+    }
+    error 500, response.to_json
+  end
+
+  def validate
+    @output = params[:output]
+    @file_format = @params[:file_format]
+    case @file_format
+    when nil, 'svg', 'png'
+      params = validate_params(@params.symbolize_keys)
+      raise 'No valid parameters detected' if params.empty?
+    else
+      message = "File format not supported: #{@params[:type]} | Valid file formats: svg, png"
+      error 405, { error: message }.to_json
+    end
+  end
+
+  def process_valid_request(face)
+    resource = get_resource(face)
     case @output
     when 'json'
       json(resource)

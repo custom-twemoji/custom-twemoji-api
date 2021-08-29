@@ -12,7 +12,8 @@ class AbsoluteTwemoji < Twemoji
   attr_reader :xml
 
   def initialize(version, id, layers, features, raw)
-    super(version, id, features)
+    @version = version.nil? ? self.class.superclass.latest : version
+    super(@version, id, features)
 
     @xml = convert_children_paths_to_abs(@xml)
     @xml = label_layers_by_feature(@xml, layers) unless raw == true

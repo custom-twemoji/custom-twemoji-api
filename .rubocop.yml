@@ -9,6 +9,7 @@ Metrics/ClassLength:
 
 Metrics/MethodLength:
   CountAsOne: ['array', 'hash', 'heredoc']
+  Max: 15
 
 Metrics/BlockLength:
   CountAsOne: ['array', 'hash', 'heredoc']

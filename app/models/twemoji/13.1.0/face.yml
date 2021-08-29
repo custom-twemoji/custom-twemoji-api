@@ -99,7 +99,7 @@
   1: 'mouth'
   2: 'eyes'
   3: 'eyes'
-  4: 'headwear'
+  4: 'head'
   5: 'headwear'
   6: 'subtract'
   7: 'headwear'
@@ -375,7 +375,7 @@
   5: 'cheeks'
   6: 'eyes'
   7: 'eyes'
-  8: 'other'
+  8: 'cheeks'
   9: 'mouth'
 '1f62e-200d-1f4a8':
   0: 'head'

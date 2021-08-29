@@ -14,24 +14,27 @@ class CustomFace < CustomEmoji
   # Stacked from bottom to top
   DEFAULT_FEATURE_STACKING_ORDER = %i[
     head
-    headwear
     cheeks
     mouth
     nose
     eyes
     eyewear
+    headwear
     other
   ].freeze
 
   def initialize(params)
     super
 
-    @raw = @params[:raw] == 'true' || false
-    prepare_base_emoji
-    if @raw
-      @xml = @base_twemoji.to_xml
-      return
+    unless @base_emoji_id.nil?
+      @raw = @params[:raw] == 'true' || false
+      prepare_base_emoji
+      if @raw
+        @xml = @base_twemoji.to_xml
+        return
+      end
     end
+    LOGGER.debug("Creating custom face with params: #{@params}")
 
     add_features
 
@@ -113,37 +116,45 @@ class CustomFace < CustomEmoji
     @params
   end
 
-  def cache_twemoji(emoji_id)
+  def cache_twemoji(twemojis, emoji_id)
     layers = Face.find(emoji_id)
     features = features_from_layers(layers)
     xml = AbsoluteTwemoji.new(@twemoji_version, emoji_id, layers, features, false).xml
 
     twemojis[emoji_id] = xml
+    twemojis
   end
 
   def get_xml_and_emoji_id(feature_name, twemojis)
     xml, emoji_id = nil
 
     if @params[feature_name].nil?
+      return [nil, nil, twemojis] if @base_emoji_id.nil?
+
       xml = @base_twemoji
       emoji_id = @base_emoji_id
     else
       emoji_id = @params[feature_name].presence
-      return if emoji_id.nil?
+      return [nil, nil, twemojis] if emoji_id.nil?
 
-      # Save Twemojis to reduce number of fetches
-      twemojis[emoji_id].nil? ? cache_twemoji(emoji_id) : xml = twemojis[emoji_id]
+      if twemojis[emoji_id].nil?
+        # Save Twemojis to reduce number of fetches
+        twemojis = cache_twemoji(twemojis, emoji_id)
+      end
+
+      xml = twemojis[emoji_id]
     end
 
-    [emoji_id, xml]
+    [emoji_id, xml, twemojis]
   end
 
   def features
     validate_feature_params
-    all_features, twemojis = {}
+    all_features = {}
+    twemojis = {}
 
     DEFAULT_FEATURE_STACKING_ORDER.each do |feature_name|
-      emoji_id, xml = get_xml_and_emoji_id(feature_name, twemojis)
+      emoji_id, xml, twemojis = get_xml_and_emoji_id(feature_name, twemojis)
       next if emoji_id.nil?
 
       # Get nodes by feature (class)
