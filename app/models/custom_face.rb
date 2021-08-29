@@ -100,7 +100,8 @@ class CustomFace < CustomEmoji
 
     value = validate_emoji_input(value, Face)
 
-    if Face.find(value).nil? || value == @base_emoji_id
+    # Permit false as a means of removing a feature
+    if (Face.find(value).nil? || value == @base_emoji_id) && value != false
       # Delete bad or duplicate parameter
       @params.delete(feature_name)
     else

@@ -15,7 +15,7 @@ class AbsoluteTwemoji < Twemoji
     @version = version.nil? ? self.class.superclass.latest : version
     super(@version, id, features)
 
-    @xml = convert_children_paths_to_abs(@xml)
+    @xml = analyze_children(@xml)
     @xml = label_layers_by_feature(@xml, layers) unless raw == true
   end
 
@@ -31,14 +31,6 @@ class AbsoluteTwemoji < Twemoji
     end
 
     xml
-  end
-
-  def convert_d_to_abs(node, xml)
-    fill = node.attributes['fill'].value unless node.attributes['fill'].nil?
-    node.children.each do |child|
-      child['fill'] = fill unless fill.nil?
-      convert_path_to_abs(child, xml)
-    end
   end
 
   def get_absolute_d(original_d, node, xml)
@@ -72,10 +64,18 @@ class AbsoluteTwemoji < Twemoji
     xml
   end
 
-  def convert_child_to_abs(child, xml)
+  def break_down_group(node, xml)
+    fill = node.attributes['fill'].value unless node.attributes['fill'].nil?
+    node.children.each do |child|
+      child['fill'] = fill unless fill.nil?
+      analyze_child(child, xml)
+    end
+  end
+
+  def analyze_child(child, xml)
     case child.name
     when 'g'
-      convert_d_to_abs(child, xml)
+      break_down_group(child, xml)
     when 'path'
       convert_path_to_abs(child, xml)
     else
@@ -83,12 +83,12 @@ class AbsoluteTwemoji < Twemoji
     end
   end
 
-  def convert_children_paths_to_abs(xml)
+  def analyze_children(xml)
     new_xml = xml.dup
     new_xml.children.map(&:remove)
 
     xml.children.each do |child|
-      convert_child_to_abs(child, new_xml)
+      analyze_child(child, new_xml)
     end
 
     new_xml
@@ -146,6 +146,11 @@ class AbsoluteTwemoji < Twemoji
   def label_layers_by_feature(xml, layers)
     xml.children.each_with_index do |child, index|
       label_layers_of_feature(xml, layers, child, index)
+    end
+
+    if xml.children.length < layers.length
+      raise "Number of layers in the model (#{layers.length}) greater"\
+        " than the number in the SVG (#{xml.children.length})"
     end
 
     xml.css("[class='hole']").each(&:remove)

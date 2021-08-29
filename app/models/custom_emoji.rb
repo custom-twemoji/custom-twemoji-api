@@ -21,6 +21,8 @@ class CustomEmoji
   end
 
   def validate_emoji_input(input, find_class)
+    return false if input == 'false'
+
     if input[0..1] == 'U+'
       input = input[2..]
     elsif input.scan(Unicode::Emoji::REGEX).length == 1
