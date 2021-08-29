@@ -132,9 +132,9 @@ class AbsoluteTwemoji < Twemoji
     node[:fill] = fill unless fill.nil?
   end
 
-  def label_layers_of_feature(xml, child, layers, node, index)
+  def label_layers_of_feature(xml, layers, node, index)
     if layers[index].nil?
-      message = "Found missing layer data | emoji: #{@id} , layer: #{index} , xml: #{child}"
+      message = "Found missing layer data | emoji: #{@id} , layer: #{index} , xml: #{node}"
       raise NameError, message
     else
       feature, fill = determine_layer_format(layers, index, xml)
@@ -144,7 +144,7 @@ class AbsoluteTwemoji < Twemoji
 
   def label_layers_by_feature(xml, layers)
     xml.children.each_with_index do |child, index|
-      label_layers_of_feature(xml, child, layers, node, index)
+      label_layers_of_feature(xml, layers, child, index)
     end
 
     xml.css("[class='hole']").each(&:remove)

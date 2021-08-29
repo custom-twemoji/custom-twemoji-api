@@ -23,9 +23,10 @@ class CustomEmoji
   def validate_emoji_input(input, find_class)
     if input[0..1] == 'U+'
       input = input[2..]
-    elsif input.length == 1 && input.scan(Unicode::Emoji::REGEX).length == 1
+    elsif input.scan(Unicode::Emoji::REGEX).length == 1
       # Source: https://dev.to/ohbarye/convert-emoji-and-codepoints-each-other-in-ruby-27j
-      input = input.each_codepoint.map { |n| n.to_s(16) }[0]
+      input = input.each_codepoint.map { |n| n.to_s(16) }
+      input = input.join('-') if input.is_a?(Array)
     end
 
     find_class.find(input).nil? ? nil : input
