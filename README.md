@@ -15,6 +15,20 @@
   🚧 WIP - Beta 🚧
 </p>
 
+## Getting Started
+
+1. Create an account through [Login Radius](https://custom-twemoji-api.hub.loginradius.com/)
+1. Have your credentials handy in order to retrieve a token which will allow you make other API calls
+
+### [Postman](https://www.postman.com/downloads/)
+
+### Command-Line
+
+1. Open a terminal
+   - macOS: [Terminal](https://support.apple.com/guide/terminal/welcome/mac)
+   - Windows: [Windows Terminal](https://www.microsoft.com/en-us/p/windows-terminal/9n0dx20hk701)
+1.
+
 ## :slightly_smiling_face: Face Twemojis
 
 - `GET /v1/faces`
@@ -181,7 +195,9 @@ Follow these steps to contribute:
 1. Install [Bundler](https://bundler.io/) if you haven't already: `gem install bundler`
 1. Install Ruby dependencies with bundler: `bundle`
 1. Follow the [Getting Started](#getting-started) steps
-1. Run application locally using Rack: `rackup`
+1. Run application locally
+   1. Use Shotgun to enable reloading: `shotgun config.ru -p 9292` (port set to 9292 to be consistent)
+   1. If reloading isn't needed, start Rack normally: `rackup`
 1. Go to this URL in a browser to ensure it redirects to the [Custom Twemoji API GitHub repository](https://github.com/blakegearin/custom-twemoji-api): `http://localhost:9292`
 1. Stop application: `CTRL + C`
 

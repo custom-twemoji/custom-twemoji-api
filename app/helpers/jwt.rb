@@ -11,9 +11,7 @@ class JwtAuth
     begin
       options = { algorithm: 'HS256', iss: ENV['JWT_ISSUER'] }
       bearer = env.fetch('HTTP_AUTHORIZATION', '').slice(7..-1)
-      require 'pry'
-      binding.pry
-      puts 'end of pry'
+
       response = JWT.decode(bearer, ENV['JWT_SECRET'], true, options)
       payload = response[0]
       header = response[1]

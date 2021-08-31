@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'dotenv/load'
 require 'json'
 require 'jwt'
 require 'logger'
@@ -8,13 +7,15 @@ require 'sinatra/base'
 require 'sinatra/custom_logger'
 require 'sinatra/multi_route'
 
+require_relative '../../helpers/jwt'
+require_relative '../../../config/initializers/login_radius'
+require_relative '../../../config/initializers/version'
+
 LOGGER = Logger.new($stdout).tap do |logger|
   logger.formatter = proc do |severity, datetime, _progname, msg|
     "[#{datetime} #{severity}] #{msg}\n"
   end
 end
-
-require_relative '../helpers/jwt'
 
 # Defines the top-level application
 class ApplicationController < Sinatra::Base
@@ -25,8 +26,10 @@ class ApplicationController < Sinatra::Base
     set :logger, LOGGER
   end
 
+  use JwtAuth
+
   get '/', '/v1', '/v1/' do
-    redirect 'https://github.com/blakegearin/custom-twemoji-api'
+    redirect 'https://custom-twemoji-api.hub.loginradius.com'
   end
 
   def initialize
@@ -40,16 +43,46 @@ class ApplicationController < Sinatra::Base
   end
 
   post '/login' do
-    username = params[:username]
-    password = params[:password]
+    require 'pry'
+    binding.pry
+    puts 'end of pry'
 
-    content_type :json
-    if @logins[username.to_sym] == password
+    email_authentication_model = {
+      email: 'redacted',
+      password: 'redacted'
+    }
+    # email_template = "<email_template>" #Optional
+    # fields = nil #Optional
+    # login_url = "<login_url>" #Optional
+    # verification_url = "<verification_url>" #Optional
+
+    response = AuthenticationApi.login_by_email(email_authentication_model)
+
+    case response.code.to_i
+    when 200
       { token: token(username) }.to_json
-    else
-      message = 'Unauthorized'
+    when 401
+      message = 'Wrong username or password | Ensure '
       error 401, { error: message }.to_json
     end
+    # response = AuthenticationApi.login_by_email(
+    #   email_authentication_model)
+    #   email_template,
+    #   fields,
+    #   login_url,
+    #   verification_url
+    # )
+
+    # username = params[:username]
+    # password = params[:password]
+
+    # content_type :json
+    # if @logins[username.to_sym] == password
+    #   { token: token(username) }.to_json
+    # else
+    #   message = 'Unauthorized'
+    #   error 401, { error: message }.to_json
+    # end
   end
 
   # post '/login' do

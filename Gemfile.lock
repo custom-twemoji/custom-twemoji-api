@@ -8,6 +8,7 @@ GEM
     eventmachine (1.2.7)
     jwt (2.2.3)
     logger (1.4.3)
+    login_radius (11.0.0)
     method_source (1.0.0)
     mini_magick (4.11.0)
     mini_portile2 (2.6.1)
@@ -48,6 +49,8 @@ GEM
       parser (>= 3.0.1.1)
     ruby-progressbar (1.11.0)
     ruby2_keywords (0.0.5)
+    shotgun (0.9.2)
+      rack (>= 1.0)
     sinatra (2.1.0)
       mustermann (~> 1.0)
       rack (~> 2.2)
@@ -76,14 +79,16 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
-  dotenv
+  dotenv (~> 2.7)
   jwt
   logger
+  login_radius (~> 11.0)
   mini_magick
   nokogiri
-  pry
+  pry (~> 0.14)
   require_all
   rubocop
+  shotgun (~> 0.9)
   sinatra
   sinatra-contrib
   tempfile

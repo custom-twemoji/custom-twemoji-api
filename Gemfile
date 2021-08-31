@@ -6,6 +6,7 @@ ruby '~> 2.7.0'
 
 gem 'jwt'
 gem 'logger'
+gem 'login_radius', '~> 11.0'
 gem 'mini_magick'
 gem 'nokogiri'
 gem 'require_all'
@@ -17,6 +18,7 @@ gem 'thin'
 gem 'unicode-emoji'
 
 group :development, :test do
-  gem 'dotenv'
-  gem 'pry'
+  gem 'dotenv', '~> 2.7'
+  gem 'pry', '~> 0.14'
+  gem 'shotgun', '~> 0.9'
 end
