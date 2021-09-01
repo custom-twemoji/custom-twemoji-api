@@ -149,8 +149,8 @@ class AbsoluteTwemoji < Twemoji
     end
 
     if xml.children.length < layers.length
-      raise "Number of layers in the model (#{layers.length}) greater"\
-        " than the number in the SVG (#{xml.children.length})"
+      raise "Number of layers in the model (#{layers.length}) is greater than"\
+        " the number in the SVG (#{xml.children.length})"
     end
 
     xml.css("[class='hole']").each(&:remove)
