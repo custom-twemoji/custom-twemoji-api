@@ -16,7 +16,7 @@ class AbsoluteTwemoji < Twemoji
     super(@version, id, features)
 
     @xml = analyze_children(@xml)
-    @xml = label_layers_by_feature(@xml, layers) unless raw == true
+    @xml = label_layers_by_feature(@xml, layers, id) unless raw == true
   end
 
   private
@@ -143,13 +143,13 @@ class AbsoluteTwemoji < Twemoji
     end
   end
 
-  def label_layers_by_feature(xml, layers)
+  def label_layers_by_feature(xml, layers, id)
     xml.children.each_with_index do |child, index|
       label_layers_of_feature(xml, layers, child, index)
     end
 
     if xml.children.length < layers.length
-      raise "Number of layers in the model (#{layers.length}) is greater than"\
+      raise "For emoji #{id}, the number of layers in the model (#{layers.length}) is greater than"\
         " the number in the SVG (#{xml.children.length})"
     end
 
