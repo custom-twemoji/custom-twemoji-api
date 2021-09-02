@@ -1,6 +1,6 @@
 <p align="center">
   <img
-    src="assets/header.png"
+    src="assets/header.jpg"
     alt="Custom Twemoji API logo"
     title="Custom Twemoji API logo"
   />
