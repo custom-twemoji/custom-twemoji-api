@@ -9,7 +9,7 @@
 
 🚧 WIP - Beta 🚧
 
-## Face Twemojis
+## :slightly_smiling_face: Face Twemojis
 
 - `GET /faces`
   - Returns JSON list of all faces and their layers by feature
