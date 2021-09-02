@@ -151,12 +151,14 @@ Follow these steps to contribute:
 1. Install [Bundler](https://bundler.io/) if you haven't already: `gem install bundler`
 1. Install Ruby dependencies with bundler: `bundle`
 1. Follow the [Getting Started](#getting-started) steps
-1. Run application locally: `ruby app/controllers/application_controller.rb`
-1. Go to this URL in a browser to ensure it redirects to the [Custom Twemoji API GitHub repository](https://github.com/blakegearin/custom-twemoji-api): `http://localhost:4567`
+1. Run application locally using Rack: `rackup`
+1. Go to this URL in a browser to ensure it redirects to the [Custom Twemoji API GitHub repository](https://github.com/blakegearin/custom-twemoji-api): `http://localhost:9292`
 1. Stop application: `CTRL + C`
 
 ## License
 
-- Code licensed under [MIT License](LICENSE)
+- Code licensed under the [MIT License](LICENSE)
 - Graphics licensed under [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/)
 - Twemoji licensing can be found on [Twitter](https://twemoji.twitter.com)
+
+Not affiliated with Twitter Inc. or any of their affiliations
