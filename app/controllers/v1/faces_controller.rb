@@ -4,9 +4,9 @@ require 'base64'
 require 'sinatra/base'
 require 'sinatra/multi_route'
 
-require_relative '../helpers/hash'
-require_relative '../models/custom_face'
-require_relative '../models/random_custom_face'
+require_relative '../../helpers/hash'
+require_relative '../../models/custom_face'
+require_relative '../../models/random_custom_face'
 
 # Defines the Faces endpoints
 class FacesController < Sinatra::Base
@@ -25,18 +25,18 @@ class FacesController < Sinatra::Base
     :twemoji_version
   ].flatten.freeze
 
-  get '/faces', '/faces/' do
+  get '/v1/faces', '/v1/faces/' do
     json(Face.all(params[:twemoji_version].presence))
   end
 
-  get '/faces/random' do
+  get '/v1/faces/random', '/v1/faces/random/' do
     validate
     process_valid_request(RandomCustomFace.new(params))
   rescue StandardError => e
     runtime_error(e)
   end
 
-  get '/faces/:emoji_id' do
+  get '/v1/faces/:emoji_id', '/v1/faces/:emoji_id/' do
     validate
     process_valid_request(CustomFace.new(params))
   rescue StandardError => e
