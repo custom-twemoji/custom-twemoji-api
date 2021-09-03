@@ -91,32 +91,40 @@ GET /faces/{emoji}?key1=value1&key2=value2
 
   Defaults:
 
-  - File format: `svg`
-  - Output: MIME type of `image/svg+xml`
+  - Output: JSON
+  - Emoji returned as an SVG in `resource`
+  - Includes licensing information
+
+  ### Output
+
+  - `json`
+  - `image`
+  - `download`
+    - The default name of the file returned is the emoji described in key-value pairs
+    - The equals signs (`=`) and ampersands (`&`) are replaced with a minus sign (`-`) and these characters `_-_`
+
+  ### SVG (`file_format=svg`)
+
+  Defaults:
+
+  - Output:
+    - JSON: XML
+    - Image: MIME type of `image/png`
   - Height and width set to `100%`
-
-  ### Size (`size=100`)
-
-  Specify the number of pixels (`px`) for the emoji's height and width.
 
   ### PNG (`file_format=png`)
 
   Defaults:
 
-  - Output: MIME type of `image/png`
+  - Output:
+    - JSON: [Base64](https://developer.mozilla.org/en-US/docs/Glossary/Base64)
+    - Image: MIME type of `image/png`
   - Height and width set to `36px`
 
-  With `output=json` returns as [Base64](https://developer.mozilla.org/en-US/docs/Glossary/Base64)
+  ### Size (`size=100`)
 
-  ### Output
+  Specify the number of pixels (`px`) for the emoji's height and width.
 
-  #### JSON (`output=json`)
-
-  File format is returned as `resource` and also includes licensing information.
-
-  #### Download (`output=download`)
-
-  The default name of the file returned is a modified version of your request parameters. The equals signs (`=`) and ampersands (`&`) are replaced with a minus sign (`-`) and these characters `_-_`
 
   ##### Filename (`filename={your_name}`)
 

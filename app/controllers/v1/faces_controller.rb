@@ -63,17 +63,28 @@ class FacesController < Sinatra::Base
     error 500, response.to_json
   end
 
-  def validate
-    @output = params[:output]
-    @file_format = @params[:file_format]
-    case @file_format
-    when nil, 'svg', 'png'
-      params = validate_params(@params.symbolize_keys)
-      raise 'No valid parameters detected' if params.empty?
-    else
-      message = "File format not supported: #{@params[:type]} | Valid file formats: svg, png"
+  def validate_output
+    unless [nil, '', 'json', 'image', 'download'].include?(@params[:output])
+      message = "Output not supported: #{@params[:output]} | Valid file formats: json, image, download"
       error 405, { error: message }.to_json
     end
+    @output = params[:output].presence || 'json'
+  end
+
+  def validate_file_format
+    unless [nil, '', 'svg', 'png'].include?(@params[:file_format])
+      message = "File format not supported: #{@params[:file_format]} | Valid file formats: svg, png"
+      error 405, { error: message }.to_json
+    end
+    @file_format = @params[:file_format].presence || 'svg'
+  end
+
+  def validate
+    validate_output
+    validate_file_format
+
+    params = validate_params(@params.symbolize_keys)
+    raise 'No valid parameters detected' if params.empty?
   end
 
   def process_valid_request(face)
@@ -81,8 +92,11 @@ class FacesController < Sinatra::Base
     case @output
     when 'json'
       json(resource)
-    else
+    when 'image', 'download'
       resource
+    else
+      message = "Output not supported: #{@output} | Valid file formats: json, image, download"
+      error 405, { error: message }.to_json
     end
   end
 
@@ -101,7 +115,7 @@ class FacesController < Sinatra::Base
   def set_content_disposition(resource, file_extension)
     return unless @output == 'download'
 
-    filename = params[:filename].presence || resource.to_s
+    filename = @params[:filename].presence || resource.to_s
     full_filename = "#{filename}.#{file_extension}"
 
     # Good explanation on this: https://stackoverflow.com/a/20509354/5988852

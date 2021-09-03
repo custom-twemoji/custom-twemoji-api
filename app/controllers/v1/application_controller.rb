@@ -20,7 +20,7 @@ class ApplicationController < Sinatra::Base
     set :logger, LOGGER
   end
 
-  get '/', '/v1', '/v1/'  do
+  get '/', '/v1', '/v1/' do
     redirect 'https://github.com/blakegearin/custom-twemoji-api'
   end
 

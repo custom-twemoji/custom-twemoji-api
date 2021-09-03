@@ -44,7 +44,15 @@ class CustomFace < CustomEmoji
 
   # Prints out the custom face as a unique string
   def to_s
-    @features.map { |h| h.join('-') }.join('_-_')
+    descriptors = {}
+    descriptors[:base] = @base_emoji_id unless @base_emoji_id.nil?
+
+    DEFAULT_FEATURE_STACKING_ORDER.each do |feature_name|
+      value = @params[feature_name]
+      descriptors[feature_name] = value unless [nil, '', 'false', false].include?(value)
+    end
+
+    descriptors.map { |h| h.join('-') }.join('_-_')
   end
 
   private
