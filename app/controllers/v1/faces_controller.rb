@@ -14,6 +14,7 @@ class FacesController < Sinatra::Base
 
   VALID_PARAMS = [
     CustomFace::DEFAULT_FEATURE_STACKING_ORDER,
+    :density,
     :emoji_id,
     :file_format,
     :filename,
@@ -93,6 +94,9 @@ class FacesController < Sinatra::Base
     when 'json'
       json(resource)
     when 'image', 'download'
+      # send_data(resource , :filename => 'test.png', :type=>'image/png')
+      # content_type 'application/octet-stream'
+      # content_type 'image/png'
       resource
     else
       message = "Output not supported: #{@output} | Valid file formats: json, image, download"

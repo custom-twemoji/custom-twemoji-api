@@ -14,6 +14,7 @@ gem 'sinatra-contrib'
 gem 'tempfile'
 gem 'thin'
 gem 'unicode-emoji'
+gem "rmagick"
 
 group :development, :test do
   gem 'pry'

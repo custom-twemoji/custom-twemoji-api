@@ -33,6 +33,7 @@ GEM
     regexp_parser (2.1.1)
     require_all (3.0.0)
     rexml (3.2.5)
+    rmagick (4.2.2)
     rubocop (1.19.1)
       parallel (~> 1.10)
       parser (>= 3.0.0.0)
@@ -79,6 +80,7 @@ DEPENDENCIES
   nokogiri
   pry
   require_all
+  rmagick
   rubocop
   sinatra
   sinatra-contrib

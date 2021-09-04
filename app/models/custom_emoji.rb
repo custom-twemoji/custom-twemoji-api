@@ -3,6 +3,8 @@
 require 'mini_magick'
 require 'nokogiri'
 require 'tempfile'
+require "RMagick"
+# require 'rsvg2'
 
 require_relative 'twemoji/twemoji'
 require_relative '../helpers/object'
@@ -49,6 +51,7 @@ class CustomEmoji
     svg_file = svg
 
     convert_svg_to_png(svg_file.path, png_file.path)
+    # convert_svg_to_png(svg_file.path, png_file)
     contents = png_file.read
 
     png_file.unlink
@@ -71,12 +74,52 @@ class CustomEmoji
 
   # Create a PNG file out of an SVG file
   def convert_svg_to_png(svg_filepath, png_filepath)
-    size = @size.presence || 36
+    density = @params[:density].presence
+    size = @size.presence
+
     MiniMagick::Tool::Convert.new do |convert|
       convert.background('none')
-      convert.size("#{size}x#{size}")
+      # convert.size("#{size}x#{size}")
+      convert.resize("#{size}x#{size}") unless size.nil?
+
+      convert.density(density) unless density.nil?
       convert << svg_filepath
       convert << png_filepath
     end
   end
 end
+
+    # convert = MiniMagick::Tool::Convert.new
+    # convert.background('none')
+    # convert.antialias.+
+    # convert.size("#{size}x#{size}")
+    # convert.density(density)
+    # convert << svg_filepath
+    # convert << png_filepath
+    # convert.call
+
+    # require 'pry'
+    # binding.pry
+    # puts 'end of pry'
+
+    # img = Magick::Image.from_blob(@xml) {
+    #   self.format = 'SVG'
+    #   self.size = size unless size.nil?
+    #   self.density = density
+    #   self.background_color = 'transparent'
+    # }
+    # img[0].write(png_filepath)
+
+    # image = MiniMagick::Image.open(svg_filepath)
+    # image.resize("#{size}x#{size}")
+    # image.format("png")
+    # image.write(png_filepath)
+
+    # svg = RSVG::Handle.new_from_data(@xml)
+    # surface = Cairo::ImageSurface.new(Cairo::FORMAT_ARGB32, 800, 800)
+    # context = Cairo::Context.new(surface)
+    # context.render_rsvg_handle(svg)
+    # b = StringIO.new
+    # surface.write_to_png(b)
+    # # t = ImageConvert.svg_to_png(f.read)
+    # return b.string
