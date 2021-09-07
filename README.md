@@ -11,12 +11,12 @@
 
 ## :slightly_smiling_face: Face Twemojis
 
-- `GET /faces`
+- `GET /v1/faces`
   - Returns JSON list of all faces and their layers by feature
-- `GET /faces/random`
+- `GET /v1/faces/random`
   - Default is 100% chance of having a head but 50% for all other features
-  - Customize feature probability by passing in a Boolean (true or false) or decimal number between 0 and 1 (e.g. `/faces/random?eyes=0.75&nose=false` has a 75% chance of having eyes and 0% for nose)
-- `GET /faces/{emoji}`
+  - Customize feature probability by passing in a Boolean (true or false) or decimal number between 0 and 1 (e.g. `/v1/faces/random?eyes=0.75&nose=false` has a 75% chance of having eyes and 0% for nose)
+- `GET /v1/faces/{emoji}`
 
 Valid emoji formats:
 
@@ -29,7 +29,7 @@ Valid emoji formats:
 After the endpoint, you can add a question mark (`?`) and pass in URL parameters as key-value pairs (`key=value`) separated by ampersands (`&`).
 
 ```txt
-GET /faces/{emoji}?key1=value1&key2=value2
+GET /v1/faces/{emoji}?key1=value1&key2=value2
 ```
 
 - <details>
@@ -68,19 +68,19 @@ GET /faces/{emoji}?key1=value1&key2=value2
   Your request will look like this:
 
   ```txt
-  /faces/1f47f?eyes=263a&mouth=2639&eyewear=1f978
+  /v1/faces/1f47f?eyes=263a&mouth=2639&eyewear=1f978
 
   # Spaced out for easy reading
-  /faces /1f47f ? eyes=263a & mouth=2639 & eyewear=1f978
+  /v1/faces /1f47f ? eyes=263a & mouth=2639 & eyewear=1f978
   ```
 
   If you want the eyes to be above the eyewear, add in `order=manual` and move eyes in front of eyewear:
 
   ```txt
-  /faces/1f47f?mouth=2639&eyewear=1f978&eyes=263a&order=manual
+  /v1/faces/1f47f?mouth=2639&eyewear=1f978&eyes=263a&order=manual
 
   # Spaced out for easy reading
-  /faces /1f47f ? mouth=2639 & eyewear=1f978 & eyes=263a & order=manual
+  /v1/faces /1f47f ? mouth=2639 & eyewear=1f978 & eyes=263a & order=manual
   ```
 
 </details>
@@ -133,7 +133,7 @@ GET /faces/{emoji}?key1=value1&key2=value2
   Example Request:
 
   ```txt
-  /faces/263a?file_format=png&download=true&filename=amazing_emoji
+  /v1/faces/263a?file_format=png&download=true&filename=amazing_emoji
   ```
 
   File returned: `amazing_emoji.png`
