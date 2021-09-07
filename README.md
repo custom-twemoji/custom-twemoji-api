@@ -1,13 +1,19 @@
 <p align="center">
   <img
+    height="60%"
+    width="60%"
     src="assets/header.jpg"
     alt="Custom Twemoji API logo"
     title="Custom Twemoji API logo"
   />
-  An API that let's you combine <a href="https://twemoji.twitter.com">Twitter's emojis<a/>.
 </p>
 
-🚧 WIP - Beta 🚧
+<p align="center">
+  An API that let's you combine <a href="https://twemoji.twitter.com">Twitter's emojis<a/>.
+  <br>
+  <br>
+  🚧 WIP - Beta 🚧
+</p>
 
 ## :slightly_smiling_face: Face Twemojis
 
