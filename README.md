@@ -22,7 +22,7 @@
 - `GET /v1/faces/layers`
   - Returns JSON list of all supported faces and each layer corresponding to a facial feature
 - `GET /v1/faces/features`
-  - Returns JSON list of all supported faces and each facial features and their corresponding layer(s)
+  - Returns JSON list of all supported faces with each facial feature and their corresponding layer(s)
 - `GET /v1/faces/random`
   - Default is 100% chance of having a head but 50% for all other features
   - Customize feature probability by passing in a Boolean (true or false) or decimal number between 0 and 1 (e.g. `/v1/faces/random?eyes=0.75&nose=false` has a 75% chance of having eyes and 0% for nose)
