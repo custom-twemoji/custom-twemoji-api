@@ -24,6 +24,18 @@ class Twemoji
     '13.1.0'
   end
 
+  def self.validate_version(version)
+    case version
+    when nil
+      latest
+    when '13.1.0'
+      version
+    else
+      message = "Invalid Twemoji version: #{version} | Valid versions: 13.1.0"
+      raise message
+    end
+  end
+
   private
 
   def build_github_url

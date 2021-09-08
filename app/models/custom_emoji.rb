@@ -17,7 +17,7 @@ class CustomEmoji
     @xml_template = xml_template
 
     @base_emoji_id = @params[:emoji_id]
-    @twemoji_version = @params[:twemoji_version].presence || Twemoji.latest
+    @twemoji_version = Twemoji.validate_version(@params[:twemoji_version])
   end
 
   def validate_emoji_input(input, find_class)
@@ -31,7 +31,10 @@ class CustomEmoji
       input = input.join('-') if input.is_a?(Array)
     end
 
-    find_class.find(input).nil? ? nil : input
+    message = "Emoji is not supported: #{input}"
+    raise message if find_class.find(input, @twemoji_version).nil?
+
+    input
   end
 
   def svg

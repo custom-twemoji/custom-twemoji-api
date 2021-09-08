@@ -26,7 +26,20 @@ class FacesController < Sinatra::Base
   ].flatten.freeze
 
   get '/v1/faces', '/v1/faces/' do
-    json(Face.all(params[:twemoji_version].presence))
+    json(Face.all(params[:twemoji_version]).keys)
+  end
+
+  get '/v1/faces/layers' do
+    json(Face.all(params[:twemoji_version]))
+  end
+
+  get '/v1/faces/features' do
+    faces = Face.all(params[:twemoji_version])
+    faces.each do |key, value|
+      faces[key] = Face.features_from_layers(value)
+    end
+
+    json(faces)
   end
 
   get '/v1/faces/random', '/v1/faces/random/' do

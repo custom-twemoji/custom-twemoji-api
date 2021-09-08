@@ -18,17 +18,17 @@
 ## :slightly_smiling_face: Face Twemojis
 
 - `GET /v1/faces`
-  - Returns JSON list of all faces and their layers by feature
+  - Returns JSON list of all supported faces
+- `GET /v1/faces/layers`
+  - Returns JSON list of all supported faces and each layer corresponding to a facial feature
+- `GET /v1/faces/features`
+  - Returns JSON list of all supported faces and each facial features and their corresponding layer(s)
 - `GET /v1/faces/random`
   - Default is 100% chance of having a head but 50% for all other features
   - Customize feature probability by passing in a Boolean (true or false) or decimal number between 0 and 1 (e.g. `/v1/faces/random?eyes=0.75&nose=false` has a 75% chance of having eyes and 0% for nose)
 - `GET /v1/faces/{emoji}`
-
-Valid emoji formats:
-
-- 🙂
-- 1f383
-- U+1f383
+  - Build a custom face starting with a base emoji
+  - Valid emoji formats: 🙂, 1f383, U+1f383
 
 ### URL Parameters
 
@@ -78,6 +78,22 @@ GET /v1/faces/{emoji}?key1=value1&key2=value2
 
   # Spaced out for easy reading
   /v1/faces /1f47f ? eyes=263a & mouth=2639 & eyewear=1f978
+  ```
+
+  A base emoji is required, but you can exclude any feature by passing in the parameter as `false` or empty:
+
+  ```txt
+  # Head empty, no thoughts
+  /v1/faces/1f47f?head=&mouth=2639
+
+  # Spaced out for easy reading
+  /v1/faces /1f47f ? head= & mouth=2639
+
+  # Head false, headless horseman!
+  /v1/faces/1f47f?head=false&mouth=2639
+
+  # Spaced out for easy reading
+  /v1/faces /1f47f ? head=false & mouth=2639
   ```
 
   If you want the eyes to be above the eyewear, add in `order=manual` and move eyes in front of eyewear:

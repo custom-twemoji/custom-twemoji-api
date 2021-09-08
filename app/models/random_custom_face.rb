@@ -9,7 +9,7 @@ class RandomCustomFace < CustomFace
 
   def initialize(params)
     @params = params
-    @faces = Face.all
+    @faces = Face.all(@params[:twemoji_version])
 
     DEFAULT_FEATURE_STACKING_ORDER.each do |feature_name|
       process_feature_param(@params[feature_name], feature_name)

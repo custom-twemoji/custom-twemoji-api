@@ -59,14 +59,14 @@ class CustomFace < CustomEmoji
 
   def prepare_base_emoji
     @base_emoji_id = validate_emoji_input(@base_emoji_id, Face)
-    raise "Emoji not a supported face: #{@params[:emoji_id]}" if @base_emoji_id.nil?
+    raise "Base emoji is not a supported face: #{@params[:emoji_id]}" if @base_emoji_id.nil?
 
-    base_layers = Face.find(@base_emoji_id)
+    base_layers = Face.find(@base_emoji_id, @twemoji_version)
     @base_twemoji = AbsoluteTwemoji.new(
       @twemoji_version,
       @base_emoji_id,
       base_layers,
-      features_from_layers(base_layers),
+      Face.features_from_layers(base_layers),
       @raw
     ).xml
   end
@@ -93,14 +93,6 @@ class CustomFace < CustomEmoji
     end
   end
 
-  def features_from_layers(layers)
-    layers.each_with_object({}) do |(key, value), out|
-      value = value['name'] if value.is_a?(Hash)
-      out[value.to_sym] ||= []
-      out[value.to_sym] << key
-    end
-  end
-
   def validate_feature_param(feature_name)
     value = @params[feature_name]
     # Permit '' as a means of removing a feature
@@ -109,7 +101,7 @@ class CustomFace < CustomEmoji
     value = validate_emoji_input(value, Face)
 
     # Permit false as a means of removing a feature
-    if (Face.find(value).nil? || value == @base_emoji_id) && value != false
+    if (Face.find(value, @twemoji_version).nil? || value == @base_emoji_id) && value != false
       # Delete bad or duplicate parameter
       @params.delete(feature_name)
     else
@@ -126,8 +118,8 @@ class CustomFace < CustomEmoji
   end
 
   def cache_twemoji(twemojis, emoji_id)
-    layers = Face.find(emoji_id)
-    features = features_from_layers(layers)
+    layers = Face.find(emoji_id, @twemoji_version)
+    features = Face.features_from_layers(layers)
     xml = AbsoluteTwemoji.new(@twemoji_version, emoji_id, layers, features, false).xml
 
     twemojis[emoji_id] = xml
