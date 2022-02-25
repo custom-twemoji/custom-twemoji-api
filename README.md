@@ -28,7 +28,10 @@
   - Customize feature probability by passing in a Boolean (true or false) or decimal number between 0 and 1 (e.g. `/v1/faces/random?eyes=0.75&nose=false` has a 75% chance of having eyes and 0% for nose)
 - `GET /v1/faces/{emoji}`
   - Build a custom face starting with a base emoji
-  - Valid emoji formats: 🙂, 1f383, U+1f383
+  - Valid emoji formats:
+    - 🙂
+    - `1f383`
+    - `U+1f383`
 
 ### Defaults
 
