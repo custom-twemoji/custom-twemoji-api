@@ -192,7 +192,7 @@ Follow these steps to contribute:
 ## Run Locally
 
 1. Clone the repository
-1. Install [Ruby](https://www.ruby-lang.org/en/) if you haven't already: [www.ruby-lang.org](https://www.ruby-lang.org/en/documentation/installation/)
+1. Install [Ruby](https://www.ruby-lang.org/en/) if you haven't already: [www.ruby-lang.org](https://www.ruby-lang.org/en/documentation/installation/) ([version](.ruby-version))
 1. Install [Bundler](https://bundler.io/) if you haven't already: `gem install bundler`
 1. Install Ruby dependencies with bundler: `bundle`
 1. Follow the [Getting Started](#getting-started) steps
