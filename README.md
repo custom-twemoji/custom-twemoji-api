@@ -180,7 +180,6 @@ GET /v1/faces/{emoji}?key1=value1&key2=value2
 
 - <details>
   <summary><b>Color, Sizing, and Padding</b></summary>
-  <br>
 
   ### Color (`background_color=red`)
 
