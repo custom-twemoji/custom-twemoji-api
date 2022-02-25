@@ -13,6 +13,7 @@ class CustomEmoji
     @params = params
     @time = @params[:time]
 
+    @renderer = @params[:renderer]
     @size = @params[:size]
     @xml_template = xml_template
 
@@ -53,13 +54,10 @@ class CustomEmoji
   end
 
   def png
-    png_file = Tempfile.new([to_s, '.png'], 'tmp')
     svg_file = svg
 
-    convert_svg_to_png(svg_file.path, png_file.path)
-    contents = png_file.read
+    contents = convert_svg_to_png(svg_file.path)
 
-    png_file.unlink
     svg_file.unlink
 
     contents
@@ -78,13 +76,39 @@ class CustomEmoji
   end
 
   # Create a PNG file out of an SVG file
-  def convert_svg_to_png(svg_filepath, png_filepath)
+  def convert_svg_to_png(svg_filepath)
     size = @size.presence || 128
+    renderer = @renderer.presence || 'imagemagick'
+
+    case renderer.downcase
+    when 'canvg'
+      canvg(svg_filepath)
+    when 'imagemagick'
+      imagemagick(svg_filepath, size)
+    else
+      message = "Renderer not supported: #{@renderer} | Valid renderers: canvg, imagemagick"
+      raise message
+    end
+  end
+
+  def canvg(svg_filepath)
+    html_template = File.open('app/models/canvg_template.html').read
+    svg_string = File.open(svg_filepath).read
+    html_template.gsub('SVG_STRING', svg_string)
+  end
+
+  def imagemagick(svg_filepath, size)
+    png_file = Tempfile.new([to_s, '.png'], 'tmp')
+
     MiniMagick::Tool::Convert.new do |convert|
       convert.background('none')
       convert.size("#{size}x#{size}")
       convert << svg_filepath
-      convert << png_filepath
+      convert << png_file.path
     end
+
+    contents = png_file.read
+    png_file.unlink
+    contents
   end
 end

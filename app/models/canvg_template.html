@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+  <head>
+    <script type="module">
+      import { Canvg } from 'https://cdn.skypack.dev/canvg';
+
+      let v = null;
+
+      window.onload = () => {
+        const canvas = document.querySelector('canvas');
+        const ctx = canvas.getContext('2d');
+
+        const svg = `SVG_STRING`;
+        v = Canvg.fromString(ctx, svg);
+
+        v.start();
+      };
+    </script>
+  </head>
+
+  <body>
+    <canvas></canvas>
+  </body>
+</html>

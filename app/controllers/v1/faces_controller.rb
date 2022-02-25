@@ -20,6 +20,7 @@ class FacesController < Sinatra::Base
     :order,
     :output,
     :raw,
+    :renderer,
     :size,
     :time,
     :twemoji_version
@@ -102,6 +103,7 @@ class FacesController < Sinatra::Base
 
   def process_valid_request(face)
     resource = get_resource(face)
+
     case @output
     when 'json'
       json(resource)
@@ -147,7 +149,7 @@ class FacesController < Sinatra::Base
   def png(resource)
     return Base64.encode64(resource.png).gsub(/\n/, '') if @output == 'json'
 
-    content_type 'image/png'
+    content_type (@params[:renderer] == 'canvg' ? 'text/html' : 'image/png')
     set_content_disposition(resource, __method__.to_s)
 
     resource.png
