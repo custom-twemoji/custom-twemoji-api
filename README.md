@@ -61,12 +61,9 @@ GET /v1/faces/{emoji}?key1=value1&key2=value2
   <summary><b>Facial Features</b></summary>
   <br>
 
-    - Key: facial feature
-    - Value: emoji
+  Facial feature are passed in as keys with emojis as their values.
 
-  <br>
-
-  Each feature is a layer and the order in which they're stacked impacts what will be seen or hidden in the emoji. This is the list of features in default stacking order from bottom to top.
+  Each feature is a layer and the order in which they're stacked impacts what will be seen or hidden in its final visual form. This is the list of features in default stacking order from bottom to top.
 
   1. head
   1. cheeks
