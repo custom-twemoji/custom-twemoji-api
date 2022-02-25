@@ -74,7 +74,7 @@ class CustomEmoji
 
   # Create a PNG file out of an SVG file
   def convert_svg_to_png(svg_filepath, png_filepath)
-    size = @size.presence || 36
+    size = @size.presence || 128
     MiniMagick::Tool::Convert.new do |convert|
       convert.background('none')
       convert.size("#{size}x#{size}")

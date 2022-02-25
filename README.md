@@ -30,6 +30,25 @@
   - Build a custom face starting with a base emoji
   - Valid emoji formats: 🙂, 1f383, U+1f383
 
+### Defaults
+
+- Output: JSON
+- Emoji is returned as an SVG under `resource`
+- Licensing information is included
+
+Example response with defaults:
+
+  ```json
+  {
+    "success": true,
+    "resource": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100%\" height=\"100%\" viewBox=\"0 0 36 36\">\n<circle fill=\"#FFCC4D\" cx=\"18\" cy=\"18\" r=\"18\" id=\"1f61e-head\" class=\"1f61e-head\"/><path d=\"M18 24.904C11 24.904 9 22.286 9 23.523 9 24.762 13 28 18 28S27 24.762 27 23.523C27 22.286 25 24.904 18 24.904\" fill=\"#292F33\" id=\"1f31a-mouth\" class=\"1f31a-mouth\"/><path fill=\"#DD2E44\" d=\"M17.179 2.72C17.136 2.6710000000000003 17.069 2.644 16.99 2.629 16.99 2.629 1.065999999999999-0.39400000000000013 0.3769999999999989 0.21399999999999997-0.311 0.823 0.74 16.998 0.74 16.998 0.745 17.079 0.763 17.148 0.8069999999999999 17.197000000000003 1.411 17.881000000000004 5.5649999999999995 15.193000000000003 10.086 11.196000000000002 14.608 7.198000000000001 17.783 3.4040000000000017 17.179000000000002 2.7200000000000006Z\" id=\"1f973-headwear\" class=\"1f973-headwear\"/><path fill=\"#EA596E\" d=\"M0.349 0.271C0.334 0.301 0.321 0.342 0.311 0.394 0.47 1.765 2.006 13.046 2.963 16.572 4.399 15.768999999999998 5.8580000000000005 14.677999999999999 7.572 13.318999999999999 6.116 10.654 1.158 0.146 0.349 0.271Z\" id=\"1f973-headwear1\" class=\"1f973-headwear\"/><path fill=\"#5DADEC\" d=\"M11 11C11 13.762 8.762 16 6 16 3.239 16 1 13.762 1 11S5 1 6 1 11 8.238 11 11Z\" id=\"1f613-other\" class=\"1f613-other\"/></svg>",
+    "license": {
+      "name": "CC-BY 4.0",
+      "url": "https://creativecommons.org/licenses/by/4.0"
+    }
+  }
+  ```
+
 ### URL Parameters
 
 After the endpoint, you can add a question mark (`?`) and pass in URL parameters as key-value pairs (`key=value`) separated by ampersands (`&`).
@@ -108,22 +127,22 @@ GET /v1/faces/{emoji}?key1=value1&key2=value2
 </details>
 
 - <details>
-  <summary><b>File Formats & Output</b></summary>
+  <summary><b>Output</b></summary>
   <br>
 
-  Defaults:
+  Options:
+  <br>
 
-  - Output: JSON
-  - Emoji returned as an SVG in `resource`
-  - Includes licensing information
-
-  ### Output
-
-  - `json`
-  - `image`
-  - `download`
+  - JSON (`output=json`)
+  - image (`output=image`)
+  - download (`output=download`)
     - The default name of the file returned is the emoji described in key-value pairs
     - The equals signs (`=`) and ampersands (`&`) are replaced with a minus sign (`-`) and these characters `_-_`
+
+</details>
+
+- <details>
+  <summary><b>File Formats</b></summary>
 
   ### SVG (`file_format=svg`)
 
@@ -141,12 +160,11 @@ GET /v1/faces/{emoji}?key1=value1&key2=value2
   - Output:
     - JSON: [Base64](https://developer.mozilla.org/en-US/docs/Glossary/Base64)
     - Image: MIME type of `image/png`
-  - Height and width set to `36px`
+  - Height & width set to `128px` (ideal for Slack)
 
   ### Size (`size=100`)
 
-  Specify the number of pixels (`px`) for the emoji's height and width.
-
+  Specify the number of pixels (`px`) for the emoji's height and width. It's always a square so they're equal.
 
   ##### Filename (`filename={your_name}`)
 
