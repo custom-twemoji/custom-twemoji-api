@@ -70,7 +70,7 @@ class CustomEmoji
     when 'canvg'
       canvg(svg_xml)
     when 'imagemagick'
-      imagemagick()
+      imagemagick
     else
       message = "Renderer not supported: #{@renderer} | Valid renderers: canvg, imagemagick"
       raise message
