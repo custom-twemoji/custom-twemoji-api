@@ -14,11 +14,13 @@ class FacesController < Sinatra::Base
 
   VALID_PARAMS = [
     CustomFace::DEFAULT_FEATURE_STACKING_ORDER,
+    :background_color,
     :emoji_id,
     :file_format,
     :filename,
     :order,
     :output,
+    :padding,
     :raw,
     :renderer,
     :size,
@@ -147,12 +149,17 @@ class FacesController < Sinatra::Base
   end
 
   def png(resource)
-    return Base64.encode64(resource.png).gsub(/\n/, '') if @output == 'json'
+    renderer = @params[:renderer].presence || @output == 'image' ? 'canvg' : 'imagemagick'
 
-    content_type (@params[:renderer] == 'canvg' ? 'text/html' : 'image/png')
+    if @output == 'json'
+      content_type 'text/html' if renderer == 'canvg'
+      return Base64.encode64(resource.png(renderer)).gsub(/\n/, '')
+    end
+
+    content_type renderer == 'canvg' ? 'text/html' : 'image/png'
     set_content_disposition(resource, __method__.to_s)
 
-    resource.png
+    resource.png(renderer)
   end
 
   def get_resource(resource)

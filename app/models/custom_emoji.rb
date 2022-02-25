@@ -13,8 +13,11 @@ class CustomEmoji
     @params = params
     @time = @params[:time]
 
+    @size = @params[:size].presence
+    @padding = (@params[:padding].presence || 0).to_s.delete('px').to_i
     @renderer = @params[:renderer]
-    @size = @params[:size]
+    @background_color = @params[:background_color]
+
     @xml_template = xml_template
 
     @base_emoji_id = @params[:emoji_id]
@@ -53,14 +56,25 @@ class CustomEmoji
     svg
   end
 
-  def png
-    svg_file = svg
+  def png(renderer)
+    size = @size.presence || 128
+    renderer = @renderer.presence || renderer
 
-    contents = convert_svg_to_png(svg_file.path)
+    svg_xml = Nokogiri::XML(@xml)
+    svg_xml.at(:svg).attributes['width'].value = "#{size}px"
+    svg_xml.at(:svg).attributes['height'].value = "#{size}px"
 
-    svg_file.unlink
+    update_padding(svg_xml, 128) if @padding.presence
 
-    contents
+    case renderer.downcase
+    when 'canvg'
+      canvg(svg_xml)
+    when 'imagemagick'
+      imagemagick()
+    else
+      message = "Renderer not supported: #{@renderer} | Valid renderers: canvg, imagemagick"
+      raise message
+    end
   end
 
   private
@@ -72,43 +86,55 @@ class CustomEmoji
       xml.attributes['height'].value = "#{@size}px"
     end
 
+    xml.css('rect').first.attributes['fill'].value = @background_color
+    update_padding(xml, '100%') if @padding.presence
+
     xml
   end
 
-  # Create a PNG file out of an SVG file
-  def convert_svg_to_png(svg_filepath)
-    size = @size.presence || 128
-    renderer = @renderer.presence || 'imagemagick'
-
-    case renderer.downcase
-    when 'canvg'
-      canvg(svg_filepath)
-    when 'imagemagick'
-      imagemagick(svg_filepath, size)
-    else
-      message = "Renderer not supported: #{@renderer} | Valid renderers: canvg, imagemagick"
-      raise message
-    end
-  end
-
-  def canvg(svg_filepath)
-    html_template = File.open('app/models/canvg_template.html').read
-    svg_string = File.open(svg_filepath).read
+  def canvg(svg_xml)
+    html_template = File.open('assets/template.html').read
+    svg_string = svg_xml.to_s
     html_template.gsub('SVG_STRING', svg_string)
   end
 
-  def imagemagick(svg_filepath, size)
+  def imagemagick
+    svg_file = svg
     png_file = Tempfile.new([to_s, '.png'], 'tmp')
 
     MiniMagick::Tool::Convert.new do |convert|
       convert.background('none')
-      convert.size("#{size}x#{size}")
-      convert << svg_filepath
+      convert.size("#{@size}x#{@size}")
+      convert << svg_file.path
       convert << png_file.path
     end
 
     contents = png_file.read
+
     png_file.unlink
+    svg_file.unlink
+
     contents
+  end
+
+  def update_padding(xml, default_size)
+    size =
+      if @size.presence
+        @size.to_s.delete('px').to_i
+      else
+        default_size
+      end
+
+    message = 'Padding must be less than half of the size | ' \
+              "size: #{@size}px, padding: #{@padding}px"
+    raise message if size.is_a?(Integer) && @padding >= (size / 2)
+
+    emoji_svg = xml.css('#emoji').first
+
+    new_square_size = size.is_a?(Integer) ? size - (@padding * 2) : "#{size} - #{@padding * 2}"
+    emoji_svg.attributes['height'].value = "#{new_square_size}px"
+    emoji_svg.attributes['width'].value = "#{new_square_size}px"
+    emoji_svg.attributes['x'].value = "#{@padding}px"
+    emoji_svg.attributes['y'].value = "#{@padding}px"
   end
 end

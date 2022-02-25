@@ -160,7 +160,8 @@ GET /v1/faces/{emoji}?key1=value1&key2=value2
   - Output:
     - JSON: XML
     - Image: MIME type of `image/png`
-  - Height and width set to `100%`
+  - Size: `100%`
+  - Padding: `0px`
 
   ### PNG (`file_format=png`)
 
@@ -169,15 +170,34 @@ GET /v1/faces/{emoji}?key1=value1&key2=value2
   - Output:
     - JSON: [Base64](https://developer.mozilla.org/en-US/docs/Glossary/Base64)
     - Image: MIME type of `image/png`
-  - Height & width set to `128px` (ideal for Slack)
+  - Size: `128px` (ideal for Slack)
+  - Padding: `0px`
+  - Renderer:
+    - `imagemagick` for `json` and `download`
+    - `canvg` for `image`
 
 </details>
 
 - <details>
-  <summary><b>Size</b></summary>
+  <summary><b>Color, Sizing, and Padding</b></summary>
   <br>
 
-  Specify the number of pixels (`px`) for the emoji's height and width (e.g. `size=50`). It's always a square.
+  ### Color (`background_color=red`)
+
+  Specify a background color with a string. Formats supported:
+
+  - [HTML color names](https://www.w3schools.com/colors/colors_hex.asp)
+  - escaped hexadecimal values  (e.g. `#bbbbbb` escaped is `%23bbbbbb`)
+  - escaped RGB/RGBA values (e.g. `rgb(100%, 0%, 0%)` escaped is `rgb%28100%25%2C%200%25%2C%200%25%29`)
+  - escaped HSL/HSLA values (e.g. `hsl(120, 50%, 50%)` escaped is `hsl%28120%2C%2050%25%2C%2050%25%29`)
+
+  ### Sizing (`size=500`)
+
+  Specify the size of the output in pixels with an integer. It will always be a square so height and width are equal.
+
+  ### Padding (`padding=100`)
+
+  Add padding between the emoji and the edge of the output. Specify the number of pixels of the padding with an integer. This reduces the size of the emoji, but not the `size` of the output.
 
 </details>
 

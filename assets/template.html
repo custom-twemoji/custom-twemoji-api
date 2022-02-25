@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+  <head>
+    <script type="module">
+      import { Canvg } from 'https://cdn.skypack.dev/canvg';
+
+      let v = null;
+
+      window.onload = () => {
+        const canvas = document.querySelector('canvas');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const ctx = canvas.getContext('2d');
+
+        const svg = `SVG_STRING`;
+        v = Canvg.fromString(ctx, svg);
+
+        v.start();
+      };
+    </script>
+    <style>
+      html, body {
+        margin: 0 !important;
+        padding: 0 !important;
+        color:
+      }
+      canvas {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        -moz-transform: translateX(-50%) translateY(-50%);
+        -webkit-transform: translateX(-50%) translateY(-50%);
+        transform: translateX(-50%) translateY(-50%);
+      }
+    </style>
+  </head>
+
+  <body>
+    <canvas></canvas>
+  </body>
+</html>

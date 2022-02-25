@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# Helper file to
-
 svg_files = Dir.entries('assets/processing/core')
 
 remove_elements = [

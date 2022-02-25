@@ -74,7 +74,8 @@ class CustomFace < CustomEmoji
   # Adds a feature of a Twemoji's XML to an XML template
   def add_all_feature_layers(layers)
     layers.each do |layer|
-      @xml_template.add_child(layer)
+      emoji_svg = @xml_template.css('#emoji').first
+      emoji_svg.add_child(layer)
     end
   end
 
