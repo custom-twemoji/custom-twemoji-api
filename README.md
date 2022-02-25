@@ -29,9 +29,9 @@
 - `GET /v1/faces/{emoji}`
   - Build a custom face starting with a base emoji
   - Valid emoji formats:
-    - 🙂
-    - `1f383`
-    - `U+1f383`
+    - glyph: 🙂
+    - case insensitive codepoint: `1f642` or `U+1f642`
+    - number representation `128578`
 
 ### Defaults
 

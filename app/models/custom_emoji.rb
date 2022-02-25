@@ -23,7 +23,10 @@ class CustomEmoji
   def validate_emoji_input(input, find_class)
     return false if input == 'false'
 
-    if input[0..1] == 'U+'
+    message = "Emoji is not supported: #{input}"
+    input.downcase!
+
+    if input[0..1] == 'u+'
       input = input[2..]
     elsif input.scan(Unicode::Emoji::REGEX).length == 1
       # Source: https://dev.to/ohbarye/convert-emoji-and-codepoints-each-other-in-ruby-27j
@@ -31,8 +34,10 @@ class CustomEmoji
       input = input.join('-') if input.is_a?(Array)
     end
 
-    message = "Emoji is not supported: #{input}"
-    raise message if find_class.find(input, @twemoji_version).nil?
+    if find_class.find(input, @twemoji_version).nil?
+      input = input.to_i(16)
+      raise message if find_class.find(input, @twemoji_version).nil?
+    end
 
     input
   end
