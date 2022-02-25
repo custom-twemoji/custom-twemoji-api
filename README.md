@@ -138,6 +138,15 @@ GET /v1/faces/{emoji}?key1=value1&key2=value2
   - download (`output=download`)
     - The default name of the file returned is the emoji described in key-value pairs
     - The equals signs (`=`) and ampersands (`&`) are replaced with a minus sign (`-`) and these characters `_-_`
+    - If you want to name your download file, pass in `filename=` with a value of your choosing.
+
+      Example Request:
+
+      ```txt
+      /v1/faces/263a?file_format=png&download=true&filename=amazing_emoji
+      ```
+
+      File returned: `amazing_emoji.png`
 
 </details>
 
@@ -162,21 +171,13 @@ GET /v1/faces/{emoji}?key1=value1&key2=value2
     - Image: MIME type of `image/png`
   - Height & width set to `128px` (ideal for Slack)
 
-  ### Size (`size=100`)
+</details>
 
-  Specify the number of pixels (`px`) for the emoji's height and width. It's always a square so they're equal.
+- <details>
+  <summary><b>Size</b></summary>
+  <br>
 
-  ##### Filename (`filename={your_name}`)
-
-  If you want to name your download file, pass in `filename=` with a value of your choosing.
-
-  Example Request:
-
-  ```txt
-  /v1/faces/263a?file_format=png&download=true&filename=amazing_emoji
-  ```
-
-  File returned: `amazing_emoji.png`
+  Specify the number of pixels (`px`) for the emoji's height and width (e.g. `size=50`). It's always a square.
 
 </details>
 
