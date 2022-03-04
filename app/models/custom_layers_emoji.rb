@@ -15,8 +15,8 @@ class CustomLayersEmoji < CustomEmoji
     super
 
     @base_emoji_id = @params[:emoji_id]
-    @remove_groups = @params[:remove_groups].to_s == 'false' ? false : true
-    @absolute_paths = @params[:absolute_paths].to_s == 'false' ? false : true
+    @remove_groups = @params[:remove_groups].to_s != 'false'
+    @absolute_paths = @params[:absolute_paths].to_s != 'false'
 
     LOGGER.debug("Creating custom face with params: #{@params}")
     add_layers
@@ -69,17 +69,20 @@ class CustomLayersEmoji < CustomEmoji
   def pluck_layers_from_twemoji(twemoji_xml, layers_value)
     xml_layers = []
 
-    # Accept single integer, arrays, and strings like "1..3"
-    if layers_value.is_a?(String)
-      message = "Layers as a string only supports x..y where x and y are integers | " \
-        "Didn't match supported pattern: '#{layers_value}'"
+    # Accept single integer, arrays, and strings like "2..13"
+    case layers_value
+    when String
+      message = 'Layers as a string only supports x..y where x and y are integers | ' \
+                "Didn't match supported pattern: '#{layers_value}'"
       raise message unless layers_value.match(/^\d+..\d+$/)
 
-      layers_value = eval(layers_value)
+      layers_array = layers_value.split('..').map(&:to_i)
+      layers_value = Range.new(layers_array[0], layers_array[1])
+
       if layers_value.first > layers_value.last
         layers_value = (layers_value.last..layers_value.first).to_a.reverse
       end
-    elsif layers_value.is_a?(Integer)
+    when Integer
       layers_value = [layers_value]
     end
 
@@ -93,7 +96,7 @@ class CustomLayersEmoji < CustomEmoji
   def retrieve_and_cache_twemoji(twemojis, emoji_id, absolute_paths, remove_groups, emoji_cache_name)
     twemoji_xml =
       if absolute_paths
-        AbsoluteTwemoji.new(@twemoji_version, emoji_id, remove_groups).xml
+        AbsoluteTwemoji.new(@twemoji_version, emoji_id, remove_groups: remove_groups).xml
       else
         Twemoji.new(@twemoji_version, emoji_id, remove_groups).xml
       end
@@ -106,8 +109,8 @@ class CustomLayersEmoji < CustomEmoji
     emoji_input = body_object[:emoji].presence
     emoji_id = validate_emoji_input(emoji_input)
 
-    remove_groups = body_object[:remove_groups] || @remove_groups
-    absolute_paths = body_object[:absolute_paths] || @absolute_paths
+    remove_groups = body_object[:remove_groups].to_s == 'false' ? false : @remove_groups
+    absolute_paths = body_object[:absolute_paths].to_s == 'false' ? false : @absolute_paths
 
     emoji_cache_name = "#{emoji_id}#{'-absolute' if absolute_paths}"
 
@@ -129,19 +132,19 @@ class CustomLayersEmoji < CustomEmoji
 
     begin
       xml = pluck_layers_from_twemoji(twemoji_xml, layers_value)
-    rescue => error
-      raise "#{error.message} '#{emoji_input}'"
+    rescue StandardError => e
+      raise "#{e.message} '#{emoji_input}'"
     end
 
-    [emoji_id, xml, twemojis, layer_identifier]
+    [xml, twemojis, layer_identifier]
   end
 
   def layers
     all_layers = {}
     twemojis = {}
 
-    @params[:body].each_with_index do |body_object, i|
-      emoji_id, xml, twemojis, layer_identifier = get_xml_and_emoji_id(body_object, twemojis)
+    @params[:body].each do |body_object|
+      xml, twemojis, layer_identifier = get_xml_and_emoji_id(body_object, twemojis)
 
       all_layers[layer_identifier] = xml
     end

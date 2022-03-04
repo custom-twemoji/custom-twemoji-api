@@ -26,7 +26,6 @@ class CustomEmoji
   def validate_emoji_input(emoji_input)
     return false if emoji_input == 'false'
 
-    message = "Emoji is not supported: #{emoji_input}"
     emoji_input = emoji_input.downcase
 
     if emoji_input[0..1] == 'u+'

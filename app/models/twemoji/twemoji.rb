@@ -19,7 +19,7 @@ class Twemoji
 
     begin
       fetch_from_github(@github_url)
-    rescue
+    rescue StandardError
       # Check for number representation input
       id = @id.to_i.to_s(16)
       github_url = build_github_url(id)
@@ -60,7 +60,7 @@ class Twemoji
     case response
     when Net::HTTPSuccess
       @xml = Nokogiri::XML(response.body).css('svg')[0]
-    else raise
+    else raise StandardError
     end
   end
 

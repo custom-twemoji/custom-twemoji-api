@@ -29,9 +29,7 @@ class CustomFace < CustomEmoji
     @base_emoji_id = @params[:emoji_id]
     @remove_groups = @params[:remove_groups]
 
-    unless @base_emoji_id.nil?
-      prepare_base_emoji
-    end
+    prepare_base_emoji unless @base_emoji_id.nil?
     LOGGER.debug("Creating custom face with params: #{@params}")
 
     @url = define_url
@@ -137,7 +135,6 @@ class CustomFace < CustomEmoji
 
   def cache_twemoji(twemojis, emoji_id)
     layers = Face.find(@twemoji_version, emoji_id)
-    features = Face.features_from_layers(layers)
 
     xml = AbsoluteTwemoji.new(@twemoji_version, emoji_id).xml
     xml = label_layers_by_feature(xml, layers, emoji_id)

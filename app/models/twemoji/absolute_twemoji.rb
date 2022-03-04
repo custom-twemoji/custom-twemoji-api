@@ -11,7 +11,7 @@ require_relative '../svgpath/svgpath'
 class AbsoluteTwemoji < Twemoji
   attr_reader :xml
 
-  def initialize(version, id, remove_groups = true)
+  def initialize(version, id, remove_groups: true)
     @version = version.nil? ? self.class.superclass.latest : version
     super(@version, id, remove_groups)
 

@@ -173,14 +173,14 @@ class FacesController < Sinatra::Base
   end
 
   def face_url(face)
-    url = "https://#{@env["HTTP_HOST"]}/v1/faces/#{face.url}"
+    url = "https://#{@env['HTTP_HOST']}/v1/faces/#{face.url}"
 
     request.params.each do |key, value|
       next if CustomFace::DEFAULT_FEATURE_STACKING_ORDER.include?(key.to_sym)
 
       feature_hash = { key => value }
       url =
-        "#{url}#{'&' unless url.end_with?('?')}#{URI.encode_www_form(feature_hash) }"
+        "#{url}#{'&' unless url.end_with?('?')}#{URI.encode_www_form(feature_hash)}"
     end
 
     url
@@ -188,7 +188,7 @@ class FacesController < Sinatra::Base
 
   def json(data, links_self = request.url)
     content_type 'application/json'
-    response = {
+    {
       success: true,
       data: data,
       links: {
