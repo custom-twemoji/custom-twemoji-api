@@ -20,30 +20,60 @@ class CustomEmoji
 
     @xml_template = xml_template
 
-    @base_emoji_id = @params[:emoji_id]
     @twemoji_version = Twemoji.validate_version(@params[:twemoji_version])
   end
 
-  def validate_emoji_input(input, find_class)
-    return false if input == 'false'
+  def check_number_representation(find_class, find_function, emoji_input, error_message, exclude_groups)
+    emoji_input = emoji_input.to_i.to_s(16)
 
-    message = "Emoji is not supported: #{input}"
-    input.downcase!
+    begin
+      if find_class.send(find_function, @twemoji_version, emoji_input, exclude_groups).nil?
+        raise error_message
+      end
+    rescue
+      raise error_message
+    end
 
-    if input[0..1] == 'u+'
-      input = input[2..]
-    elsif input.scan(Unicode::Emoji::REGEX).length == 1
+    emoji_input
+  end
+
+  def validate_emoji_input(emoji_input, find_class, find_function, exclude_groups)
+    return false if emoji_input == 'false'
+
+    message = "Emoji is not supported: #{emoji_input}"
+    emoji_input = emoji_input.downcase
+
+    if emoji_input[0..1] == 'u+'
+      emoji_input = emoji_input[2..]
+    elsif emoji_input.scan(Unicode::Emoji::REGEX).length == 1
       # Source: https://dev.to/ohbarye/convert-emoji-and-codepoints-each-other-in-ruby-27j
-      input = input.each_codepoint.map { |n| n.to_s(16) }
-      input = input.join('-') if input.is_a?(Array)
+      emoji_input = emoji_input.each_codepoint.map { |n| n.to_s(16) }
+      emoji_input = emoji_input.join('-') if emoji_input.is_a?(Array)
     end
 
-    if find_class.find(input, @twemoji_version).nil?
-      input = input.to_i(16)
-      raise message if find_class.find(input, @twemoji_version).nil?
+    begin
+      # Check for number representation if nil
+      if find_class.send(find_function, @twemoji_version, emoji_input, exclude_groups).nil?
+        emoji_input = check_number_representation(
+          find_class,
+          find_function,
+          emoji_input,
+          message,
+          exclude_groups
+        )
+      end
+    rescue
+      # Check for number representation if error occurred
+      emoji_input = check_number_representation(
+        find_class,
+        find_function,
+        emoji_input,
+        message,
+        exclude_groups
+      )
     end
 
-    input
+    emoji_input
   end
 
   def svg

@@ -1,21 +1,20 @@
 # frozen_string_literal: true
 
 require 'base64'
+require 'json'
 require 'sinatra/base'
 require 'sinatra/multi_route'
 
 require_relative '../../helpers/hash'
-require_relative '../../models/custom_face'
-require_relative '../../models/random_custom_face'
+require_relative '../../models/custom_layers_emoji'
+# require_relative '../../models/random_custom_face'
 
-# Defines the Faces endpoints
-class FacesController < Sinatra::Base
+# Defines the Emojis endpoints
+class EmojisController < Sinatra::Base
   register Sinatra::MultiRoute
 
   VALID_PARAMS = [
-    CustomFace::DEFAULT_FEATURE_STACKING_ORDER,
     :background_color,
-    :emoji_id,
     :file_format,
     :filename,
     :order,
@@ -28,34 +27,37 @@ class FacesController < Sinatra::Base
     :twemoji_version
   ].flatten.freeze
 
-  get '/v1/faces', '/v1/faces/' do
-    json(Face.all(params[:twemoji_version]).keys)
+  before do
+    @request_payload = JSON.parse(request.body.read)
   end
 
-  get '/v1/faces/layers' do
-    json(Face.all(params[:twemoji_version]))
-  end
+  # get '/v1/emojis', '/v1/emojis/' do
+  #   json(Face.all(params[:twemoji_version]).keys)
+  # end
 
-  get '/v1/faces/features' do
-    faces = Face.all(params[:twemoji_version])
-    faces.each do |key, value|
-      faces[key] = Face.features_from_layers(value)
-    end
+  # get '/v1/emojis/layers' do
+  #   json(Face.all(params[:twemoji_version]))
+  # end
 
-    json(faces)
-  end
+  # get '/v1/emojis/features' do
+  #   faces = Face.all(params[:twemoji_version])
+  #   faces.each do |key, value|
+  #     faces[key] = Face.features_from_layers(value)
+  #   end
 
-  get '/v1/faces/random', '/v1/faces/random/' do
+  #   json(faces)
+  # end
+
+  # get '/v1/emojis/random', '/v1/emojis/random/' do
+  #   validate
+  #   process_valid_request(RandomCustomFace.new(params))
+  # rescue StandardError => e
+  #   runtime_error(e)
+  # end
+
+  post '/v1/emojis', '/v1/emojis/' do
     validate
-    face = RandomCustomFace.new(params)
-    process_valid_request(face, face_url(face))
-  rescue StandardError => e
-    runtime_error(e)
-  end
-
-  get '/v1/faces/:emoji_id', '/v1/faces/:emoji_id/' do
-    validate
-    process_valid_request(CustomFace.new(params))
+    process_valid_request(CustomLayersEmoji.new(params))
   rescue StandardError => e
     runtime_error(e)
   end
@@ -64,7 +66,7 @@ class FacesController < Sinatra::Base
     content_type 'application/json'
     message =
       "Endpoint not found: #{request.request_method} #{request.path_info}"\
-      ' | Valid endpoints: GET /faces, GET /faces/{emoji_id}'
+      ' | Valid endpoints: GET /emojis, GET /emojis/{emoji_id}'
     error 404, { error: message }.to_json
   end
 
@@ -100,16 +102,17 @@ class FacesController < Sinatra::Base
     validate_output
     validate_file_format
 
-    params = validate_params(@params.symbolize_keys)
-    raise 'No valid parameters detected' if params.empty?
+    raise 'No request body detected' if @request_payload.empty?
+
+    params[:body] = @request_payload
   end
 
-  def process_valid_request(face, url = nil)
-    resource = get_resource(face)
+  def process_valid_request(layers_emoji)
+    resource = get_resource(layers_emoji)
 
     case @output
     when 'json'
-      url.nil? ? json(resource) : json(resource, url)
+      json(resource)
     when 'image', 'download'
       resource
     else
@@ -172,28 +175,11 @@ class FacesController < Sinatra::Base
     end
   end
 
-  def face_url(face)
-    url = "https://#{@env["HTTP_HOST"]}/v1/faces/#{face.url}"
-
-    request.params.each do |key, value|
-      next if CustomFace::DEFAULT_FEATURE_STACKING_ORDER.include?(key.to_sym)
-
-      feature_hash = { key => value }
-      url =
-        "#{url}#{'&' unless url.end_with?('?')}#{URI.encode_www_form(feature_hash) }"
-    end
-
-    url
-  end
-
-  def json(data, links_self = request.url)
+  def json(resource)
     content_type 'application/json'
-    response = {
+    {
       success: true,
-      data: data,
-      links: {
-        self: links_self
-      },
+      resource: resource,
       license: {
         name: 'CC-BY 4.0',
         url: 'https://creativecommons.org/licenses/by/4.0'

@@ -1,6 +1,6 @@
-## :slightly_smiling_face: Face Twemojis
+## :slightly_smiling_face: All Twemojis
 
-- `GET /v1/faces`
+- `GET /v1/emojis`
   - Returns JSON list of all supported faces
 - `GET /v1/faces/layers`
   - Returns JSON list of all supported faces and each layer corresponding to a facial feature
@@ -9,7 +9,6 @@
 - `GET /v1/faces/random`
   - Default is 100% chance of having a head but 50% for all other features
   - Customize feature probability by passing in a Boolean (true or false) or decimal number between 0 and 1 (e.g. `/v1/faces/random?eyes=0.75&nose=false` has a 75% chance of having eyes and 0% for nose)
-  - Returns a `/v1/faces/{emoji}` URL under `links.self`
 - `GET /v1/faces/{emoji}`
   - Build a custom face starting with a base emoji
   - Valid emoji formats:
@@ -20,7 +19,7 @@
 ### Defaults
 
 - Output: JSON
-- Emoji is returned as an SVG under `data`
+- Emoji is returned as an SVG under `resource`
 - Licensing information is included
 
 Example response with defaults:
@@ -29,9 +28,6 @@ Example response with defaults:
   {
     "success": true,
     "data": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100%\" height=\"100%\" viewBox=\"0 0 36 36\">\n<circle fill=\"#FFCC4D\" cx=\"18\" cy=\"18\" r=\"18\" id=\"1f61e-head\" class=\"1f61e-head\"/><path d=\"M18 24.904C11 24.904 9 22.286 9 23.523 9 24.762 13 28 18 28S27 24.762 27 23.523C27 22.286 25 24.904 18 24.904\" fill=\"#292F33\" id=\"1f31a-mouth\" class=\"1f31a-mouth\"/><path fill=\"#DD2E44\" d=\"M17.179 2.72C17.136 2.6710000000000003 17.069 2.644 16.99 2.629 16.99 2.629 1.065999999999999-0.39400000000000013 0.3769999999999989 0.21399999999999997-0.311 0.823 0.74 16.998 0.74 16.998 0.745 17.079 0.763 17.148 0.8069999999999999 17.197000000000003 1.411 17.881000000000004 5.5649999999999995 15.193000000000003 10.086 11.196000000000002 14.608 7.198000000000001 17.783 3.4040000000000017 17.179000000000002 2.7200000000000006Z\" id=\"1f973-headwear\" class=\"1f973-headwear\"/><path fill=\"#EA596E\" d=\"M0.349 0.271C0.334 0.301 0.321 0.342 0.311 0.394 0.47 1.765 2.006 13.046 2.963 16.572 4.399 15.768999999999998 5.8580000000000005 14.677999999999999 7.572 13.318999999999999 6.116 10.654 1.158 0.146 0.349 0.271Z\" id=\"1f973-headwear1\" class=\"1f973-headwear\"/><path fill=\"#5DADEC\" d=\"M11 11C11 13.762 8.762 16 6 16 3.239 16 1 13.762 1 11S5 1 6 1 11 8.238 11 11Z\" id=\"1f613-other\" class=\"1f613-other\"/></svg>",
-    "links: {
-      "self": ""
-    }
     "license": {
       "name": "CC-BY 4.0",
       "url": "https://creativecommons.org/licenses/by/4.0"

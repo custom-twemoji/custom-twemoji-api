@@ -4,6 +4,7 @@ source 'https://rubygems.org'
 
 ruby '~> 2.7.0'
 
+gem 'json'
 gem 'logger'
 gem 'mini_magick'
 gem 'nokogiri'

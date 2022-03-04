@@ -9,13 +9,15 @@ require_relative '../svgpath/svgpath'
 
 # Defines an Twemoji
 class Twemoji
-  def initialize(version, id, features)
+  attr_reader :xml
+
+  def initialize(version, id, raw = false)
     @id = id
     @version = version.nil? ? latest : version
     @github_url = build_github_url
-    @features = features
 
     fetch_from_github
+    break_down_groups unless raw
   rescue StandardError => e
     raise "Failed to access SVG from GitHub: #{@github_url} | Error: #{e.message}"
   end
@@ -51,5 +53,31 @@ class Twemoji
       @xml = Nokogiri::XML(response.body).css('svg')[0]
     else raise
     end
+  end
+
+  def break_down_group(node, xml)
+    node.children.each do |child|
+      analyze_child(child, xml)
+    end
+  end
+
+  def analyze_child(child, xml)
+    case child.name
+    when 'g'
+      break_down_group(child, xml)
+    else
+      xml.add_child(child)
+    end
+  end
+
+  def break_down_groups
+    no_groups_xml = @xml.dup
+    no_groups_xml.children.map(&:remove)
+
+    xml.children.each do |child|
+      analyze_child(child, no_groups_xml)
+    end
+
+    @xml = no_groups_xml
   end
 end

@@ -11,12 +11,11 @@ require_relative '../svgpath/svgpath'
 class AbsoluteTwemoji < Twemoji
   attr_reader :xml
 
-  def initialize(version, id, layers, features, raw)
+  def initialize(version, id)
     @version = version.nil? ? self.class.superclass.latest : version
-    super(@version, id, features)
+    super(@version, id)
 
     @xml = analyze_children(@xml)
-    @xml = label_layers_by_feature(@xml, layers, id) unless raw == true
   end
 
   private
@@ -92,68 +91,5 @@ class AbsoluteTwemoji < Twemoji
     end
 
     new_xml
-  end
-
-  def subtract_layers(shape, hole)
-    shape.attributes['d'].value = "#{shape.attributes['d'].value} #{hole.attributes['d'].value}"
-    hole[:class] = 'hole'
-    nil
-  end
-
-  def find_layer_underneath(layers, current_index, xml)
-    (current_index - 1).downto(0) do |i|
-      return xml.children[i] unless ['', 'subtract'].include?(layers[i])
-    end
-
-    raise "No bottom layer to subtract with layer #{current_index}"
-  end
-
-  def determine_layer_format(layers, index, xml)
-    case layers[index]
-    when 'subtract'
-      subtract_layers(find_layer_underneath(layers, index, xml), xml.children[index])
-    when String
-      [
-        layers[index].to_sym,
-        nil
-      ]
-    when Hash
-      [
-        layers[index]['name'].to_sym,
-        layers[index]['fill']
-      ]
-    end
-  end
-
-  def update_node_attributes(node, feature, index, fill)
-    feature_name = "#{@id}-#{feature}"
-    feature_number = @features[feature].index(index)
-    node[:id] = "#{feature_name}#{feature_number.zero? ? '' : feature_number.to_s}"
-    node[:class] = feature_name
-    node[:fill] = fill unless fill.nil?
-  end
-
-  def label_layers_of_feature(xml, layers, node, index)
-    if layers[index].nil?
-      message = "Found missing layer data | emoji: #{@id} , layer: #{index} , xml: #{node}"
-      raise NameError, message
-    else
-      feature, fill = determine_layer_format(layers, index, xml)
-      update_node_attributes(node, feature, index, fill) unless feature.nil?
-    end
-  end
-
-  def label_layers_by_feature(xml, layers, id)
-    xml.children.each_with_index do |child, index|
-      label_layers_of_feature(xml, layers, child, index)
-    end
-
-    if xml.children.length < layers.length
-      raise "For emoji #{id}, the number of layers in the model (#{layers.length}) is greater than"\
-            " the number in the SVG (#{xml.children.length})"
-    end
-
-    xml.css("[class='hole']").each(&:remove)
-    xml
   end
 end
