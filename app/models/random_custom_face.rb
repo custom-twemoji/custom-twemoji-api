@@ -9,7 +9,6 @@ class RandomCustomFace < CustomFace
 
   def initialize(params)
     @params = params
-    @faces = Face.all(@params[:twemoji_version])
 
     DEFAULT_FEATURE_STACKING_ORDER.each do |feature_name|
       process_feature_param(@params[feature_name], feature_name)
@@ -23,6 +22,10 @@ class RandomCustomFace < CustomFace
 
   private
 
+  def faces
+    @faces ||= Face.all(@params[:twemoji_version])
+  end
+
   def valid_float?(string)
     # The double negation turns this into an actual boolean true - if you're
     # okay with "truthy" values (like 0.0), you can remove it.
@@ -34,9 +37,10 @@ class RandomCustomFace < CustomFace
 
   def add_random_twemoji(feature_name)
     @params[feature_name] = nil
+
     while @params[feature_name].nil?
-      face = @faces.keys[rand(0..@faces.length - 1)]
-      features = features_from_layers(@faces[face])
+      face = faces.keys[rand(0..faces.length - 1)]
+      features = Face.features_from_layers(faces[face])
       feature = features[feature_name]
       @params[feature_name] = face unless feature.nil?
     end

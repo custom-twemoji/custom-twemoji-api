@@ -20,30 +20,34 @@ class CustomEmoji
 
     @xml_template = xml_template
 
-    @base_emoji_id = @params[:emoji_id]
     @twemoji_version = Twemoji.validate_version(@params[:twemoji_version])
   end
 
-  def validate_emoji_input(input, find_class)
-    return false if input == 'false'
+  def update_node_attributes(node, emoji_id, feature, index, fill)
+    feature_string = feature.presence ? "-#{feature}" : ''
+    index_string = index.presence ? "-#{index}" : ''
 
-    message = "Emoji is not supported: #{input}"
-    input.downcase!
+    node[:id] = "#{emoji_id}#{feature_string}#{index_string}"
+    node[:class] = "#{emoji_id} #{feature}"
+    node[:fill] = fill unless fill.nil?
 
-    if input[0..1] == 'u+'
-      input = input[2..]
-    elsif input.scan(Unicode::Emoji::REGEX).length == 1
+    node
+  end
+
+  def validate_emoji_input(emoji_input)
+    return false if emoji_input == 'false'
+
+    emoji_input = emoji_input.downcase
+
+    if emoji_input[0..1] == 'u+'
+      emoji_input = emoji_input[2..]
+    elsif emoji_input.scan(Unicode::Emoji::REGEX).length == 1
       # Source: https://dev.to/ohbarye/convert-emoji-and-codepoints-each-other-in-ruby-27j
-      input = input.each_codepoint.map { |n| n.to_s(16) }
-      input = input.join('-') if input.is_a?(Array)
+      emoji_input = emoji_input.each_codepoint.map { |n| n.to_s(16) }
+      emoji_input = emoji_input.join('-') if emoji_input.is_a?(Array)
     end
 
-    if find_class.find(input, @twemoji_version).nil?
-      input = input.to_i(16)
-      raise message if find_class.find(input, @twemoji_version).nil?
-    end
-
-    input
+    emoji_input
   end
 
   def svg
