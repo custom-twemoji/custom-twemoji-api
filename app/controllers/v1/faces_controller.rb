@@ -21,7 +21,6 @@ class FacesController < Sinatra::Base
     :order,
     :output,
     :padding,
-    :raw,
     :renderer,
     :size,
     :time,
@@ -127,6 +126,7 @@ class FacesController < Sinatra::Base
   def validate_params(params)
     # Add time parameter to track request
     params[:time] = Time.now.getutc.to_i
+
     params.select { |key, _| VALID_PARAMS.include?(key) }
   end
 

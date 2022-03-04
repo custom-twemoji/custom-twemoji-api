@@ -13,19 +13,20 @@ require_relative '../../models/custom_layers_emoji'
 class EmojisController < Sinatra::Base
   register Sinatra::MultiRoute
 
-  VALID_PARAMS = [
-    :background_color,
-    :file_format,
-    :filename,
-    :order,
-    :output,
-    :padding,
-    :raw,
-    :renderer,
-    :size,
-    :time,
-    :twemoji_version
-  ].flatten.freeze
+  VALID_PARAMS = %i[
+    absolute_paths
+    background_color
+    file_format
+    filename
+    order
+    output
+    padding
+
+    renderer
+    size
+    time
+    twemoji_version
+  ].freeze
 
   before do
     @request_payload = JSON.parse(request.body.read)
@@ -130,6 +131,7 @@ class EmojisController < Sinatra::Base
   def validate_params(params)
     # Add time parameter to track request
     params[:time] = Time.now.getutc.to_i
+
     params.select { |key, _| VALID_PARAMS.include?(key) }
   end
 

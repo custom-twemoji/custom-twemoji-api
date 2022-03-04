@@ -18,6 +18,8 @@ class Face
   end
 
   def self.features_from_layers(layers)
+    return if layers.nil?
+
     layers.each_with_object({}) do |(key, value), out|
       value = value['name'] if value.is_a?(Hash)
       out[value.to_sym] ||= []

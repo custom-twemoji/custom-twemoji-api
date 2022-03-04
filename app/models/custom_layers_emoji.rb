@@ -15,18 +15,10 @@ class CustomLayersEmoji < CustomEmoji
     super
 
     @base_emoji_id = @params[:emoji_id]
-
-    # unless @base_emoji_id.nil?
-    #   @raw = @params[:raw] == 'true' || false
-    #   prepare_base_emoji
-    #   if @raw
-    #     @xml = @base_twemoji.to_xml
-    #     return
-    #   end
-    # end
+    @remove_groups = @params[:remove_groups].to_s == 'false' ? false : true
+    @absolute_paths = @params[:absolute_paths].to_s == 'false' ? false : true
 
     LOGGER.debug("Creating custom face with params: #{@params}")
-
     add_layers
 
     # Previously @xml was a Nokogiri XML parser
@@ -48,20 +40,6 @@ class CustomLayersEmoji < CustomEmoji
 
   private
 
-  # def prepare_base_emoji
-  #   @base_emoji_id = validate_emoji_input(@base_emoji_id, Face, 'find')
-  #   raise "Base emoji is not a supported face: #{@params[:emoji_id]}" if @base_emoji_id.nil?
-
-  #   base_layers = Face.find(@base_emoji_id, @twemoji_version)
-  #   @base_twemoji = AbsoluteTwemoji.new(
-  #     @twemoji_version,
-  #     @base_emoji_id,
-  #     base_layers,
-  #     Face.features_from_layers(base_layers),
-  #     @raw
-  #   ).xml
-  # end
-
   # Adds a feature of a Twemoji's XML to an XML template
   def add_all_feature_layers(layers)
     layers.each do |layer|
@@ -74,46 +52,10 @@ class CustomLayersEmoji < CustomEmoji
   def add_layers
     @layers = layers
 
-    # if @params[:order] == 'manual'
-    #   features.each do |_, feature_xml|
-    #     add_all_feature_layers(feature_xml)
-    #   end
-    # else
-    #   @features.each do |_, feature_xml|
-    #     add_all_feature_layers(feature_xml)
-    #   end
-    # end
-
     @layers.each do |_, layer|
       add_all_feature_layers(layer)
-      # emoji_svg = @xml_template.css('#emoji').first
-      # emoji_svg.add_child(layer)
     end
   end
-
-  # def validate_feature_param(feature_name)
-  #   value = @params[feature_name]
-  #   # Permit '' as a means of removing a feature
-  #   return if value.blank?
-
-  #   value = validate_emoji_input(value, Face, 'find')
-
-  #   # Permit false as a means of removing a feature
-  #   if (Face.find(@twemoji_version, value).nil? || value == @base_emoji_id) && value != false
-  #     # Delete bad or duplicate parameter
-  #     @params.delete(feature_name)
-  #   else
-  #     @params[feature_name] = value
-  #   end
-  # end
-
-  # def validate_feature_params
-  #   DEFAULT_FEATURE_STACKING_ORDER.each do |feature_name|
-  #     validate_feature_param(feature_name)
-  #   end
-
-  #   @params
-  # end
 
   def get_layer_by_number(xml, path_number)
     children = xml.children
@@ -148,15 +90,12 @@ class CustomLayersEmoji < CustomEmoji
     xml_layers
   end
 
-  def retrieve_and_cache_twemoji(twemojis, emoji_id, raw, emoji_cache_name)
-    # layers = Face.find(@twemoji_version, emoji_id)
-    # features = Face.features_from_layers(layers)
-
+  def retrieve_and_cache_twemoji(twemojis, emoji_id, absolute_paths, remove_groups, emoji_cache_name)
     twemoji_xml =
-      if raw
-        Twemoji.new(@twemoji_version, emoji_id).xml
+      if absolute_paths
+        AbsoluteTwemoji.new(@twemoji_version, emoji_id, remove_groups).xml
       else
-        AbsoluteTwemoji.new(@twemoji_version, emoji_id).xml
+        Twemoji.new(@twemoji_version, emoji_id, remove_groups).xml
       end
 
     twemojis[emoji_cache_name] = twemoji_xml
@@ -164,53 +103,45 @@ class CustomLayersEmoji < CustomEmoji
   end
 
   def get_xml_and_emoji_id(body_object, twemojis)
-    # xml, emoji_id = nil
+    emoji_input = body_object[:emoji].presence
+    emoji_id = validate_emoji_input(emoji_input)
 
-    # if @params[object].nil?
-    #   return [nil, nil, twemojis] if @base_emoji_id.nil?
+    remove_groups = body_object[:remove_groups] || @remove_groups
+    absolute_paths = body_object[:absolute_paths] || @absolute_paths
 
-    #   xml = @base_twemoji
-    #   emoji_id = @base_emoji_id
-    # else
-      emoji_input = body_object[:emoji].presence
+    emoji_cache_name = "#{emoji_id}#{'-absolute' if absolute_paths}"
 
-      emoji_id = validate_emoji_input(emoji_input, Twemoji, 'new')
-      raw = body_object[:raw] || false
-      emoji_cache_name = "#{emoji_id}#{'-raw' if raw}"
+    layers_value = body_object[:layers]
+    layer_identifier = "#{emoji_cache_name}#{layers_value}"
 
-      layers_value = body_object[:layers]
-      layer_identifier = "#{emoji_cache_name}#{layers_value}"
+    twemoji_xml = twemojis[emoji_cache_name]
+    if twemoji_xml.nil?
+      # Save Twemojis to reduce number of fetches
+      twemojis, twemoji_xml =
+        retrieve_and_cache_twemoji(
+          twemojis,
+          emoji_id,
+          absolute_paths,
+          remove_groups,
+          emoji_cache_name
+        )
+    end
 
-      # return [nil, nil, twemojis] if emoji_id.nil?
-
-      twemoji_xml = twemojis[emoji_cache_name]
-      if twemoji_xml.nil?
-        # Save Twemojis to reduce number of fetches
-        twemojis, twemoji_xml =
-          retrieve_and_cache_twemoji(twemojis, emoji_id, raw, emoji_cache_name)
-      end
-
-      begin
-        xml = pluck_layers_from_twemoji(twemoji_xml, layers_value)
-      rescue => error
-        raise "#{error.message} '#{emoji_input}'"
-      end
-    # end
+    begin
+      xml = pluck_layers_from_twemoji(twemoji_xml, layers_value)
+    rescue => error
+      raise "#{error.message} '#{emoji_input}'"
+    end
 
     [emoji_id, xml, twemojis, layer_identifier]
   end
 
   def layers
-    # validate_feature_params
     all_layers = {}
     twemojis = {}
 
     @params[:body].each_with_index do |body_object, i|
       emoji_id, xml, twemojis, layer_identifier = get_xml_and_emoji_id(body_object, twemojis)
-
-      # Get nodes by feature (class)
-      # layers_for_object = xml.css("[class='#{emoji_id}-#{i}']") unless xml.nil?
-      # all_layers[object] = layers_for_object unless layers_for_object.empty?
 
       all_layers[layer_identifier] = xml
     end

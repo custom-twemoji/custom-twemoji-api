@@ -27,14 +27,10 @@ class CustomFace < CustomEmoji
     super
 
     @base_emoji_id = @params[:emoji_id]
+    @remove_groups = @params[:remove_groups]
 
     unless @base_emoji_id.nil?
-      @raw = @params[:raw] == 'true' || false
       prepare_base_emoji
-      if @raw
-        @xml = @base_twemoji.to_xml
-        return
-      end
     end
     LOGGER.debug("Creating custom face with params: #{@params}")
 
@@ -80,16 +76,14 @@ class CustomFace < CustomEmoji
   end
 
   def prepare_base_emoji
-    @base_emoji_id = validate_emoji_input(@base_emoji_id, Face, 'find', @raw)
+    @base_emoji_id = validate_emoji_input(@base_emoji_id)
     raise "Base emoji is not a supported face: #{@params[:emoji_id]}" if @base_emoji_id.nil?
 
     base_layers = Face.find(@twemoji_version, @base_emoji_id)
     @features = Face.features_from_layers(base_layers)
 
     @base_twemoji = AbsoluteTwemoji.new(@twemoji_version, @base_emoji_id).xml
-    unless @raw == true
-      @base_twemoji = label_layers_by_feature(@base_twemoji, base_layers, @base_emoji_id)
-    end
+    @base_twemoji = label_layers_by_feature(@base_twemoji, base_layers, @base_emoji_id)
 
     @base_twemoji
   end
@@ -122,7 +116,7 @@ class CustomFace < CustomEmoji
     # Permit '' as a means of removing a feature
     return if value.blank?
 
-    value = validate_emoji_input(value, Face, 'find')
+    value = validate_emoji_input(value)
 
     # Permit false as a means of removing a feature
     if (Face.find(@twemoji_version, value).nil? || value == @base_emoji_id) && value != false
@@ -141,7 +135,7 @@ class CustomFace < CustomEmoji
     @params
   end
 
-  def cache_twemoji(twemojis, emoji_id, raw)
+  def cache_twemoji(twemojis, emoji_id)
     layers = Face.find(@twemoji_version, emoji_id)
     features = Face.features_from_layers(layers)
 
@@ -166,7 +160,7 @@ class CustomFace < CustomEmoji
 
       if twemojis[emoji_id].nil?
         # Save Twemojis to reduce number of fetches
-        twemojis = cache_twemoji(twemojis, emoji_id, nil)
+        twemojis = cache_twemoji(twemojis, emoji_id)
       end
 
       xml = twemojis[emoji_id]

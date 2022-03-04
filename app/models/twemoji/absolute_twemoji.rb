@@ -11,11 +11,11 @@ require_relative '../svgpath/svgpath'
 class AbsoluteTwemoji < Twemoji
   attr_reader :xml
 
-  def initialize(version, id)
+  def initialize(version, id, remove_groups = true)
     @version = version.nil? ? self.class.superclass.latest : version
-    super(@version, id)
+    super(@version, id, remove_groups)
 
-    @xml = analyze_children(@xml)
+    @xml = find_and_convert_paths(@xml)
   end
 
   private
@@ -63,18 +63,8 @@ class AbsoluteTwemoji < Twemoji
     xml
   end
 
-  def break_down_group(node, xml)
-    fill = node.attributes['fill'].value unless node.attributes['fill'].nil?
-    node.children.each do |child|
-      child['fill'] = fill unless fill.nil?
-      analyze_child(child, xml)
-    end
-  end
-
-  def analyze_child(child, xml)
+  def check_child_name_for_path(child, xml)
     case child.name
-    when 'g'
-      break_down_group(child, xml)
     when 'path'
       convert_path_to_abs(child, xml)
     else
@@ -82,12 +72,12 @@ class AbsoluteTwemoji < Twemoji
     end
   end
 
-  def analyze_children(xml)
+  def find_and_convert_paths(xml)
     new_xml = xml.dup
     new_xml.children.map(&:remove)
 
     xml.children.each do |child|
-      analyze_child(child, new_xml)
+      check_child_name_for_path(child, new_xml)
     end
 
     new_xml
