@@ -8,7 +8,7 @@ require_relative '../../helpers/hash'
 require_relative '../../models/custom_face'
 require_relative '../../models/random_custom_face'
 
-# Defines the Faces endpoints
+# Defines the faces endpoints
 class FacesController < Sinatra::Base
   register Sinatra::MultiRoute
 
@@ -31,11 +31,11 @@ class FacesController < Sinatra::Base
     json(Face.all(params[:twemoji_version]).keys)
   end
 
-  get '/v1/faces/layers' do
+  get '/v1/faces/layers', '/v1/faces/layers/' do
     json(Face.all(params[:twemoji_version]))
   end
 
-  get '/v1/faces/features' do
+  get '/v1/faces/features', '/v1/faces/features/' do
     faces = Face.all(params[:twemoji_version])
     faces.each do |key, value|
       faces[key] = Face.features_from_layers(value)

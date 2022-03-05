@@ -23,6 +23,17 @@ class CustomEmoji
     @twemoji_version = Twemoji.validate_version(@params[:twemoji_version])
   end
 
+  def update_node_attributes(node, emoji_id, feature, index, fill)
+    feature_string = feature.presence ? "-#{feature}" : ''
+    index_string = index.presence ? "-#{index}" : ''
+
+    node[:id] = "#{emoji_id}#{feature_string}#{index_string}"
+    node[:class] = "#{emoji_id} #{feature}"
+    node[:fill] = fill unless fill.nil?
+
+    node
+  end
+
   def validate_emoji_input(emoji_input)
     return false if emoji_input == 'false'
 

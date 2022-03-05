@@ -66,7 +66,7 @@ class CustomLayersEmoji < CustomEmoji
     children[path_number]
   end
 
-  def pluck_layers_from_twemoji(twemoji_xml, layers_value)
+  def pluck_layers_from_twemoji(twemoji_xml, layers_value, emoji_id, fill)
     xml_layers = []
 
     # Accept single integer, arrays, and strings like "2..13"
@@ -86,8 +86,19 @@ class CustomLayersEmoji < CustomEmoji
       layers_value = [layers_value]
     end
 
-    layers_value.each do |number|
-      xml_layers.push(get_layer_by_number(twemoji_xml, number))
+    layers_value.each do |i|
+      case i
+      when Integer
+        index = i
+      when Hash
+        index = i[:layer]
+        fill = i[:fill]
+      end
+
+      layer = get_layer_by_number(twemoji_xml, index)
+      layer = update_node_attributes(layer, emoji_id, nil, index, fill)
+
+      xml_layers.push(layer)
     end
 
     xml_layers
@@ -111,6 +122,7 @@ class CustomLayersEmoji < CustomEmoji
 
     remove_groups = body_object[:remove_groups].to_s == 'false' ? false : @remove_groups
     absolute_paths = body_object[:absolute_paths].to_s == 'false' ? false : @absolute_paths
+    fill = body_object[:fill]
 
     emoji_cache_name = "#{emoji_id}#{'-absolute' if absolute_paths}"
 
@@ -131,7 +143,7 @@ class CustomLayersEmoji < CustomEmoji
     end
 
     begin
-      xml = pluck_layers_from_twemoji(twemoji_xml, layers_value)
+      xml = pluck_layers_from_twemoji(twemoji_xml, layers_value, emoji_id, fill)
     rescue StandardError => e
       raise "#{e.message} '#{emoji_input}'"
     end

@@ -7,9 +7,8 @@ require 'sinatra/multi_route'
 
 require_relative '../../helpers/hash'
 require_relative '../../models/custom_layers_emoji'
-# require_relative '../../models/random_custom_face'
 
-# Defines the Emojis endpoints
+# Defines the emojis endpoints
 class EmojisController < Sinatra::Base
   register Sinatra::MultiRoute
 
@@ -21,7 +20,6 @@ class EmojisController < Sinatra::Base
     order
     output
     padding
-
     renderer
     size
     time
@@ -32,30 +30,6 @@ class EmojisController < Sinatra::Base
     @request_payload = JSON.parse(request.body.read)
   end
 
-  # get '/v1/emojis', '/v1/emojis/' do
-  #   json(Face.all(params[:twemoji_version]).keys)
-  # end
-
-  # get '/v1/emojis/layers' do
-  #   json(Face.all(params[:twemoji_version]))
-  # end
-
-  # get '/v1/emojis/features' do
-  #   faces = Face.all(params[:twemoji_version])
-  #   faces.each do |key, value|
-  #     faces[key] = Face.features_from_layers(value)
-  #   end
-
-  #   json(faces)
-  # end
-
-  # get '/v1/emojis/random', '/v1/emojis/random/' do
-  #   validate
-  #   process_valid_request(RandomCustomFace.new(params))
-  # rescue StandardError => e
-  #   runtime_error(e)
-  # end
-
   post '/v1/emojis', '/v1/emojis/' do
     validate
     process_valid_request(CustomLayersEmoji.new(params))
@@ -63,11 +37,24 @@ class EmojisController < Sinatra::Base
     runtime_error(e)
   end
 
+  # get '/v1/emojis/:emoji_id/layers' do
+  #   json(Face.all(params[:twemoji_version]))
+  # end
+
+  # get '/v1/emojis/random', '/v1/emojis/random/' do
+  #   validate
+  #   face = RandomCustomFace.new(params)
+  #   process_valid_request(face, face_url(face))
+  # rescue StandardError => e
+  #   runtime_error(e)
+  # end
+
   not_found do
     content_type 'application/json'
     message =
       "Endpoint not found: #{request.request_method} #{request.path_info}"\
-      ' | Valid endpoints: GET /emojis, GET /emojis/{emoji_id}'
+      ' | Valid endpoints: POST /emojis, GET /emojis/{emoji_id}, ' \
+      'GET/emojis/{emoji_id}/layers, GET /emojis/random'
     error 404, { error: message }.to_json
   end
 

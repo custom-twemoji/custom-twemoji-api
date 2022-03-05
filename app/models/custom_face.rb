@@ -214,17 +214,6 @@ class CustomFace < CustomEmoji
     end
   end
 
-  def update_node_attributes(node, emoji_id, feature, index, fill)
-    # feature_name = "#{id}-#{feature}"
-
-    # feature_number = @features[feature].index(index)
-    # node[:id] = "#{feature_name}#{feature_number.zero? ? '' : feature_number.to_s}"
-    node[:id] = "#{emoji_id}-#{feature}#{index.zero? ? '' : index}"
-    # node[:id] = feature_name
-    node[:class] = "#{emoji_id} #{feature}"
-    node[:fill] = fill unless fill.nil?
-  end
-
   def label_layers_of_feature(xml, layers, id, node, index)
     if layers[index].nil?
       message = "Found missing layer data | emoji: #{id} , layer: #{index} , xml: #{node}"
