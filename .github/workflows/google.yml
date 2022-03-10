@@ -11,11 +11,12 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
       - name: Deploy to App Engine
         uses: google-github-actions/deploy-appengine@v0.8.0
-        id: deploy-app
+        id: deploy
         with:
-          project: ${{ secrets.gcp_project }}
           deliverables: app.yaml
-          credentials: ${{ secrets.gcp_credentials }}
+          project: ${{ secrets.GCP_PROJECT }}
+          credentials: ${{ secrets.GCP_SA_KEY }}
