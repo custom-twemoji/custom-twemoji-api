@@ -19,4 +19,4 @@ jobs:
         with:
           deliverables: app.yaml
           project: ${{ secrets.GCP_PROJECT }}
-          credentials: ${{ secrets.GCP_SA_KEY }}
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
