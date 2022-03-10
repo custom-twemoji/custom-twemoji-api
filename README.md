@@ -9,14 +9,21 @@
 </p>
 
 <p align="center">
-  An API that let's you combine <a href="https://twemoji.twitter.com">Twitter's emojis<a/>.
-  <br>
-  <br>
   🚧 WIP - Beta 🚧
-  <br>
-  <br>
-  🙂 <a href="faces.md">Face Twemojis</a>
 </p>
+
+[![Google Cloud](https://github.com/custom-twemoji/custom-twemoji-api/actions/workflows/google.yml/badge.svg?branch=main)](https://github.com/custom-twemoji/custom-twemoji-api/actions/workflows/google.yml)
+
+## Run Locally
+
+1. Clone the repository
+1. Install [Ruby](https://www.ruby-lang.org/en/) if you haven't already: [www.ruby-lang.org](https://www.ruby-lang.org/en/documentation/installation/) ([version](.ruby-version))
+1. Install [Bundler](https://bundler.io/) if you haven't already: `gem install bundler`
+1. Install Ruby dependencies with bundler: `bundle`
+1. Follow the [Getting Started](#getting-started) steps
+1. Run application locally using Rack: `rackup`
+1. Go to this URL in a browser to ensure it redirects to the [Custom Twemoji API GitHub repository](https://github.com/blakegearin/custom-twemoji-api): `http://localhost:9292`
+1. Stop application: `Ctrl + C`
 
 ## Contributing
 
@@ -29,17 +36,6 @@ Follow these steps to contribute:
 1. Make and test changes
 1. Run [Rubocop](https://rubocop.org) to check files for linting/formatting: `rubocop`
 1. When satisfied with your changes, open a pull request with screenshots of your testing evidence
-
-## Run Locally
-
-1. Clone the repository
-1. Install [Ruby](https://www.ruby-lang.org/en/) if you haven't already: [www.ruby-lang.org](https://www.ruby-lang.org/en/documentation/installation/) ([version](.ruby-version))
-1. Install [Bundler](https://bundler.io/) if you haven't already: `gem install bundler`
-1. Install Ruby dependencies with bundler: `bundle`
-1. Follow the [Getting Started](#getting-started) steps
-1. Run application locally using Rack: `rackup`
-1. Go to this URL in a browser to ensure it redirects to the [Custom Twemoji API GitHub repository](https://github.com/blakegearin/custom-twemoji-api): `http://localhost:9292`
-1. Stop application: `Ctrl + C`
 
 ## License
 
