@@ -22,3 +22,11 @@ jobs:
         uses: google-github-actions/deploy-appengine@v0.8.0
         with:
           deliverables: app.yaml
+      - name: Delete old versions in App Engine
+        run: |
+          INSTANCE_TYPE="default"
+          VERSIONS_TO_KEEP=1
+          VERSIONS=`gcloud app versions list --service $INSTANCE_TYPE --sort-by '~version' --format 'value(version.id)' | sort -r | tail -n +$(($VERSIONS_TO_KEEP + 1)) | paste -sd " " -`
+          if [ ${#VERSIONS} -gt 0 ]; then 
+            delete_cmd="gcloud app versions delete --service $INSTANCE_TYPE $VERSIONS -q" && eval $delete_cmd; 
+          fi
