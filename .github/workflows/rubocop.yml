@@ -5,7 +5,7 @@ on:
   pull_request:
     branches: [ main ]
     paths:
-      - 'app/**'
+    - 'app/**'
   workflow_dispatch:
 
 jobs:
