@@ -12,7 +12,9 @@
   🚧 WIP - Beta 🚧
 </p>
 
-[![Google Cloud](https://github.com/custom-twemoji/custom-twemoji-api/actions/workflows/google.yml/badge.svg?branch=main)](https://github.com/custom-twemoji/custom-twemoji-api/actions/workflows/google.yml) ![License](https://img.shields.io/github/license/custom-twemoji/custom-twemoji-api)
+[![Google Cloud](https://github.com/custom-twemoji/custom-twemoji-api/actions/workflows/google.yml/badge.svg?branch=main)](https://github.com/custom-twemoji/custom-twemoji-api/actions/workflows/google.yml)
+[![Ruby Style Guide](https://img.shields.io/badge/code_style-rubocop-brightgreen.svg)](https://github.com/rubocop/rubocop)
+![License](https://img.shields.io/github/license/custom-twemoji/custom-twemoji-api)
 
 ## Run Locally
 
