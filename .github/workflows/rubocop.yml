@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 jobs:
-  rubocop:
+  lint:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
