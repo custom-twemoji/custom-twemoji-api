@@ -8,6 +8,7 @@ gem 'json'
 gem 'logger'
 gem 'mini_magick'
 gem 'nokogiri'
+gem 'rack', github: 'rack/rack', branch: 'main'
 gem 'require_all'
 gem 'rubocop', require: false
 gem 'sinatra'

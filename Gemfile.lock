@@ -1,3 +1,11 @@
+GIT
+  remote: https://github.com/rack/rack.git
+  revision: 253fc5b29c240276d3cf573bdf795e6a6126b16f
+  branch: main
+  specs:
+    rack (2.3.0)
+      rack-session
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -27,9 +35,9 @@ GEM
       coderay (~> 1.1)
       method_source (~> 1.0)
     racc (1.6.0)
-    rack (2.2.3)
     rack-protection (2.1.0)
       rack
+    rack-session (0.1.0)
     rainbow (3.0.0)
     regexp_parser (2.1.1)
     require_all (3.0.0)
@@ -80,6 +88,7 @@ DEPENDENCIES
   mini_magick
   nokogiri
   pry
+  rack!
   require_all
   rubocop
   sinatra
