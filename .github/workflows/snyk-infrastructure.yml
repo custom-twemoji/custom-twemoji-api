@@ -1,0 +1,16 @@
+name: Snyk
+
+on: 
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+jobs:
+  vulnerability_check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Run Snyk
+        uses: snyk/actions/ruby@0.3.0
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
