@@ -1,6 +1,10 @@
 name: Snyk
 
-on: 
+on:
+  push:
+    paths:
+      - 'Gemfile'
+      - 'Gemfile.lock'
   pull_request:
     branches: [ main ]
   workflow_dispatch:
