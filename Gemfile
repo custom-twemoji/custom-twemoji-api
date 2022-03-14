@@ -8,7 +8,7 @@ gem 'json'
 gem 'logger'
 gem 'mini_magick'
 gem 'nokogiri'
-gem 'rack', github: 'rack/rack', branch: 'main'
+gem 'rack', github: 'rack/rack', ref: 'a05f8d5'
 gem 'require_all'
 gem 'rubocop', require: false
 gem 'sinatra'
@@ -19,4 +19,5 @@ gem 'unicode-emoji'
 
 group :development, :test do
   gem 'pry'
+  gem 'shotgun'
 end

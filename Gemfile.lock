@@ -1,10 +1,9 @@
 GIT
   remote: https://github.com/rack/rack.git
-  revision: 253fc5b29c240276d3cf573bdf795e6a6126b16f
-  branch: main
+  revision: a05f8d56f9ac4da14dddb8f312a3b43644f73397
+  ref: a05f8d5
   specs:
     rack (2.3.0)
-      rack-session
 
 GEM
   remote: https://rubygems.org/
@@ -37,7 +36,6 @@ GEM
     racc (1.6.0)
     rack-protection (2.1.0)
       rack
-    rack-session (0.1.0)
     rainbow (3.0.0)
     regexp_parser (2.1.1)
     require_all (3.0.0)
@@ -55,6 +53,8 @@ GEM
       parser (>= 3.0.1.1)
     ruby-progressbar (1.11.0)
     ruby2_keywords (0.0.5)
+    shotgun (0.9.2)
+      rack (>= 1.0)
     sinatra (2.1.0)
       mustermann (~> 1.0)
       rack (~> 2.2)
@@ -91,6 +91,7 @@ DEPENDENCIES
   rack!
   require_all
   rubocop
+  shotgun
   sinatra
   sinatra-contrib
   tempfile

@@ -27,7 +27,7 @@ class EmojisController < Sinatra::Base
   ].freeze
 
   before do
-    @request_payload = JSON.parse(request.body.read)
+    @request_payload = JSON.parse(request.body.read) unless request.body.read.empty?
   end
 
   post '/v1/emojis', '/v1/emojis/' do
