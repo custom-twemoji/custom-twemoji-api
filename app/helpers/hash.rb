@@ -3,8 +3,8 @@
 # Defines custom Hash methods
 class Hash
   def symbolize_keys
-    map do |(k, v)|
+    to_h do |(k, v)|
       [k.to_sym, v]
-    end.to_h
+    end
   end
 end

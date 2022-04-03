@@ -53,9 +53,7 @@ class CustomEmoji
   def svg
     svg = Tempfile.new([to_s, '.svg'], 'tmp')
 
-    File.open(svg.path, 'w') do |f|
-      f.write(@xml)
-    end
+    File.write(svg.path, @xml)
 
     svg
   end
@@ -97,7 +95,7 @@ class CustomEmoji
   end
 
   def canvg(svg_xml)
-    html_template = File.open('assets/template.html').read
+    html_template = File.read('assets/template.html')
     svg_string = svg_xml.to_s
     html_template.gsub('SVG_STRING', svg_string)
   end
