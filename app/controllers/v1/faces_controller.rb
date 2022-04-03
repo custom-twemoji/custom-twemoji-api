@@ -12,6 +12,10 @@ require_relative '../../models/random_custom_face'
 class FacesController < Sinatra::Base
   register Sinatra::MultiRoute
 
+  after do
+    headers({ 'X-Frame-Options' => 'ALLOW-FROM customtwemoji.com' })
+  end
+
   VALID_PARAMS = [
     CustomFace::DEFAULT_FEATURE_STACKING_ORDER,
     :background_color,

@@ -21,7 +21,7 @@ class ApplicationController < Sinatra::Base
   end
 
   get '/', '/v1', '/v1/' do
-    redirect 'https://github.com/blakegearin/custom-twemoji-api'
+    redirect 'https://customtwemoji.com'
   end
 
   run! if app_file == $PROGRAM_NAME
