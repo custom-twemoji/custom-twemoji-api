@@ -133,7 +133,7 @@ class CustomEmoji
 
     emoji_svg = xml.css('#emoji').first
 
-    unless @padding == 0
+    unless @padding.zero?
       new_square_size = size.is_a?(Integer) ? size - (@padding * 2) : "#{size} - #{@padding * 2}"
       emoji_svg.attributes['height'].value = "#{new_square_size}px"
       emoji_svg.attributes['width'].value = "#{new_square_size}px"
