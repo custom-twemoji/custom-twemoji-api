@@ -9,6 +9,7 @@ gem 'logger'
 gem 'mini_magick'
 gem 'nokogiri'
 gem 'rack', github: 'rack/rack', ref: 'a05f8d5'
+gem 'rack-protection'
 gem 'require_all'
 gem 'rubocop', require: false
 gem 'sinatra'

@@ -89,6 +89,7 @@ DEPENDENCIES
   nokogiri
   pry
   rack!
+  rack-protection
   require_all
   rubocop
   shotgun
