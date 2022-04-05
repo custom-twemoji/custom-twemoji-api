@@ -6,7 +6,7 @@ require 'sinatra/base'
 
 require_all './app/controllers/v1'
 
-use Rack::Protection::ContentSecurityPolicy, frame_ancestors: 'customtwemoji.com'
+use Rack::Protection::ContentSecurityPolicy, frame_ancestors: 'customtwemoji.com', default_src: 'self'
 
 use FacesController
 use EmojisController
