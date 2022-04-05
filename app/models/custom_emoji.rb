@@ -54,7 +54,7 @@ class CustomEmoji
 
   def svg
     target_directory = 'tmp'
-    Dir.mkdir(target_directory) unless File.exists?(target_directory)
+    Dir.mkdir(target_directory) unless File.exist?(target_directory)
     svg = Tempfile.new([to_s, '.svg'], target_directory)
 
     File.write(svg.path, @xml)
