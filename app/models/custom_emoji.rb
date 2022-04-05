@@ -66,7 +66,7 @@ class CustomEmoji
     svg_xml.at(:svg).attributes['width'].value = "#{size}px"
     svg_xml.at(:svg).attributes['height'].value = "#{size}px"
 
-    update_padding(svg_xml, 128) if @padding.presence
+    update_padding(svg_xml, 128) unless @padding.zero?
 
     case renderer.downcase
     when 'canvg'
@@ -133,12 +133,10 @@ class CustomEmoji
 
     emoji_svg = xml.css('#emoji').first
 
-    unless @padding.zero?
-      new_square_size = size.is_a?(Integer) ? size - (@padding * 2) : "#{size} - #{@padding * 2}"
-      emoji_svg.attributes['height'].value = "#{new_square_size}px"
-      emoji_svg.attributes['width'].value = "#{new_square_size}px"
-      emoji_svg.attributes['x'].value = "#{@padding}px"
-      emoji_svg.attributes['y'].value = "#{@padding}px"
-    end
+    new_square_size = size.is_a?(Integer) ? size - (@padding * 2) : "#{size} - #{@padding * 2}"
+    emoji_svg.attributes['height'].value = "#{new_square_size}px"
+    emoji_svg.attributes['width'].value = "#{new_square_size}px"
+    emoji_svg.attributes['x'].value = "#{@padding}px"
+    emoji_svg.attributes['y'].value = "#{@padding}px"
   end
 end

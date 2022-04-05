@@ -12,7 +12,7 @@ require_relative '../../models/random_custom_face'
 class FacesController < Sinatra::Base
   before do
     headers 'Access-Control-Allow-Origin' => '*',
-            'Access-Control-Allow-Methods' => ['GET', 'POST']
+            'Access-Control-Allow-Methods' => %w[GET POST]
   end
 
   register Sinatra::MultiRoute
