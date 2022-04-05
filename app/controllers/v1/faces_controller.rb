@@ -10,6 +10,11 @@ require_relative '../../models/random_custom_face'
 
 # Defines the faces endpoints
 class FacesController < Sinatra::Base
+  before do
+    headers 'Access-Control-Allow-Origin' => '*',
+            'Access-Control-Allow-Methods' => ['GET', 'POST']
+  end
+
   register Sinatra::MultiRoute
 
   VALID_PARAMS = [
