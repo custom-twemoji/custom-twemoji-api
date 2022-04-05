@@ -156,6 +156,13 @@ class FacesController < Sinatra::Base
 
   def png(resource)
     renderer = @params[:renderer].presence || @output == 'image' ? 'canvg' : 'imagemagick'
+    nonce = SecureRandom.hex(32)
+
+    if renderer == 'canvg'
+      puts 'adding Content-Security-Policy'
+      headers['Content-Security-Policy'] =
+        "script-src 'nonce-#{nonce}'; frame-ancestors customtwemoji.com"
+    end
 
     if @output == 'json'
       content_type 'text/html' if renderer == 'canvg'
@@ -165,7 +172,7 @@ class FacesController < Sinatra::Base
     content_type renderer == 'canvg' ? 'text/html' : 'image/png'
     set_content_disposition(resource, __method__.to_s)
 
-    resource.png(renderer)
+    resource.png(renderer, nonce)
   end
 
   def get_resource(resource)

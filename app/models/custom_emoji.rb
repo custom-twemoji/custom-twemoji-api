@@ -2,6 +2,7 @@
 
 require 'mini_magick'
 require 'nokogiri'
+require 'securerandom'
 require 'tempfile'
 
 require_relative 'twemoji/twemoji'
@@ -62,7 +63,7 @@ class CustomEmoji
     svg
   end
 
-  def png(renderer)
+  def png(renderer, nonce)
     size = @size.presence || DEFAULT_PNG_SIZE
     renderer = @renderer.presence || renderer
 
@@ -74,7 +75,7 @@ class CustomEmoji
 
     case renderer.downcase
     when 'canvg'
-      canvg(svg_xml)
+      canvg(svg_xml, nonce)
     when 'imagemagick'
       imagemagick(size)
     else
@@ -98,10 +99,12 @@ class CustomEmoji
     xml
   end
 
-  def canvg(svg_xml)
+  def canvg(svg_xml, nonce)
     html_template = File.read('assets/template.html')
     svg_string = svg_xml.to_s
-    html_template.gsub('SVG_STRING', svg_string)
+
+    html_template.gsub!('SVG_STRING', svg_string)
+    html_template.gsub!('NONCE', nonce)
   end
 
   def imagemagick(size)

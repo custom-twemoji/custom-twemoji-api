@@ -1,7 +1,24 @@
 <!doctype html>
 <html>
   <head>
-    <script type="module">
+    <style>
+      html, body {
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+      canvas {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        -moz-transform: translateX(-50%) translateY(-50%);
+        -webkit-transform: translateX(-50%) translateY(-50%);
+        transform: translateX(-50%) translateY(-50%);
+      }
+    </style>
+  </head>
+  <body>
+    <canvas></canvas>
+    <script type="module" nonce="NONCE">
       import { Canvg } from 'https://cdn.skypack.dev/canvg';
 
       let v = null;
@@ -19,24 +36,5 @@
         v.start();
       };
     </script>
-    <style>
-      html, body {
-        margin: 0 !important;
-        padding: 0 !important;
-        color:
-      }
-      canvas {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        -moz-transform: translateX(-50%) translateY(-50%);
-        -webkit-transform: translateX(-50%) translateY(-50%);
-        transform: translateX(-50%) translateY(-50%);
-      }
-    </style>
-  </head>
-
-  <body>
-    <canvas></canvas>
   </body>
 </html>
