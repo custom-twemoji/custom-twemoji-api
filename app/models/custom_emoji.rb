@@ -9,6 +9,8 @@ require_relative '../helpers/object'
 
 # Defines an custom-built emoji
 class CustomEmoji
+  DEFAULT_PNG_SIZE = 128
+
   def initialize(params)
     @params = params
     @time = @params[:time]
@@ -59,14 +61,14 @@ class CustomEmoji
   end
 
   def png(renderer)
-    size = @size.presence || 128
+    size = @size.presence || DEFAULT_PNG_SIZE
     renderer = @renderer.presence || renderer
 
     svg_xml = Nokogiri::XML(@xml)
     svg_xml.at(:svg).attributes['width'].value = "#{size}px"
     svg_xml.at(:svg).attributes['height'].value = "#{size}px"
 
-    update_padding(svg_xml, 128) unless @padding.zero?
+    update_padding(svg_xml, DEFAULT_PNG_SIZE) unless @padding.zero?
 
     case renderer.downcase
     when 'canvg'
@@ -89,7 +91,7 @@ class CustomEmoji
     end
 
     xml.css('rect').first.attributes['fill'].value = @background_color
-    update_padding(xml, '100%') if @padding.presence
+    update_padding(xml, '100%') unless @padding.zero?
 
     xml
   end
