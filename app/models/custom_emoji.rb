@@ -53,7 +53,9 @@ class CustomEmoji
   end
 
   def svg
-    svg = Tempfile.new([to_s, '.svg'], 'tmp')
+    target_directory = 'tmp'
+    Dir.mkdir(target_directory) unless File.exists?(target_directory)
+    svg = Tempfile.new([to_s, '.svg'], target_directory)
 
     File.write(svg.path, @xml)
 
@@ -74,7 +76,7 @@ class CustomEmoji
     when 'canvg'
       canvg(svg_xml)
     when 'imagemagick'
-      imagemagick
+      imagemagick(size)
     else
       message = "Renderer not supported: #{@renderer} | Valid renderers: canvg, imagemagick"
       raise message
@@ -102,13 +104,13 @@ class CustomEmoji
     html_template.gsub('SVG_STRING', svg_string)
   end
 
-  def imagemagick
+  def imagemagick(size)
     svg_file = svg
     png_file = Tempfile.new([to_s, '.png'], 'tmp')
 
     MiniMagick::Tool::Convert.new do |convert|
       convert.background('none')
-      convert.size("#{@size}x#{@size}")
+      convert.size("#{size}x#{size}")
       convert << svg_file.path
       convert << png_file.path
     end
