@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require 'base64'
+require 'date'
+require 'securerandom'
 require 'sinatra/base'
 require 'sinatra/multi_route'
 
@@ -60,8 +62,8 @@ class FacesController < Sinatra::Base
   get '/v1/faces/:emoji_id', '/v1/faces/:emoji_id/' do
     validate
     process_valid_request(CustomFace.new(params))
-  rescue StandardError => e
-    runtime_error(e)
+  # rescue StandardError => e
+  #   runtime_error(e)
   end
 
   not_found do
@@ -156,7 +158,7 @@ class FacesController < Sinatra::Base
 
   def png(resource)
     renderer = @params[:renderer].presence || @output == 'image' ? 'canvg' : 'imagemagick'
-    nonce = SecureRandom.hex(32)
+    nonce = SecureRandom.hex(32) + DateTime.now.new_offset(0).strftime('%s')
 
     if renderer == 'canvg'
       puts 'adding Content-Security-Policy'
@@ -166,7 +168,7 @@ class FacesController < Sinatra::Base
 
     if @output == 'json'
       content_type 'text/html' if renderer == 'canvg'
-      return Base64.encode64(resource.png(renderer)).gsub(/\n/, '')
+      return Base64.encode64(resource.png(renderer, nonce)).gsub(/\n/, '')
     end
 
     content_type renderer == 'canvg' ? 'text/html' : 'image/png'
