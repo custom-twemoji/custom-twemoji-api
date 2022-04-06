@@ -62,8 +62,8 @@ class FacesController < Sinatra::Base
   get '/v1/faces/:emoji_id', '/v1/faces/:emoji_id/' do
     validate
     process_valid_request(CustomFace.new(params))
-  # rescue StandardError => e
-  #   runtime_error(e)
+  rescue StandardError => e
+    runtime_error(e)
   end
 
   not_found do

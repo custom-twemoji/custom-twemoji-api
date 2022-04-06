@@ -110,9 +110,9 @@ class EmojisController < Sinatra::Base
   end
 
   def symbolize_params
-    params.map do |(k, v)|
+    params.to_h do |(k, v)|
       [k.to_sym, v]
-    end.to_h
+    end
   end
 
   def validate_params(params)
