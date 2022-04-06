@@ -70,8 +70,9 @@ class CustomEmoji
     svg_xml = Nokogiri::XML(@xml)
     svg_xml.at(:svg).attributes['width'].value = "#{size}px"
     svg_xml.at(:svg).attributes['height'].value = "#{size}px"
+    @xml = svg_xml
 
-    update_padding(svg_xml, DEFAULT_PNG_SIZE) unless @padding.zero?
+    update_padding(@xml, DEFAULT_PNG_SIZE) unless @padding.zero?
 
     case renderer.downcase
     when 'canvg'
