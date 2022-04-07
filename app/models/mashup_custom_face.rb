@@ -14,10 +14,10 @@ class MashupCustomFace < CustomFace
     @twemoji_version = Twemoji.validate_version(@params[:twemoji_version])
     feature_counts = {}
 
-    emojis = @params[:emojis].split(',')
+    emojis = @params[:emojis]&.split(',')
 
-    message = "Emojis parameter should have more than one emoji on mashup: #{@params[:emojis]}"
-    raise message if emojis.length == 1
+    message = "Emojis parameter should have two or more emojis on /v1/faces/mashup: #{@params[:emojis]}"
+    raise message if emojis&.length.nil? || emojis&.length < 2
 
     emojis.each do |emoji|
       emoji_id = validate_emoji_input(emoji)
