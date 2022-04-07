@@ -14,16 +14,16 @@ class CustomEmoji
 
   def initialize(params)
     @params = params
-    @time = @params[:time]
 
+    @twemoji_version = Twemoji.validate_version(@params[:twemoji_version])
+
+    @time = @params[:time]
     @size = @params[:size].presence
     @padding = (@params[:padding].presence || 0).to_s.delete('px').to_i
     @renderer = @params[:renderer]
     @background_color = @params[:background_color]
 
     @xml_template = xml_template
-
-    @twemoji_version = Twemoji.validate_version(@params[:twemoji_version])
   end
 
   def update_node_attributes(node, emoji_id, feature, index, fill)
@@ -48,6 +48,8 @@ class CustomEmoji
       # Source: https://dev.to/ohbarye/convert-emoji-and-codepoints-each-other-in-ruby-27j
       emoji_input = emoji_input.each_codepoint.map { |n| n.to_s(16) }
       emoji_input = emoji_input.join('-') if emoji_input.is_a?(Array)
+    elsif emoji_input.scan(Unicode::Emoji::REGEX).length > 1
+      return nil
     end
 
     emoji_input

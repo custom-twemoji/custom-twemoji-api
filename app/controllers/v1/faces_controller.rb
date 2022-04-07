@@ -9,6 +9,7 @@ require 'sinatra/multi_route'
 require_relative '../../helpers/hash'
 require_relative '../../models/custom_face'
 require_relative '../../models/random_custom_face'
+require_relative '../../models/mashup_custom_face'
 
 # Defines the faces endpoints
 class FacesController < Sinatra::Base
@@ -19,10 +20,13 @@ class FacesController < Sinatra::Base
 
   register Sinatra::MultiRoute
 
-  VALID_PARAMS = [
+  VALID_PARAMS = %i[
+    twemoji_version
+  ].freeze
+
+  BUILDING_PARAMS = [
     CustomFace::DEFAULT_FEATURE_STACKING_ORDER,
     :background_color,
-    :emoji_id,
     :file_format,
     :filename,
     :order,
@@ -31,21 +35,20 @@ class FacesController < Sinatra::Base
     :renderer,
     :size,
     :time,
-    :twemoji_version
   ].flatten.freeze
 
   get '/v1/faces', '/v1/faces/' do
-    json(Face.all(params[:twemoji_version]).keys)
+    json(Face.all(twemoji_version).keys)
   end
 
   get '/v1/faces/layers', '/v1/faces/layers/' do
-    json(Face.all(params[:twemoji_version]))
+    json(Face.all(twemoji_version))
   end
 
   get '/v1/faces/features', '/v1/faces/features/' do
-    faces = Face.all(params[:twemoji_version])
+    faces = Face.all(twemoji_version)
     faces.each do |key, value|
-      faces[key] = Face.features_from_layers(value)
+      faces[key] = Face.find_with_features(twemoji_version, key)
     end
 
     json(faces)
@@ -54,13 +57,31 @@ class FacesController < Sinatra::Base
   get '/v1/faces/random', '/v1/faces/random/' do
     validate
     face = RandomCustomFace.new(params)
-    process_valid_request(face, face_url(face))
+    process_valid_request(face, face_url(face, CustomFace::DEFAULT_FEATURE_STACKING_ORDER))
+  rescue StandardError => e
+    runtime_error(e)
+  end
+
+  get '/v1/faces/mashup', '/v1/faces/mashup/' do
+    endpoint_specific_params = %i[
+      emojis
+      every_feature
+    ]
+
+    validate([BUILDING_PARAMS, endpoint_specific_params].flatten.freeze)
+    face = MashupCustomFace.new(params)
+
+    process_valid_request(face, face_url(face, endpoint_specific_params))
   rescue StandardError => e
     runtime_error(e)
   end
 
   get '/v1/faces/:emoji_id', '/v1/faces/:emoji_id/' do
-    validate
+    endpoint_specific_params = %i[
+      emoji_id
+    ]
+
+    validate([BUILDING_PARAMS, endpoint_specific_params].flatten.freeze)
     process_valid_request(CustomFace.new(params))
   rescue StandardError => e
     runtime_error(e)
@@ -75,6 +96,10 @@ class FacesController < Sinatra::Base
   end
 
   private
+
+  def twemoji_version
+    params[:twemoji_version]
+  end
 
   def runtime_error(error)
     LOGGER.error(error.message)
@@ -102,11 +127,16 @@ class FacesController < Sinatra::Base
     @file_format = @params[:file_format].presence || 'svg'
   end
 
-  def validate
+  def validate(endpoint_specific_params)
     validate_output
     validate_file_format
 
-    params = validate_params(@params.symbolize_keys)
+    valid_params = [
+      VALID_PARAMS,
+      endpoint_specific_params
+    ].flatten.freeze
+
+    params = validate_params(@params.symbolize_keys, valid_params)
     raise 'No valid parameters detected' if params.empty?
   end
 
@@ -130,11 +160,11 @@ class FacesController < Sinatra::Base
     end
   end
 
-  def validate_params(params)
+  def validate_params(params, valid_params = VALID_PARAMS)
     # Add time parameter to track request
     params[:time] = Time.now.getutc.to_i
 
-    params.select { |key, _| VALID_PARAMS.include?(key) }
+    params.select { |key, _| valid_params.include?(key) }
   end
 
   def set_content_disposition(resource, file_extension)
@@ -186,11 +216,11 @@ class FacesController < Sinatra::Base
     end
   end
 
-  def face_url(face)
+  def face_url(face, exclude_params)
     url = "https://#{@env['HTTP_HOST']}/v1/faces/#{face.url}"
 
     request.params.each do |key, value|
-      next if CustomFace::DEFAULT_FEATURE_STACKING_ORDER.include?(key.to_sym)
+      next if exclude_params.include?(key.to_sym)
 
       feature_hash = { key => value }
       url =

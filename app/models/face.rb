@@ -13,11 +13,13 @@ class Face
     YAML.safe_load(File.read(yml_file))
   end
 
-  def self.find(twemoji_version, id)
+  def self.find_with_layers(twemoji_version, id)
     all(twemoji_version)[id]
   end
 
-  def self.features_from_layers(layers)
+  def self.find_with_features(twemoji_version, id)
+    layers = self.find_with_layers(twemoji_version, id)
+
     return if layers.nil?
 
     layers.each_with_object({}) do |(key, value), out|

@@ -37,6 +37,7 @@ class CustomFace < CustomEmoji
     add_features
 
     # Previously @xml was a Nokogiri XML parser
+    # Note: Newlines are not removable via Nokigiri: https://github.com/sparklemotion/nokogiri/issues/233
     @xml = @xml_template.to_xml
   end
 
@@ -77,10 +78,10 @@ class CustomFace < CustomEmoji
     @base_emoji_id = validate_emoji_input(@base_emoji_id)
     raise "Base emoji is not a supported face: #{@params[:emoji_id]}" if @base_emoji_id.nil?
 
-    base_layers = Face.find(@twemoji_version, @base_emoji_id)
-    @features = Face.features_from_layers(base_layers)
-
+    @features = Face.find_with_features(@twemoji_version, @base_emoji_id)
     @base_twemoji = AbsoluteTwemoji.new(@twemoji_version, @base_emoji_id).xml
+
+    base_layers = Face.find_with_layers(@twemoji_version, @base_emoji_id)
     @base_twemoji = label_layers_by_feature(@base_twemoji, base_layers, @base_emoji_id)
 
     @base_twemoji
@@ -117,7 +118,7 @@ class CustomFace < CustomEmoji
     value = validate_emoji_input(value)
 
     # Permit false as a means of removing a feature
-    if (Face.find(@twemoji_version, value).nil? || value == @base_emoji_id) && value != false
+    if (Face.find_with_layers(@twemoji_version, value).nil? || value == @base_emoji_id) && value != false
       # Delete bad or duplicate parameter
       @params.delete(feature_name)
     else
@@ -134,7 +135,7 @@ class CustomFace < CustomEmoji
   end
 
   def cache_twemoji(twemojis, emoji_id)
-    layers = Face.find(@twemoji_version, emoji_id)
+    layers = Face.find_with_layers(@twemoji_version, emoji_id)
 
     xml = AbsoluteTwemoji.new(@twemoji_version, emoji_id).xml
     xml = label_layers_by_feature(xml, layers, emoji_id)
