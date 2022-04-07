@@ -34,7 +34,7 @@ class FacesController < Sinatra::Base
     :padding,
     :renderer,
     :size,
-    :time,
+    :time
   ].flatten.freeze
 
   get '/v1/faces', '/v1/faces/' do
@@ -47,7 +47,7 @@ class FacesController < Sinatra::Base
 
   get '/v1/faces/features', '/v1/faces/features/' do
     faces = Face.all(twemoji_version)
-    faces.each do |key, value|
+    faces.each do |key, _|
       faces[key] = Face.find_with_features(twemoji_version, key)
     end
 

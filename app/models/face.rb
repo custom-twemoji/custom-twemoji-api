@@ -18,7 +18,7 @@ class Face
   end
 
   def self.find_with_features(twemoji_version, id)
-    layers = self.find_with_layers(twemoji_version, id)
+    layers = find_with_layers(twemoji_version, id)
 
     return if layers.nil?
 

@@ -3,6 +3,7 @@
 require_relative 'face'
 require_relative '../helpers/hash'
 
+# Defines helper functions for randomizing
 class Random
   def self.check_float(string, param_name)
     float = Float(string, exception: false)

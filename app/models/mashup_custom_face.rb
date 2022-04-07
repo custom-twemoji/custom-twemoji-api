@@ -17,7 +17,7 @@ class MashupCustomFace < CustomFace
     emojis = @params[:emojis]&.split(',')
 
     message = "Emojis parameter should have two or more emojis on /v1/faces/mashup: #{@params[:emojis]}"
-    raise message if emojis&.length.nil? || emojis&.length < 2
+    raise message if emojis&.length.nil? || emojis.length < 2
 
     emojis.each do |emoji|
       emoji_id = validate_emoji_input(emoji)
@@ -27,7 +27,7 @@ class MashupCustomFace < CustomFace
 
       features = Face.find_with_features(@twemoji_version, emoji_id)
 
-      features.each do |feature, layers|
+      features.each do |feature, _|
         key = feature_counts[feature] || []
         feature_counts[feature] = key.push(emoji_id)
       end
@@ -38,7 +38,9 @@ class MashupCustomFace < CustomFace
 
       chance =
         if input_param.nil?
+          # rubocop:disable Style/TernaryParentheses
           (@params[:every_feature] || feature_name == :head) ? 1 : 0.5
+          # rubocop:enable Style/TernaryParentheses
         else
           input_param
         end
