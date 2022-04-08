@@ -64,6 +64,7 @@ class FacesController < Sinatra::Base
 
   get '/v1/faces/mashup', '/v1/faces/mashup/' do
     endpoint_specific_params = %i[
+      amount
       emojis
       every_feature
     ]

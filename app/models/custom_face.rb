@@ -56,6 +56,10 @@ class CustomFace < CustomEmoji
 
   private
 
+  def faces
+    @faces ||= Face.all(@params[:twemoji_version])
+  end
+
   def define_url
     url_string = ''
 

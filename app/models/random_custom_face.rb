@@ -23,10 +23,6 @@ class RandomCustomFace < CustomFace
 
   private
 
-  def faces
-    @faces ||= Face.all(@params[:twemoji_version])
-  end
-
   def valid_float?(string)
     # The double negation turns this into an actual boolean true - if you're
     # okay with "truthy" values (like 0.0), you can remove it.
