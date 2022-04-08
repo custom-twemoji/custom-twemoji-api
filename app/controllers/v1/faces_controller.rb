@@ -66,7 +66,7 @@ class FacesController < Sinatra::Base
     endpoint_specific_params = %i[
       amount
       emojis
-      every_feature
+      use_every_feature
     ]
 
     validate([BUILDING_PARAMS, endpoint_specific_params].flatten.freeze)

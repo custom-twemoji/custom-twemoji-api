@@ -68,7 +68,7 @@ class MashupCustomFace < CustomFace
       chance =
         if input_param.nil?
           # rubocop:disable Style/TernaryParentheses
-          (@params[:every_feature] || feature_name == :head) ? 1 : 0.5
+          (@params[:use_every_feature] || feature_name == :head) ? 1 : 0.5
           # rubocop:enable Style/TernaryParentheses
         else
           input_param
