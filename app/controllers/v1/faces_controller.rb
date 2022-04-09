@@ -55,7 +55,7 @@ class FacesController < Sinatra::Base
   end
 
   get '/v1/faces/random', '/v1/faces/random/' do
-    validate
+    validate(BUILDING_PARAMS)
     face = RandomCustomFace.new(params)
     process_valid_request(face, face_url(face, CustomFace::DEFAULT_FEATURE_STACKING_ORDER))
   rescue StandardError => e
@@ -128,7 +128,7 @@ class FacesController < Sinatra::Base
     @file_format = @params[:file_format].presence || 'svg'
   end
 
-  def validate(endpoint_specific_params)
+  def validate(endpoint_specific_params = nil)
     validate_output
     validate_file_format
 
