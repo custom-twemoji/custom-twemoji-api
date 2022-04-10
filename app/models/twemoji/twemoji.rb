@@ -11,6 +11,12 @@ require_relative '../svgpath/svgpath'
 class Twemoji
   attr_reader :xml
 
+  VALID_VERSIONS = %w[
+    13.1.0
+    13.1.1
+    14.0.0
+  ]
+
   def initialize(version, id, remove_groups)
     @id = id
     @version = version.nil? ? latest : version
@@ -32,17 +38,17 @@ class Twemoji
   end
 
   def self.latest
-    '13.1.0'
+    VALID_VERSIONS.last
   end
 
   def self.validate_version(version)
     case version
     when nil
       latest
-    when '13.1.0'
+    when *VALID_VERSIONS
       version
     else
-      message = "Invalid Twemoji version: #{version} | Valid versions: 13.1.0"
+      message = "Invalid Twemoji version: #{version} | Valid versions: #{VALID_VERSIONS.join(',')}"
       raise message
     end
   end
@@ -65,16 +71,20 @@ class Twemoji
   end
 
   def break_down_group(node, xml)
+    fill_attribute = node.attributes['fill']
+    node_fill = fill_attribute.value if fill_attribute.present?
+
     node.children.each do |child|
-      check_child_name_for_group(child, xml)
+      check_child_name_for_group(child, xml, node_fill)
     end
   end
 
-  def check_child_name_for_group(child, xml)
+  def check_child_name_for_group(child, xml, fill)
     case child.name
     when 'g'
       break_down_group(child, xml)
     else
+      child[:fill] = fill unless fill.nil?
       xml.add_child(child)
     end
   end
@@ -84,7 +94,7 @@ class Twemoji
     no_groups_xml.children.map(&:remove)
 
     @xml.children.each do |child|
-      check_child_name_for_group(child, no_groups_xml)
+      check_child_name_for_group(child, no_groups_xml, nil)
     end
 
     @xml = no_groups_xml

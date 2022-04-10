@@ -23,6 +23,12 @@ class String
   end
 end
 
+class Integer
+  def prettify
+    self
+  end
+end
+
 class SvgPath
   attr_accessor :segments, :err, :stack
 
