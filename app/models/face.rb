@@ -17,7 +17,7 @@ class Face
     version_found = false
 
     yml_file.each do |key, value|
-      version_found = key == twemoji_version unless version_found
+      version_found ||= key == twemoji_version
       next if !version_found || value.nil?
 
       version_hash = value.merge!(version_hash)

@@ -15,7 +15,7 @@ class Twemoji
     13.1.0
     13.1.1
     14.0.0
-  ]
+  ].freeze
 
   def initialize(version, id, remove_groups)
     @id = id
