@@ -24,5 +24,14 @@ class ApplicationController < Sinatra::Base
     redirect 'https://customtwemoji.com'
   end
 
+  not_found do
+    content_type 'application/json'
+    response = {
+      success: false,
+      message: 'Endpoint not found'
+    }
+    error 404, response.to_json
+  end
+
   run! if app_file == $PROGRAM_NAME
 end

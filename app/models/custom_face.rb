@@ -5,6 +5,7 @@ require 'unicode/emoji'
 require_relative 'custom_emoji'
 require_relative 'face'
 require_relative 'twemoji/absolute_twemoji'
+require_relative '../helpers/error'
 require_relative '../helpers/object'
 
 # Defines a custom face emoji
@@ -80,7 +81,6 @@ class CustomFace < CustomEmoji
 
   def prepare_base_emoji
     @base_emoji_id = validate_emoji_input(@base_emoji_id)
-    raise "Base emoji is not a supported face: #{@params[:emoji_id]}" if @base_emoji_id.nil?
 
     @features = Face.find_with_features(@twemoji_version, @base_emoji_id)
     @base_twemoji = AbsoluteTwemoji.new(@twemoji_version, @base_emoji_id).xml
@@ -122,7 +122,9 @@ class CustomFace < CustomEmoji
     value = validate_emoji_input(value)
 
     # Permit false as a means of removing a feature
-    if (Face.find_with_layers(@twemoji_version, value).nil? || value == @base_emoji_id) && value != false
+    if value != false && (
+      Face.find_with_layers(@twemoji_version, value).nil? || value == @base_emoji_id
+    )
       # Delete bad or duplicate parameter
       @params.delete(feature_name)
     else

@@ -7,6 +7,7 @@ require 'tempfile'
 
 require_relative 'twemoji/twemoji'
 require_relative '../helpers/object'
+require_relative '../helpers/error'
 
 # Defines an custom-built emoji
 class CustomEmoji
@@ -49,10 +50,22 @@ class CustomEmoji
       emoji_input = emoji_input.each_codepoint.map { |n| n.to_s(16) }
       emoji_input = emoji_input.join('-') if emoji_input.is_a?(Array)
     elsif emoji_input.scan(Unicode::Emoji::REGEX).length > 1
-      return nil
+      emoji_input = nil
     end
 
+    message = "Emoji is not valid: #{emoji_input}"
+    raise CustomTwemojiApiError.new(400), message if emoji_input.nil?
+
     emoji_input
+  end
+
+  def get_resource_in_file_format(resource)
+    case @file_format
+    when nil, 'svg'
+      svg(resource)
+    when 'png'
+      png(resource)
+    end
   end
 
   def svg
@@ -83,7 +96,7 @@ class CustomEmoji
       imagemagick(size)
     else
       message = "Renderer not supported: #{@renderer} | Valid renderers: canvg, imagemagick"
-      raise message
+      raise CustomTwemojiApiError.new(400), message
     end
   end
 
@@ -139,7 +152,7 @@ class CustomEmoji
 
     message = 'Padding must be less than half of the size | ' \
               "size: #{@size}px, padding: #{@padding}px"
-    raise message if size.is_a?(Integer) && @padding >= (size / 2)
+    raise CustomTwemojiApiError.new(400), message if size.is_a?(Integer) && @padding >= (size / 2)
 
     emoji_svg = xml.css('#emoji').first
 

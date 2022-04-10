@@ -96,7 +96,7 @@ class EmojisController < Sinatra::Base
   end
 
   def process_valid_request(layers_emoji)
-    resource = get_resource(layers_emoji)
+    resource = get_resource_in_file_format(layers_emoji)
 
     case @output
     when 'json'
@@ -155,7 +155,7 @@ class EmojisController < Sinatra::Base
     resource.png(renderer)
   end
 
-  def get_resource(resource)
+  def get_resource_in_file_format(resource)
     case @file_format
     when nil, 'svg'
       svg(resource)

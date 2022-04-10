@@ -2,15 +2,14 @@
 
 require 'yaml'
 
+require_relative 'random'
 require_relative 'twemoji/twemoji'
+require_relative '../helpers/error'
 
 # Defines an emoji face
 class Face
   # Retrieves all faces
   def self.all(twemoji_version)
-    twemoji_version = Twemoji.validate_version(twemoji_version)
-    raise 'Twemoji version is incorrectly nil' if twemoji_version.nil?
-
     yml_file = YAML.safe_load(File.read('app/models/twemoji/face.yml'))
 
     version_hash = {}
@@ -31,7 +30,7 @@ class Face
 
     message =
       "Emoji (#{id}) was not found to be a supported face for Twemoji version #{twemoji_version}"
-    raise message if face.nil?
+    raise CustomTwemojiApiError.new(400), message if face.nil?
 
     face
   end
@@ -46,5 +45,12 @@ class Face
       out[value.to_sym] ||= []
       out[value.to_sym] << key
     end
+  end
+
+  def self.random(twemoji_version)
+    faces = all(twemoji_version)
+    random_face = Random.from_hash(faces)
+
+    { random_face.to_s => faces[random_face] }
   end
 end

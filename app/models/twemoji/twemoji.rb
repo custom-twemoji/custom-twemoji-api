@@ -6,6 +6,7 @@ require 'nokogiri'
 require 'uri'
 
 require_relative '../svgpath/svgpath'
+require_relative '../../helpers/error'
 
 # Defines an Twemoji
 class Twemoji
@@ -48,8 +49,9 @@ class Twemoji
     when *VALID_VERSIONS
       version
     else
-      message = "Invalid Twemoji version: #{version} | Valid versions: #{VALID_VERSIONS.join(',')}"
-      raise message
+      message =
+        "Invalid twemoji_version parameter: #{version} | Valid values: #{VALID_VERSIONS.join(',')}"
+      raise CustomTwemojiApiError.new(400), message
     end
   end
 

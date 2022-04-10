@@ -5,6 +5,7 @@ require 'unicode/emoji'
 require_relative 'custom_emoji'
 require_relative 'face'
 require_relative 'twemoji/absolute_twemoji'
+require_relative '../helpers/error'
 require_relative '../helpers/object'
 
 # Defines a custom layers emoji
@@ -74,7 +75,7 @@ class CustomLayersEmoji < CustomEmoji
     when String
       message = 'Layers as a string only supports x..y where x and y are integers | ' \
                 "Didn't match supported pattern: '#{layers_value}'"
-      raise message unless layers_value.match(/^\d+..\d+$/)
+      raise CustomTwemojiApiError.new(400), message unless layers_value.match(/^\d+..\d+$/)
 
       layers_array = layers_value.split('..').map(&:to_i)
       layers_value = Range.new(layers_array[0], layers_array[1])

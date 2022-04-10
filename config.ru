@@ -6,5 +6,6 @@ require 'sinatra/base'
 require_all './app/controllers/v1'
 
 use FacesController
+use CustomFacesController
 use EmojisController
 run ApplicationController

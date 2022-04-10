@@ -2,6 +2,7 @@
 
 require_relative 'face'
 require_relative 'random'
+require_relative '../helpers/error'
 require_relative '../helpers/hash'
 
 # Defines a mashup custom face emoji
@@ -26,13 +27,15 @@ class MashupCustomFace < CustomFace
     amount = FALLBACK_FACES_AMOUNT if emojis.empty? && amount.nil?
 
     message = "Emojis parameter on mashup should have two or more emojis: #{@params[:emojis]}"
-    raise message if (emojis&.length.nil? || emojis.length < REQUIRED_FACES_AMOUNT) && amount.nil?
+    if amount.nil? && (emojis&.length.nil? || emojis.length < REQUIRED_FACES_AMOUNT)
+      raise CustomTwemojiApiError.new(400), message
+    end
 
     message = "Amount parameter on mashup should be greater than one: #{amount}"
-    raise message if amount && amount < REQUIRED_FACES_AMOUNT
+    raise CustomTwemojiApiError.new(400), message if amount && amount < REQUIRED_FACES_AMOUNT
 
     message = "Amount parameter (#{amount}) exceeds number of supported faces (#{faces.length})"
-    raise message if amount && amount > faces.length
+    raise CustomTwemojiApiError.new(400), message if amount && amount > faces.length
 
     if amount
       difference = amount - emojis.length
@@ -52,7 +55,6 @@ class MashupCustomFace < CustomFace
 
     emojis.each do |emoji|
       emoji_id = validate_emoji_input(emoji)
-      raise "Emoji is not a supported face: #{emoji}" if emoji_id.nil?
 
       features = Face.find_with_features(@twemoji_version, emoji_id)
 
