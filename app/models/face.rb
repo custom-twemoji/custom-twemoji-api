@@ -25,6 +25,16 @@ class Face
     version_hash
   end
 
+  def self.layers_to_features(layers)
+    return if layers.nil?
+
+    layers.each_with_object({}) do |(key, value), out|
+      value = value['name'] if value.is_a?(Hash)
+      out[value.to_sym] ||= []
+      out[value.to_sym] << key
+    end
+  end
+
   def self.find_with_layers(twemoji_version, id)
     face = all(twemoji_version)[id]
 
@@ -37,14 +47,7 @@ class Face
 
   def self.find_with_features(twemoji_version, id)
     layers = find_with_layers(twemoji_version, id)
-
-    return if layers.nil?
-
-    layers.each_with_object({}) do |(key, value), out|
-      value = value['name'] if value.is_a?(Hash)
-      out[value.to_sym] ||= []
-      out[value.to_sym] << key
-    end
+    layers_to_features(layers)
   end
 
   def self.random(twemoji_version)

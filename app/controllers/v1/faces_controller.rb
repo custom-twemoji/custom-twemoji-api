@@ -53,7 +53,8 @@ class FacesController < Sinatra::Base
   get "#{BASE_ENDPOINT}/random" do
     validate
     random_face = Face.random(@twemoji_version)
-    json(random_face)
+    url = "https://#{@env['HTTP_HOST']}#{BASE_ENDPOINT}/#{random_face.keys[0]}"
+    json(random_face, url)
   rescue StandardError => e
     handle_error(e)
   end
@@ -65,7 +66,9 @@ class FacesController < Sinatra::Base
     message = 'Parameter emoji_id is required'
     raise CustomTwemojiApiError.new(400), message if @emoji_id.nil?
 
-    face = Face.find_with_layers(@twemoji_version, @emoji_id)
+    face = {
+      @emoji_id.to_s => Face.find_with_layers(@twemoji_version, @emoji_id)
+    }
     json(face)
   rescue StandardError => e
     handle_error(e)
@@ -80,16 +83,16 @@ class FacesController < Sinatra::Base
       success: false,
       error: error.message
     }
-    status_code = error.status_code.presence || 500
+    status_code = error.respond_to?(:status_code) ? error.status_code : 500
 
     error status_code, response.to_json
   end
 
   def initialize_params(params)
+    params.select { |key, _| VALID_PARAMS.include?(key) }
+
     # Add time parameter to track request
     params[:time] = Time.now.getutc.to_i
-
-    params.select { |key, _| VALID_PARAMS.include?(key) }
   end
 
   def validate
@@ -109,8 +112,8 @@ class FacesController < Sinatra::Base
   def index_by(data)
     return data unless @index_by == 'features'
 
-    data.each do |key, _|
-      data[key] = Face.find_with_features(@twemoji_version, key)
+    data.each do |key, value|
+      data[key] = Face.layers_to_features(value)
     end
   end
 

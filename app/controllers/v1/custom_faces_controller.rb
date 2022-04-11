@@ -33,8 +33,7 @@ class CustomFacesController < Sinatra::Base
     :output,
     :padding,
     :renderer,
-    :size,
-    :time
+    :size
   ].flatten.freeze
 
   BASE_ENDPOINT = '/v1/custom_faces'
@@ -83,7 +82,8 @@ class CustomFacesController < Sinatra::Base
       success: false,
       error: error.message
     }
-    status_code = error.status_code.presence || 500
+
+    status_code = error.respond_to?(:status_code) ? error.status_code : 500
 
     error status_code, response.to_json
   end
@@ -117,7 +117,6 @@ class CustomFacesController < Sinatra::Base
     ].flatten.freeze
 
     params = validate_params(@params.symbolize_keys, valid_params)
-    raise 'No valid parameters detected' if params.empty?
   end
 
   def process_valid_request(face, url = nil)
@@ -135,10 +134,10 @@ class CustomFacesController < Sinatra::Base
   end
 
   def validate_params(params, valid_params = VALID_PARAMS)
+    params.select { |key, _| valid_params.include?(key) }
+
     # Add time parameter to track request
     params[:time] = Time.now.getutc.to_i
-
-    params.select { |key, _| valid_params.include?(key) }
   end
 
   def set_content_disposition(resource, file_extension)
@@ -191,7 +190,7 @@ class CustomFacesController < Sinatra::Base
   end
 
   def face_url(face, exclude_params)
-    url = "https://#{@env['HTTP_HOST']}/v1/custom_faces/#{face.url}"
+    url = "https://#{@env['HTTP_HOST']}#{BASE_ENDPOINT}/#{face.url}"
 
     request.params.each do |key, value|
       next if exclude_params.include?(key.to_sym)

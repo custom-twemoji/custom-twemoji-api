@@ -116,10 +116,10 @@ class EmojisController < Sinatra::Base
   end
 
   def validate_params(params)
+    params.select { |key, _| VALID_PARAMS.include?(key) }
+
     # Add time parameter to track request
     params[:time] = Time.now.getutc.to_i
-
-    params.select { |key, _| VALID_PARAMS.include?(key) }
   end
 
   def set_content_disposition(resource, file_extension)
