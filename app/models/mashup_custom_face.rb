@@ -46,7 +46,7 @@ class MashupCustomFace < CustomFace
           random_face = Face.random(@twemoji_version)
           face_emoji_id = random_face.keys[0]
 
-          emojis.push(Face.random(face_emoji_id)
+          emojis.push(face_emoji_id)
         end
       elsif difference.negative?
         difference.abs.times do
