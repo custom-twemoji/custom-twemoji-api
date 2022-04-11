@@ -116,7 +116,7 @@ class CustomFacesController < Sinatra::Base
       endpoint_specific_params
     ].flatten.freeze
 
-    params = validate_params(@params.symbolize_keys, valid_params)
+    validate_params(@params.symbolize_keys, valid_params)
   end
 
   def process_valid_request(face, url = nil)
