@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
-require_relative 'face'
-require_relative '../helpers/error'
-require_relative '../helpers/hash'
+require_relative 'error'
+require_relative 'hash'
 
 # Defines helper functions for randomizing
 class Random

@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 require_relative 'face'
-require_relative 'random'
 require_relative '../helpers/error'
 require_relative '../helpers/hash'
+require_relative '../helpers/random'
 
 # Defines a mashup custom face emoji
 class MashupCustomFace < CustomFace
@@ -43,7 +43,10 @@ class MashupCustomFace < CustomFace
       if difference.positive?
         difference.times do
           # Add emojis to bring up the count to match amount
-          emojis.push(faces.keys[rand(0..faces.length - 1)])
+          random_face = Face.random(@twemoji_version)
+          face_emoji_id = random_face.keys[0]
+
+          emojis.push(Face.random(face_emoji_id)
         end
       elsif difference.negative?
         difference.abs.times do

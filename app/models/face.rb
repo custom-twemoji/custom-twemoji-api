@@ -2,9 +2,9 @@
 
 require 'yaml'
 
-require_relative 'random'
 require_relative 'twemoji/twemoji'
 require_relative '../helpers/error'
+require_relative '../helpers/random'
 
 # Defines an emoji face
 class Face

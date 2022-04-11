@@ -83,7 +83,7 @@ class CustomFacesController < Sinatra::Base
       success: false,
       error: error.message
     }
-    status_code = e.status_code.presence || 500
+    status_code = error.status_code.presence || 500
 
     error status_code, response.to_json
   end
@@ -107,6 +107,9 @@ class CustomFacesController < Sinatra::Base
   def validate(endpoint_specific_params = nil)
     validate_output
     validate_file_format
+
+    @twemoji_version = Twemoji.validate_version(params[:twemoji_version])
+    params[:twemoji_version] = @twemoji_version
 
     valid_params = [
       VALID_PARAMS,
@@ -202,8 +205,7 @@ class CustomFacesController < Sinatra::Base
   end
 
   def json(data, links_self = request.url)
-    # content_type 'application/json'
-    Serializer.test_method
+    content_type 'application/json'
 
     {
       success: true,
