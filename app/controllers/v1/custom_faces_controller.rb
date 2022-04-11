@@ -5,10 +5,8 @@ require 'date'
 require 'securerandom'
 require 'sinatra/base'
 require 'sinatra/multi_route'
-require 'sinatra/required_params'
 
 require_relative '../../helpers/hash'
-require_relative '../../helpers/serializer'
 require_relative '../../models/custom_face'
 require_relative '../../models/random_custom_face'
 require_relative '../../models/mashup_custom_face'
@@ -78,6 +76,7 @@ class CustomFacesController < Sinatra::Base
   private
 
   def handle_error(error)
+    content_type 'application/json'
     LOGGER.error(error.message)
 
     response = {
