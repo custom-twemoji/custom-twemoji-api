@@ -86,7 +86,7 @@ DEPENDENCIES
   json
   logger
   mini_magick
-  nokogiri
+  nokogiri (>= 1.13.4)
   pry
   rack!
   rack-protection
