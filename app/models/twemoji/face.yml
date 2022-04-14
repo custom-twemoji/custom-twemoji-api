@@ -1,3 +1,5 @@
+'14.0.2':
+'14.0.1':
 '14.0.0':
   '1f979':
     0: 'head'
@@ -133,6 +135,39 @@
     11: 'other'
     12: 'other'
     13: 'other'
+  '1fae4':
+    0: 'head'
+    1: 'eyes'
+    2: 'eyes'
+    3: 'mouth'
+  '1fae5':
+    0: 'head'
+    1: 'other'
+    2: 'other'
+    3: 'other'
+    4: 'other'
+    5: 'other'
+    6: 'other'
+    7: 'other'
+    8: 'other'
+    9: 'other'
+    10: 'other'
+    11: 'other'
+    12: 'eyes'
+    13: 'eyes'
+    14: 'mouth'
+  '1fae6':
+    0: 'mouth'
+    1: 'mouth'
+    2: 'mouth'
+  '1faac':
+    0: 'head'
+    1: 'eyes'
+    2: 'eyes'
+    3: 'eyes'
+    4: 'eyes'
+    5: 'head'
+    6: 'head'
 '13.1.1':
 '13.1.0':
   '1f383':

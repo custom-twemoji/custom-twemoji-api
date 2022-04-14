@@ -104,7 +104,7 @@ class FacesController < Sinatra::Base
     @index_by = params[:index_by]
 
     valid_values = %w[features layers].freeze
-    message = "Invalid index_by parameter: #{@index_by} | Valid values: #{valid_values.join(',')}"
+    message = "Invalid index_by parameter: #{@index_by} | Valid values: #{valid_values.join(', ')}"
 
     raise CustomTwemojiApiError.new(400), message unless valid_values.include?(@index_by) || @index_by.nil?
   end

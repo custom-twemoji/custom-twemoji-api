@@ -4,6 +4,7 @@ require 'mini_magick'
 require 'net/http'
 require 'nokogiri'
 require 'uri'
+require 'yaml'
 
 require_relative '../svgpath/svgpath'
 require_relative '../../helpers/error'
@@ -12,11 +13,7 @@ require_relative '../../helpers/error'
 class Twemoji
   attr_reader :xml
 
-  VALID_VERSIONS = %w[
-    13.1.0
-    13.1.1
-    14.0.0
-  ].freeze
+  VALID_VERSIONS = YAML.safe_load(File.read('app/models/twemoji/face.yml')).keys.freeze
 
   def initialize(version, id, remove_groups)
     @id = id
@@ -39,7 +36,7 @@ class Twemoji
   end
 
   def self.latest
-    VALID_VERSIONS.last
+    VALID_VERSIONS.first
   end
 
   def self.validate_version(version)
@@ -50,7 +47,7 @@ class Twemoji
       version
     else
       message =
-        "Invalid twemoji_version parameter: #{version} | Valid values: #{VALID_VERSIONS.join(',')}"
+        "Invalid twemoji_version parameter: #{version} | Valid values: #{VALID_VERSIONS.join(', ')}"
       raise CustomTwemojiApiError.new(400), message
     end
   end
