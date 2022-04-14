@@ -27,24 +27,14 @@ class FacesController < Sinatra::Base
     twemoji_version
   ].freeze
 
-  BUILDING_PARAMS = [
-    CustomFace::DEFAULT_FEATURE_STACKING_ORDER,
-    :background_color,
-    :file_format,
-    :filename,
-    :order,
-    :output,
-    :padding,
-    :renderer,
-    :size,
-    :time
-  ].flatten.freeze
-
   BASE_ENDPOINT = '/v1/faces'
 
   get BASE_ENDPOINT do
     validate
+
     faces = Face.all(@twemoji_version)
+    apply_filters(params, face)
+
     json(faces)
   rescue StandardError => e
     handle_error(e)
@@ -52,9 +42,12 @@ class FacesController < Sinatra::Base
 
   get "#{BASE_ENDPOINT}/random" do
     validate
-    random_face = Face.random(@twemoji_version)
-    url = "https://#{@env['HTTP_HOST']}#{BASE_ENDPOINT}/#{random_face.keys[0]}"
-    json(random_face, url)
+
+    face = Face.random(@twemoji_version)
+    apply_filters(params, face)
+
+    url = "https://#{@env['HTTP_HOST']}#{BASE_ENDPOINT}/#{face.keys[0]}"
+    json(face, url)
   rescue StandardError => e
     handle_error(e)
   end
@@ -63,12 +56,14 @@ class FacesController < Sinatra::Base
     validate
     @emoji_id = params[:emoji_id]
 
-    message = 'Parameter emoji_id is required'
+    message = "Parameter 'emoji_id' is required"
     raise CustomTwemojiApiError.new(400), message if @emoji_id.nil?
 
     face = {
       @emoji_id.to_s => Face.find_with_layers(@twemoji_version, @emoji_id)
     }
+    apply_filters(params, face)
+
     json(face)
   rescue StandardError => e
     handle_error(e)
@@ -104,9 +99,41 @@ class FacesController < Sinatra::Base
     @index_by = params[:index_by]
 
     valid_values = %w[features layers].freeze
-    message = "Invalid index_by parameter: #{@index_by} | Valid values: #{valid_values.join(', ')}"
+    message = "Invalid 'index_by' parameter: #{@index_by} | " \
+              "Valid values: #{valid_values.join(', ')}"
 
     raise CustomTwemojiApiError.new(400), message unless valid_values.include?(@index_by) || @index_by.nil?
+  end
+
+  def filter_by_features(features, faces)
+    return if features.nil?
+
+    features = features.split(',')
+    return if features.empty?
+
+    faces.transform_values! do |value|
+      value.select { |_key2, value2| features.include?(value2) }
+    end
+    faces.reject! { |_, value| value.empty? }
+  end
+
+  def filter_by_layers(layers, faces)
+    return if layers.nil?
+
+    # rubocop:disable Style/RescueModifier
+    layers = layers.split(',').select { |value| Integer(value) rescue nil }.map(&:to_i)
+    # rubocop:enable Style/RescueModifier
+    return if layers.empty?
+
+    faces.transform_values! do |value|
+      value.select { |key2, _value2| layers.include?(key2) }
+    end
+    faces.reject! { |_, value| value.empty? }
+  end
+
+  def apply_filters(params, faces)
+    filter_by_features(params[:include_features], faces)
+    filter_by_layers(params[:include_layers], faces)
   end
 
   def index_by(data)
