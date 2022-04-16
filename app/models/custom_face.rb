@@ -186,15 +186,15 @@ class CustomFace < CustomEmoji
 
       all_features = add_layers_from_twemoji(all_features, feature_name, emoji_id, xml)
     elsif !@params[feature_name].presence.nil?
-      @params[feature_name].split(',').each do |emoji_id|
-        if twemojis[emoji_id].nil?
+      @params[feature_name].split(',').each do |current_emoji_id|
+        if twemojis[current_emoji_id].nil?
           # Save Twemojis to reduce number of fetches
-          twemojis = cache_twemoji(twemojis, emoji_id)
+          twemojis = cache_twemoji(twemojis, current_emoji_id)
         end
 
-        xml = twemojis[emoji_id]
+        xml = twemojis[current_emoji_id]
 
-        all_features = add_layers_from_twemoji(all_features, feature_name, emoji_id, xml)
+        all_features = add_layers_from_twemoji(all_features, feature_name, current_emoji_id, xml)
       end
     end
 
