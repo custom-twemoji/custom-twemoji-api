@@ -33,7 +33,7 @@ class FacesController < Sinatra::Base
     validate
 
     faces = Face.all(@twemoji_version)
-    apply_filters(params, face)
+    apply_filters(params, faces)
 
     json(faces)
   rescue StandardError => e
