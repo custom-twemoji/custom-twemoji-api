@@ -112,9 +112,11 @@ class FacesController < Sinatra::Base
     return if features.empty?
 
     faces.transform_values! do |value|
-      value.select { |_key2, value2| features.include?(value2) }
+      {
+        'glyph' => value['glyph'],
+        'layers' => value['layers'].select { |_key2, value2| features.include?(value2) }
+      }
     end
-    faces.reject! { |_, value| value.empty? }
   end
 
   def filter_by_layers(layers, faces)
@@ -126,21 +128,33 @@ class FacesController < Sinatra::Base
     return if layers.empty?
 
     faces.transform_values! do |value|
-      value.select { |key2, _value2| layers.include?(key2) }
+      {
+        'glyph' => value['glyph'],
+        'layers' => value['layers'].select { |key2, _value2| layers.include?(key2) }
+      }
     end
-    faces.reject! { |_, value| value.empty? }
   end
 
   def apply_filters(params, faces)
     filter_by_features(params[:include_features], faces)
     filter_by_layers(params[:include_layers], faces)
+
+    unless params[:include_empty_layers] == 'true'
+      faces.reject! { |_, value| value['layers'].empty? }
+    end
+
+    return unless params[:include_glyph] == 'false'
+
+    faces.each do |_, value|
+      value.delete('glyph')
+    end
   end
 
   def index_by(data)
     return data unless @index_by == 'features'
 
     data.each do |key, value|
-      data[key] = Face.layers_to_features(value)
+      data[key]['layers'] = Face.layers_to_features(value['layers'])
     end
   end
 

@@ -45,8 +45,12 @@ class Face
     face
   end
 
+  def self.find_with_glyph(twemoji_version, id)
+    find_with_layers(twemoji_version, id)['glyph']
+  end
+
   def self.find_with_features(twemoji_version, id)
-    layers = find_with_layers(twemoji_version, id)
+    layers = find_with_layers(twemoji_version, id)['layers']
     layers_to_features(layers)
   end
 

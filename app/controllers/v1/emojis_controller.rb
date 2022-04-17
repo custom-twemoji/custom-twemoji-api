@@ -125,7 +125,7 @@ class EmojisController < Sinatra::Base
   def set_content_disposition(resource, file_extension)
     return unless @output == 'download'
 
-    filename = @params[:filename].presence || resource.to_s
+    filename = @params[:filename].presence || resource.unique_string
     full_filename = "#{filename}.#{file_extension}"
 
     # Good explanation on this: https://stackoverflow.com/a/20509354/5988852

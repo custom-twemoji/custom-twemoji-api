@@ -124,7 +124,7 @@ class CustomFacesController < Sinatra::Base
 
     case @output
     when 'json'
-      url.nil? ? json(resource) : json(resource, url)
+      url.nil? ? json(resource, face.description) : json(resource, face.description, url)
     when 'image', 'download'
       resource
     else
@@ -143,7 +143,7 @@ class CustomFacesController < Sinatra::Base
   def set_content_disposition(resource, file_extension)
     return unless @output == 'download'
 
-    filename = @params[:filename].presence || resource.to_s
+    filename = @params[:filename].presence || resource.unique_string
     full_filename = "#{filename}.#{file_extension}"
 
     # Good explanation on this: https://stackoverflow.com/a/20509354/5988852
@@ -203,12 +203,15 @@ class CustomFacesController < Sinatra::Base
     url
   end
 
-  def json(data, links_self = request.url)
+  def json(data, description, links_self = request.url)
     content_type 'application/json'
 
     {
       success: true,
-      data: data,
+      data: {
+        output: data,
+        description: description
+      },
       links: {
         self: links_self
       },

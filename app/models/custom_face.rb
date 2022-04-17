@@ -37,13 +37,37 @@ class CustomFace < CustomEmoji
 
     add_features
 
+    @xml_template.css('#emoji').first.attributes['id'].value = unique_string
+
     # Previously @xml was a Nokogiri XML parser
     # Note: Newlines are not removable via Nokigiri: https://github.com/sparklemotion/nokogiri/issues/233
     @xml = @xml_template.to_xml
   end
 
-  # Prints out the custom face as a unique string
-  def to_s
+  # Brief text that describes the custom face
+  def description
+    response = ''
+
+    DEFAULT_FEATURE_STACKING_ORDER.each do |feature_name|
+      value = @params[feature_name]
+      next if value.nil?
+
+      value.split(',').each do |value_emoji_id|
+        glyph = Face.find_with_glyph(@twemoji_version, value_emoji_id)
+        response += "#{response == '' ? '' : ' + '}#{feature_name} from #{glyph}"
+      end
+    end
+
+    unless @base_emoji_id.nil?
+      glyph = Face.find_with_glyph(@twemoji_version, @base_emoji_id)
+      response += " + everything else from #{glyph}"
+    end
+
+    response
+  end
+
+  # Prints out the custom face as a unique string, similar to a request URL
+  def unique_string
     descriptors = {}
     descriptors[:base] = @base_emoji_id unless @base_emoji_id.nil?
 
@@ -85,8 +109,10 @@ class CustomFace < CustomEmoji
     @features = Face.find_with_features(@twemoji_version, @base_emoji_id)
     @base_twemoji = AbsoluteTwemoji.new(@twemoji_version, @base_emoji_id).xml
 
-    base_layers = Face.find_with_layers(@twemoji_version, @base_emoji_id)
-    @base_twemoji = label_layers_by_feature(@base_twemoji, base_layers, @base_emoji_id)
+    base_emoji_face = Face.find_with_layers(@twemoji_version, @base_emoji_id)
+
+    @base_twemoji =
+      label_layers_by_feature(@base_twemoji, base_emoji_face['layers'], @base_emoji_id)
 
     @base_twemoji
   end
@@ -148,10 +174,10 @@ class CustomFace < CustomEmoji
   end
 
   def cache_twemoji(twemojis, emoji_id)
-    layers = Face.find_with_layers(@twemoji_version, emoji_id)
+    emoji_face = Face.find_with_layers(@twemoji_version, emoji_id)
 
     xml = AbsoluteTwemoji.new(@twemoji_version, emoji_id).xml
-    xml = label_layers_by_feature(xml, layers, emoji_id)
+    xml = label_layers_by_feature(xml, emoji_face['layers'], emoji_id)
 
     twemojis[emoji_id] = xml
     twemojis
