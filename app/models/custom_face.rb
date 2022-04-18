@@ -44,23 +44,30 @@ class CustomFace < CustomEmoji
     @xml = @xml_template.to_xml
   end
 
-  # Brief text that describes the custom face
+  # Hash that describes the feature-to-emoji relationships present
   def description
-    response = ''
+    response = []
+
+    unless @base_emoji_id.nil?
+      response.push({
+        feature: 'base',
+        codepoint: @base_emoji_id,
+        glyph: Face.find_with_glyph(@twemoji_version, @base_emoji_id)
+      })
+    end
 
     DEFAULT_FEATURE_STACKING_ORDER.each do |feature_name|
       value = @params[feature_name]
       next if value.nil?
 
       value.split(',').each do |value_emoji_id|
-        glyph = Face.find_with_glyph(@twemoji_version, value_emoji_id)
-        response += "#{response == '' ? '' : ' + '}#{feature_name} from #{glyph}"
+        emoji_identifier =
+        response.push({
+          feature: feature_name,
+          codepoint: value_emoji_id,
+          glyph: Face.find_with_glyph(@twemoji_version, value_emoji_id)
+        })
       end
-    end
-
-    unless @base_emoji_id.nil?
-      glyph = Face.find_with_glyph(@twemoji_version, @base_emoji_id)
-      response += " + everything else from #{glyph}"
     end
 
     response
