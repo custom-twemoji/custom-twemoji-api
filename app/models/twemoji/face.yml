@@ -356,11 +356,11 @@
     glyph: 😋
     layers:
       0: 'head'
-      1: 'mouth'
-      2: 'mouth'
-      3: 'eyes'
-      4: 'eyes'
-      5: 'mouth'
+      1: 'eyes'
+      2: 'eyes'
+      3: 'mouth'
+      4: 'other'
+      5: 'other'
   '1f60c':
     glyph: 😌
     layers:
