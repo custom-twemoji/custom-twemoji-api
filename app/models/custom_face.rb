@@ -49,11 +49,13 @@ class CustomFace < CustomEmoji
     response = []
 
     unless @base_emoji_id.nil?
-      response.push({
-        feature: 'base',
-        codepoint: @base_emoji_id,
-        glyph: Face.find_with_glyph(@twemoji_version, @base_emoji_id)
-      })
+      response.push(
+        {
+          feature: 'base',
+          codepoint: @base_emoji_id,
+          glyph: Face.find_with_glyph(@twemoji_version, @base_emoji_id)
+        }
+      )
     end
 
     DEFAULT_FEATURE_STACKING_ORDER.each do |feature_name|
@@ -61,12 +63,13 @@ class CustomFace < CustomEmoji
       next if value.nil?
 
       value.split(',').each do |value_emoji_id|
-        emoji_identifier =
-        response.push({
-          feature: feature_name,
-          codepoint: value_emoji_id,
-          glyph: Face.find_with_glyph(@twemoji_version, value_emoji_id)
-        })
+        response.push(
+          {
+            feature: feature_name,
+            codepoint: value_emoji_id,
+            glyph: Face.find_with_glyph(@twemoji_version, value_emoji_id)
+          }
+        )
       end
     end
 
