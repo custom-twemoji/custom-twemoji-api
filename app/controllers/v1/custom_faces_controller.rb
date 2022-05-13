@@ -68,8 +68,8 @@ class CustomFacesController < Sinatra::Base
 
     validate([BUILDING_PARAMS, endpoint_specific_params].flatten.freeze)
     process_valid_request(CustomFace.new(params))
-  rescue StandardError => e
-    handle_error(e)
+  # rescue StandardError => e
+  #   handle_error(e)
   end
 
   private

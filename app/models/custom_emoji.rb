@@ -127,11 +127,24 @@ class CustomEmoji
     svg_file = svg
     png_file = Tempfile.new([to_s, '.png'], 'tmp')
 
+
+    require 'pry'
+    binding.pry
+    puts 'end of pry'
+
+    image = MiniMagick::Image.read(svg_file) {
+      self.units = MiniMagick::PixelsPerInchResolution
+      self.density = "600"
+    }.first
+
+
     MiniMagick::Tool::Convert.new do |convert|
       convert.background('none')
       convert.size("#{size}x#{size}")
+      convert.quality(50)
+      convert.define("webp:lossless=true")
       convert << svg_file.path
-      convert << png_file.path
+      convert << 'tmp/blake.webp'
     end
 
     contents = png_file.read

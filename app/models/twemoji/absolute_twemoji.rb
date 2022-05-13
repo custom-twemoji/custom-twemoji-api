@@ -38,6 +38,12 @@ class AbsoluteTwemoji < Twemoji
       return
     end
 
+
+    # require 'pry'
+    # binding.pry
+    # puts 'end of pry'
+
+
     abs_d = SvgPath.new(original_d).abs.to_s
     if original_d == abs_d
       xml.add_child(node)

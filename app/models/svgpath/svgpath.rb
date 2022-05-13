@@ -29,6 +29,12 @@ class Integer
   end
 end
 
+class NilClass
+  def prettify
+    self
+  end
+end
+
 class SvgPath
   attr_accessor :segments, :err, :stack
 
@@ -92,15 +98,30 @@ class SvgPath
 
     (0..@segments.length-1).each do |i|
       # remove repeating commands names
-      cmd = @segments[i][0]
+
+      # require e
+
+      segment = @segments[i]
+      cmd = segment.is_a?(Array) ? segment[0] : segment
+
+      last_segment = @segments[i - 1]
       skipCmd =
         i > 0 &&
         cmd != 'm' &&
         cmd != 'M' &&
-        cmd == @segments[i - 1][0]
-      elements = elements.concat(
-        skipCmd ? @segments[i][1..-1] : @segments[i]
-      )
+        !last_segment.nil? &&
+        last_segment.is_a?(Array) &&
+        cmd == last_segment[0]
+
+
+      new_element = skipCmd ? @segments[i][1..-1]: @segments[i]
+
+      # require 'pry'
+      # binding.pry
+      # puts 'end of pry'
+
+      # new_element = new_elemenet.split('') if new_element.is_a?(String)
+      elements = elements.concat([new_element])
     end
 
     # Optimizations: remove spaces around commands & before `-`
@@ -113,6 +134,12 @@ class SvgPath
     # workaround for FontForge SVG importing bug
     #   .replace(/zm/g, 'z m');
 
+
+    # require 'pry'
+    # binding.pry
+    # puts 'end of pry'
+
+
     elements = elements.map(&:prettify).join(' ')
     elements.gsub!(/ ?[achlmqrstvz] ?/i) { |found| found.delete(' ') }
     elements.gsub!(/ -/) { |found| found.delete(' ') }
@@ -120,9 +147,22 @@ class SvgPath
     elements
   end
 
+  # Scale path to (sx [, sy])
+  # sy = sx if not defined
+  def scale(sx, sy = 0)
+    @stack.push(
+      Matrix.new.scale(
+        sx,
+        (!sy && !(sy.zero?)) ? sx : sy
+      )
+    )
+
+    self
+  end
+
   private
 
-  def matrix_proc(s, index, x, y)
+  def matrix_proc(s, index, x, y, m)
     case s[0]
     # Process 'asymmetric' commands separately
     when 'v'
@@ -202,7 +242,7 @@ class SvgPath
     # Quick leave for empty matrix
     return unless m.queue.length > 0
 
-    iterate(true, method(:matrix_proc))
+    iterate(true, method(:matrix_proc), m)
   end
 
   # Apply stacked commands
@@ -231,7 +271,7 @@ class SvgPath
   # Apply iterator function to all segments. If function returns result,
   # current segment will be replaced to array of returned segments.
   # If empty array is returned, current segment will be deleted.
-  def iterate(keepLazyStack, iterator)
+  def iterate(keepLazyStack, iterator, m = nil)
     segments = @segments
     replacements = Hash.new
     needReplace = false
@@ -243,7 +283,9 @@ class SvgPath
     evaluateStack() unless keepLazyStack
 
     segments.each_with_index do |s, index|
-      res = iterator.call(s, index, lastX, lastY)
+      res = m.nil? ?
+        iterator.call(s, index, lastX, lastY) :
+        iterator.call(s, index, lastX, lastY, m)
 
       if res.kind_of?(Array)
         replacements[index] = res
