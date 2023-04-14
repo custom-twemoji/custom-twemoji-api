@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  🚧 WIP - Beta 🚧
+  🚧 Beta 🚧
 </p>
 
 [![Google Cloud](https://github.com/custom-twemoji/custom-twemoji-api/actions/workflows/google.yml/badge.svg?branch=main)](https://github.com/custom-twemoji/custom-twemoji-api/actions/workflows/google.yml)
