@@ -2,15 +2,15 @@
 
 source 'https://rubygems.org'
 
-ruby '~> 2.7.8'
+ruby '~> 3.0.6'
 
 gem 'json'
 gem 'logger'
 gem 'mini_magick'
 gem 'nokogiri'
 gem 'rack'
-gem 'rackup'
 gem 'rack-protection'
+gem 'rackup'
 gem 'require_all'
 gem 'rubocop', require: false
 gem 'sinatra'
@@ -21,5 +21,4 @@ gem 'unicode-emoji'
 
 group :development, :test do
   gem 'pry'
-  gem 'shotgun'
 end

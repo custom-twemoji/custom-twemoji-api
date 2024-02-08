@@ -10,7 +10,7 @@ require_relative '../helpers/random'
 class Face
   # Retrieves all faces
   def self.all(twemoji_version)
-    yml_file = YAML.safe_load(File.read('app/models/twemoji/face.yml'))
+    yml_file = YAML.safe_load_file('app/models/twemoji/face.yml')
 
     version_hash = {}
     version_found = false

@@ -13,7 +13,7 @@ require_relative '../../helpers/error'
 class Twemoji
   attr_reader :xml
 
-  VALID_VERSIONS = YAML.safe_load(File.read('app/models/twemoji/face.yml')).keys.freeze
+  VALID_VERSIONS = YAML.safe_load_file('app/models/twemoji/face.yml').keys.freeze
 
   def initialize(version, id, remove_groups)
     @id = id
