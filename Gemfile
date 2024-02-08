@@ -2,13 +2,12 @@
 
 source 'https://rubygems.org'
 
-ruby '~> 2.7.0'
+ruby '~> 2.7.8'
 
 gem 'json'
 gem 'logger'
 gem 'mini_magick'
-gem 'nokogiri', '>= 1.13.4'
-gem 'rack', github: 'rack/rack', ref: 'a05f8d5'
+gem 'nokogiri'
 gem 'rack-protection'
 gem 'require_all'
 gem 'rubocop', require: false
