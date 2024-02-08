@@ -16,4 +16,4 @@
 [![Ruby Style Guide](https://img.shields.io/badge/code_style-rubocop-brightgreen.svg)](https://github.com/rubocop/rubocop)
 ![License](https://img.shields.io/github/license/custom-twemoji/custom-twemoji-api)
 
-Not affiliated with Twitter Inc. or any of their affiliations
+Not affiliated with Twitter Inc., X Corp., or any of their affiliations

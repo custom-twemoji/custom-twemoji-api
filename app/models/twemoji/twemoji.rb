@@ -55,7 +55,7 @@ class Twemoji
   private
 
   def build_github_url(id)
-    'https://raw.githubusercontent.com/twitter/twemoji/'\
+    'https://raw.githubusercontent.com/jdecked/twemoji/'\
       "v#{@version}/assets/svg/#{id}.svg"
   end
 
