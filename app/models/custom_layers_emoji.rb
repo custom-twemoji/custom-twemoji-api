@@ -53,7 +53,7 @@ class CustomLayersEmoji < CustomEmoji
   def add_layers
     @layers = layers
 
-    @layers.each do |_, layer|
+    @layers.each_value do |layer|
       add_all_feature_layers(layer)
     end
   end

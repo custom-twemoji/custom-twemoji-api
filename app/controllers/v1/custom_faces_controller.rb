@@ -171,7 +171,7 @@ class CustomFacesController < Sinatra::Base
 
     if @output == 'json'
       content_type 'text/html' if renderer == 'canvg'
-      return Base64.encode64(resource.png(renderer, nonce)).gsub(/\n/, '')
+      return Base64.encode64(resource.png(renderer, nonce)).gsub("\n", '')
     end
 
     content_type renderer == 'canvg' ? 'text/html' : 'image/png'

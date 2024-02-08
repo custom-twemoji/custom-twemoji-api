@@ -145,7 +145,7 @@ class FacesController < Sinatra::Base
 
     return unless params[:include_glyph] == 'false'
 
-    faces.each do |_, value|
+    faces.each_value do |value|
       value.delete('glyph')
     end
   end

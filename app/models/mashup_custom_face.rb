@@ -21,7 +21,7 @@ class MashupCustomFace < CustomFace
     @twemoji_version = Twemoji.validate_version(@params[:twemoji_version])
     feature_counts = {}
 
-    amount = @params[:amount].nil? ? nil : @params[:amount].to_i
+    amount = @params[:amount]&.to_i
     emojis = @params[:emojis]&.split(',') || []
 
     amount = FALLBACK_FACES_AMOUNT if emojis.empty? && amount.nil?
@@ -61,7 +61,7 @@ class MashupCustomFace < CustomFace
 
       features = Face.find_with_features(@twemoji_version, emoji_id)
 
-      features.each do |feature, _|
+      features.each_key do |feature|
         key = feature_counts[feature] || []
         feature_counts[feature] = key.push(emoji_id)
       end

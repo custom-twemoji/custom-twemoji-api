@@ -70,7 +70,7 @@ class CustomEmoji
 
   def svg
     target_directory = 'tmp'
-    Dir.mkdir(target_directory) unless File.exist?(target_directory)
+    FileUtils.mkdir_p(target_directory)
     svg = Tempfile.new([to_s, '.svg'], target_directory)
 
     File.write(svg.path, @xml)

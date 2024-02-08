@@ -52,8 +52,8 @@ class EmojisController < Sinatra::Base
   not_found do
     content_type 'application/json'
     message =
-      "Endpoint not found: #{request.request_method} #{request.path_info}"\
-      ' | Valid endpoints: POST /emojis, GET /emojis/{emoji_id}, ' \
+      "Endpoint not found: #{request.request_method} #{request.path_info} " \
+      '| Valid endpoints: POST /emojis, GET /emojis/{emoji_id}, ' \
       'GET/emojis/{emoji_id}/layers, GET /emojis/random'
     error 404, { error: message }.to_json
   end
@@ -146,7 +146,7 @@ class EmojisController < Sinatra::Base
 
     if @output == 'json'
       content_type 'text/html' if renderer == 'canvg'
-      return Base64.encode64(resource.png(renderer)).gsub(/\n/, '')
+      return Base64.encode64(resource.png(renderer)).gsub("\n", '')
     end
 
     content_type renderer == 'canvg' ? 'text/html' : 'image/png'

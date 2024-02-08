@@ -140,11 +140,11 @@ class CustomFace < CustomEmoji
     @features = features
 
     if @params[:order] == 'manual'
-      features.each do |_, feature_xml|
+      features.each_value do |feature_xml|
         add_all_feature_layers(feature_xml)
       end
     else
-      @features.each do |_, feature_xml|
+      @features.each_value do |feature_xml|
         add_all_feature_layers(feature_xml)
       end
     end
@@ -297,8 +297,8 @@ class CustomFace < CustomEmoji
     end
 
     if xml.children.length < layers.length
-      raise "For emoji #{id}, the number of layers in the model (#{layers.length}) is greater than"\
-            " the number in the SVG (#{xml.children.length})"
+      raise "For emoji #{id}, the number of layers in the model (#{layers.length}) is greater than " \
+            "the number in the SVG (#{xml.children.length})"
     end
 
     xml.css("[class='hole']").each(&:remove)
