@@ -105,7 +105,7 @@ DEPENDENCIES
   unicode-emoji
 
 RUBY VERSION
-   ruby 3.0.6p216
+   ruby 3.2.2p53
 
 BUNDLED WITH
    2.2.33

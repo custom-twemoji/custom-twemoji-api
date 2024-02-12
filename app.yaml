@@ -1,7 +1,9 @@
 # Google Cloud configuration
-# Documentation: https://cloud.google.com/appengine/docs/standard/reference/app-yaml?tab=ruby#top
+# Documentation:
+# - https://cloud.google.com/appengine/docs/standard/reference/app-yaml?tab=ruby#top
+# - https://cloud.google.com/functions/docs/runtime-support#ruby
 
-runtime: ruby30
+runtime: ruby32
 
 entrypoint: bundle exec rackup -p $PORT
 
