@@ -1,5 +1,5 @@
 # Google Cloud configuration
-# Documentation: https://cloud.google.com/appengine/docs/standard/ruby/config/appref
+# Documentation: https://cloud.google.com/appengine/docs/standard/reference/app-yaml?tab=ruby#top
 
 runtime: ruby27
 

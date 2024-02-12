@@ -8,6 +8,8 @@ gem 'json'
 gem 'logger'
 gem 'mini_magick'
 gem 'nokogiri'
+gem 'rack'
+gem 'rackup'
 gem 'rack-protection'
 gem 'require_all'
 gem 'rubocop', require: false
