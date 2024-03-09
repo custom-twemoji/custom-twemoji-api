@@ -108,7 +108,7 @@ class CustomLayersEmoji < CustomEmoji
   def retrieve_and_cache_twemoji(twemojis, emoji_id, absolute_paths, remove_groups, emoji_cache_name)
     twemoji_xml =
       if absolute_paths
-        AbsoluteTwemoji.new(@twemoji_version, emoji_id, remove_groups: remove_groups).xml
+        AbsoluteTwemoji.new(@twemoji_version, emoji_id, remove_groups:).xml
       else
         Twemoji.new(@twemoji_version, emoji_id, remove_groups).xml
       end

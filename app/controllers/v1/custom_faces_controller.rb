@@ -210,7 +210,7 @@ class CustomFacesController < Sinatra::Base
       success: true,
       data: {
         output: data,
-        description: description
+        description:
       },
       links: {
         self: links_self
