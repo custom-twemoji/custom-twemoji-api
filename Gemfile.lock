@@ -78,7 +78,7 @@ GEM
     unicode-emoji (3.5.0)
       unicode-version (~> 1.0)
     unicode-version (1.4.0)
-    webrick (1.8.1)
+    webrick (1.8.2)
 
 PLATFORMS
   ruby
