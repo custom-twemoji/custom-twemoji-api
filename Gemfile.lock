@@ -9,7 +9,7 @@ GEM
     json (2.8.2)
     language_server-protocol (3.17.0.3)
     logger (1.6.1)
-    method_source (1.0.0)
+    method_source (1.1.0)
     mini_magick (5.0.1)
     mini_portile2 (2.8.7)
     multi_json (1.15.0)
@@ -26,7 +26,7 @@ GEM
     parser (3.3.5.0)
       ast (~> 2.4.1)
       racc
-    pry (0.14.2)
+    pry (0.15.0)
       coderay (~> 1.1)
       method_source (~> 1.0)
     racc (1.8.1)
