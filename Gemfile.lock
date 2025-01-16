@@ -10,7 +10,7 @@ GEM
     language_server-protocol (3.17.0.3)
     logger (1.6.5)
     method_source (1.1.0)
-    mini_magick (5.0.1)
+    mini_magick (5.1.0)
     mini_portile2 (2.8.8)
     multi_json (1.15.0)
     mustermann (3.0.3)
