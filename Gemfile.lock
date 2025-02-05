@@ -18,6 +18,7 @@ GEM
     multi_json (1.15.0)
     mustermann (3.0.3)
       ruby2_keywords (~> 0.0.1)
+    nio4r (2.7.4)
     nokogiri (1.18.2)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
@@ -30,6 +31,8 @@ GEM
     pry (0.15.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
+    puma (6.6.0)
+      nio4r (~> 2.0)
     racc (1.8.1)
     rack (3.1.9)
     rack-protection (4.1.1)
@@ -90,6 +93,7 @@ DEPENDENCIES
   mini_magick
   nokogiri
   pry
+  puma
   rack
   rack-protection
   rackup
