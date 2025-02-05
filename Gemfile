@@ -7,7 +7,7 @@ ruby '~> 3.2.2'
 gem 'json'
 gem 'logger'
 gem 'mini_magick'
-gem 'nokogiri', '~> 1.18.2'
+gem 'nokogiri', '~> 1.18.2', platforms: [:'x86_64_linux-gnu']
 gem 'rack'
 gem 'rack-protection'
 gem 'rackup'
