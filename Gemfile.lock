@@ -15,15 +15,15 @@ GEM
     mini_magick (5.2.0)
       benchmark
       logger
-    mini_portile2 (2.8.8)
+    mini_portile2 (2.8.9)
     multi_json (1.15.0)
     mustermann (3.0.3)
       ruby2_keywords (~> 0.0.1)
     nio4r (2.7.4)
-    nokogiri (1.18.8)
+    nokogiri (1.18.9)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
-    nokogiri (1.18.8-x86_64-darwin)
+    nokogiri (1.18.9-x86_64-darwin)
       racc (~> 1.4)
     parallel (1.27.0)
     parser (3.3.8.0)
