@@ -3,7 +3,7 @@
 # - https://cloud.google.com/appengine/docs/standard/reference/app-yaml?tab=ruby#top
 # - https://cloud.google.com/functions/docs/runtime-support#ruby
 
-runtime: ruby32
+runtime: ruby34
 
 entrypoint: bundle exec rackup -p $PORT
 
