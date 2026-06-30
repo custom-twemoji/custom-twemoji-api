@@ -7,6 +7,9 @@ runtime: ruby32
 
 entrypoint: bundle exec rackup -p $PORT
 
+automatic_scaling:
+  max_instances: 2
+
 handlers:
 - url: /.*
   script: auto
