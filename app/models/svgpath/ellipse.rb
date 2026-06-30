@@ -4,10 +4,10 @@
 # https://github.com/fontello/svgpath/blob/2.3.1/lib/ellipse.js
 
 # The precision used to consider an ellipse as a circle
-epsilon = 0.0000000001
+EPSILON = 0.0000000001
 
 # To convert degree in radians
-torad = Math::PI / 180
+TORAD = Math::PI / 180
 
 # Class constructor :
 #  an ellipse centred at 0 with radii rx,ry and x - axis - angle ax.
@@ -29,7 +29,8 @@ class Ellipse
     # We consider the current ellipse as image of the unit circle
     # by first scale(rx,ry) and then rotate(ax) ...
     # So we apply ma =  m x rotate(ax) x scale(rx,ry) to the unit circle.
-    c = Math.cos(@ax * torad), s = Math.sin(@ax * torad)
+    c = Math.cos(@ax * TORAD)
+    s = Math.sin(@ax * TORAD)
     ma = [
       @rx * (m[0]*c + m[2]*s),
       @rx * (m[1]*c + m[3]*s),
@@ -51,7 +52,7 @@ class Ellipse
     jk = (j + k) / 2
 
     # check if the image is (almost) a circle
-    if (d < epsilon * jk)
+    if (d < EPSILON * jk)
       # if it is
       @rx = @ry = Math.sqrt(jk)
       @ax = 0
@@ -67,7 +68,7 @@ class Ellipse
     l1 = jk + d/2
     l2 = jk - d/2
     # the x - axis - rotation angle is the argument of the l1 - eigenvector
-    @ax = (l.abs() < epsilon && (l1 - k).abs() < epsilon) ?
+    @ax = (l.abs() < EPSILON && (l1 - k).abs() < EPSILON) ?
       90
     :
       Math.atan(l.abs() > (l1 - k).abs() ?
@@ -93,6 +94,6 @@ class Ellipse
 
   # Check if the ellipse is (almost) degenerate, i.e. rx = 0 or ry = 0
   def isDegenerate()
-    (@rx < epsilon * @ry || @ry < epsilon * @rx)
+    (@rx < EPSILON * @ry || @ry < EPSILON * @rx)
   end
 end

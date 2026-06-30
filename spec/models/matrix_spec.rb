@@ -35,4 +35,26 @@ RSpec.describe Matrix do
       expect(matrix.calc(1, 1, false).length).to eq(2)
     end
   end
+
+  describe '#toArray' do
+    it 'returns the identity matrix when no transforms are queued' do
+      matrix = described_class.new
+
+      expect(matrix.toArray).to eq([1, 0, 0, 1, 0, 0])
+    end
+
+    it 'skips identity matrices in the queue' do
+      matrix = described_class.new.matrix([1, 0, 0, 1, 0, 0])
+
+      expect(matrix.toArray).to eq([1, 0, 0, 1, 0, 0])
+    end
+  end
+
+  describe '#calc' do
+    it 'ignores translation when calculating a relative point' do
+      matrix = described_class.new.translate(5, 10)
+
+      expect(matrix.calc(1, 2, true)).to eq([1, 2])
+    end
+  end
 end

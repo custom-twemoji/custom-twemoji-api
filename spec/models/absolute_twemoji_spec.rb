@@ -18,4 +18,24 @@ RSpec.describe AbsoluteTwemoji do
     instance = described_class.new(version, emoji_id, remove_groups: false)
     expect(instance.xml.at('path').attributes['d'].value).to include('M0 0')
   end
+
+  it 'preserves non-path children when converting paths' do
+    instance = described_class.allocate
+    xml = Nokogiri::XML('<svg/>').at('svg')
+    node = Nokogiri::XML('<rect/>').at('rect')
+
+    instance.send(:check_child_name_for_path, node, xml)
+
+    expect(xml.at('rect')).not_to be_nil
+  end
+
+  it 'splits multiple path commands into separate nodes' do
+    instance = described_class.allocate
+    xml = Nokogiri::XML('<svg/>').at('svg')
+    node = Nokogiri::XML('<path d="M0 0 M1 1"/>').at('path')
+
+    instance.send(:check_child_name_for_path, node, xml)
+
+    expect(xml.css('path').size).to eq(2)
+  end
 end

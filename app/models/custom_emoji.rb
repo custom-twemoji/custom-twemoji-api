@@ -86,9 +86,17 @@ class CustomEmoji
     size = @size.presence || DEFAULT_PNG_SIZE
     renderer = @renderer.presence || renderer
 
-    svg_xml = Nokogiri::XML(@xml)
-    svg_xml.at(:svg).attributes['width'].value = "#{size}px"
-    svg_xml.at(:svg).attributes['height'].value = "#{size}px"
+    svg_xml = if @xml.respond_to?(:at)
+      @xml
+    else
+      Nokogiri::XML(@xml)
+    end
+
+    svg_root = svg_xml.at('svg') || svg_xml
+    raise CustomTwemojiApiError, 'SVG root not found' if svg_root.nil?
+
+    svg_root['width'] = "#{size}px"
+    svg_root['height'] = "#{size}px"
     @xml = svg_xml
 
     update_padding(@xml, DEFAULT_PNG_SIZE) unless @padding.zero?

@@ -1,6 +1,12 @@
 # frozen_string_literal: true
 
 require 'bundler/setup'
+require 'simplecov'
+SimpleCov.start do
+  add_filter '/spec/'
+  add_group 'Models', 'app/models'
+end
+
 require 'logger'
 require 'rspec'
 require 'webmock/rspec'

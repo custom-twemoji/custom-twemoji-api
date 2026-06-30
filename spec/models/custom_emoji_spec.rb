@@ -45,4 +45,28 @@ RSpec.describe CustomEmoji do
       end.to raise_error(CustomTwemojiApiError, /Padding must be less than half of the size/)
     end
   end
+
+  describe '#png' do
+    let(:png_params) { params.merge(size: 32, renderer: 'canvg') }
+
+    it 'returns HTML content for canvg renderer' do
+      emoji = described_class.new(png_params)
+      svg_xml = Nokogiri::XML('<svg><path d="M0 0 L10 0"/></svg>')
+      emoji.instance_variable_set(:@xml, svg_xml)
+
+      result = emoji.png('canvg', 'nonce123')
+      expect(result).to include('<!doctype html>')
+      expect(result).to include('Canvg.fromString')
+      expect(result).to include('nonce123')
+    end
+
+    it 'raises for unsupported renderers' do
+      emoji = described_class.new(params.merge(renderer: 'unknown'))
+      emoji.instance_variable_set(:@xml, Nokogiri::XML('<svg><path d="M0 0 L10 0"/></svg>'))
+
+      expect do
+        emoji.png('unknown', 'nonce')
+      end.to raise_error(CustomTwemojiApiError, /Renderer not supported/)
+    end
+  end
 end
