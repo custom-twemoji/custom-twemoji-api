@@ -51,6 +51,10 @@ class CustomEmoji
       emoji_input = emoji_input.join('-') if emoji_input.is_a?(Array)
     elsif emoji_input.scan(Unicode::Emoji::REGEX).length > 1
       emoji_input = nil
+    elsif emoji_input.match?(/\A[0-9a-f]+(-[0-9a-f]+)*\z/i)
+      emoji_input = emoji_input.downcase
+    else
+      emoji_input = nil
     end
 
     message = "Emoji is not valid: #{emoji_input}"
@@ -62,7 +66,7 @@ class CustomEmoji
   def get_resource_in_file_format(resource)
     case @file_format
     when nil, 'svg'
-      svg(resource)
+      svg
     when 'png'
       png(resource)
     end

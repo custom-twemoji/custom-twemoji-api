@@ -22,4 +22,6 @@ gem 'unicode-emoji'
 
 group :development, :test do
   gem 'pry'
+  gem 'rspec'
+  gem 'webmock'
 end

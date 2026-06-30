@@ -67,7 +67,7 @@ class Matrix
     if angle != 0
       translate(rx, ry)
 
-      rad = angle * Math.PI / 180
+      rad = angle * Math::PI / 180
       cos = Math.cos(rad)
       sin = Math.sin(rad)
 
@@ -83,7 +83,7 @@ class Matrix
   def skewX(angle)
     if angle != 0
       @cache = nil
-      @queue.push([ 1, 0, Math.tan(angle * Math.PI / 180), 1, 0, 0 ])
+      @queue.push([ 1, 0, Math.tan(angle * Math::PI / 180), 1, 0, 0 ])
     end
 
     self
@@ -93,7 +93,7 @@ class Matrix
   def skewY(angle)
     if angle != 0
       @cache = nil
-      @queue.push([ 1, Math.tan(angle * Math.PI / 180), 0, 1, 0, 0 ])
+      @queue.push([ 1, Math.tan(angle * Math::PI / 180), 0, 1, 0, 0 ])
     end
 
     self

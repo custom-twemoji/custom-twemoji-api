@@ -12,6 +12,8 @@ require_relative '../helpers/object'
 class CustomLayersEmoji < CustomEmoji
   attr_reader :xml
 
+  DEFAULT_FEATURE_STACKING_ORDER = CustomFace::DEFAULT_FEATURE_STACKING_ORDER
+
   def initialize(params)
     super
 

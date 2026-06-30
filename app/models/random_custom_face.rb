@@ -55,7 +55,7 @@ class RandomCustomFace < CustomFace
       nil
     else
       input_param = Random.check_float(param, feature_name)
-      chance = input_param.presence || feature_name == :head ? 1 : 0.5
+      chance = input_param.presence || (feature_name == :head ? 1 : 0.5)
       add_random_twemoji(feature_name) if rand < chance
     end
   end
