@@ -123,6 +123,8 @@ class SvgPath
   private
 
   def matrix_proc(s, index, x, y)
+    m = @m
+
     case s[0]
     # Process 'asymmetric' commands separately
     when 'v'
@@ -147,8 +149,8 @@ class SvgPath
       # }
 
       # Transform rx, ry and the x-axis-rotation
-      ma = Array(m)
-      e = ellipse(s[1], s[2], s[3]).transform(ma)
+      ma = m.toArray
+      e = Ellipse.new(s[1], s[2], s[3]).transform(ma)
 
       # flip sweep-flag if matrix is not orientation-preserving
       if (ma[0] * ma[3] - ma[1] * ma[2] < 0)
@@ -160,21 +162,23 @@ class SvgPath
 
       # Empty arcs can be ignored by renderer, but should not be dropped
       # to avoid collisions with `S A S` and so on. Replace with empty line.
-      if (
+      empty_arc = (
         (s[0] === 'A' && s[6] === x && s[7] === y) ||
         (s[0] === 'a' && s[6] === 0 && s[7] === 0)
       )
-        result = [ s[0] === 'a' ? 'l' : 'L', p[0], p[1] ]
-      end
 
-      # if the resulting ellipse is (almost) a segment ...
-      if e.isDegenerate()
-        # replace the arc by a line
+      if empty_arc
         result = [ s[0] === 'a' ? 'l' : 'L', p[0], p[1] ]
       else
-        # if it is a real ellipse
-        # s[0], s[4] and s[5] are not modified
-        result = [ s[0], e.rx, e.ry, e.ax, s[4], s[5], p[0], p[1] ]
+        # if the resulting ellipse is (almost) a segment ...
+        if e.isDegenerate()
+          # replace the arc by a line
+          result = [ s[0] === 'a' ? 'l' : 'L', p[0], p[1] ]
+        else
+          # if it is a real ellipse
+          # s[0], s[4] and s[5] are not modified
+          result = [ s[0], e.rx, e.ry, e.ax, s[4], s[5], p[0], p[1] ]
+        end
       end
     when 'm'
       # Edge case. The very first `m` should be processed as absolute, if happens.
@@ -195,14 +199,26 @@ class SvgPath
       end
     end
 
-    @segments[index] = result
+    result
   end
 
   def matrix(m)
-    # Quick leave for empty matrix
-    return unless m.queue.length > 0
+    # Accept either a Matrix instance or a raw matrix array
+    m_obj = if m.respond_to?(:queue)
+      m
+    else
+      mm = Matrix.new
+      mm.matrix(Array(m))
+      mm
+    end
 
+    # Quick leave for empty matrix
+    return unless m_obj.queue.length > 0
+
+    # expose matrix for matrix_proc
+    @m = m_obj
     iterate(true, method(:matrix_proc))
+    @m = nil
   end
 
   # Apply stacked commands
@@ -216,7 +232,7 @@ class SvgPath
     end
 
     m = Matrix.new
-    i = @stack.length
+    i = @stack.length - 1
 
     while (i >= 0) do
       m.matrix(Array(@stack[i]))
@@ -283,10 +299,16 @@ class SvgPath
     newSegments = []
 
     (0..segments.length-1).each do |i|
-      # May be wrong
-      if (defined?(replacements[i]) != nil)
-        (0..replacements[i].length).each do |j|
-          newSegments.push(replacements[i][j])
+      if replacements.key?(i)
+        repl = replacements[i]
+        # If repl is an array of segments (arrays), push each segment
+        if repl.first.is_a?(Array)
+          repl.each do |seg|
+            newSegments.push(seg)
+          end
+        else
+          # Single segment replacement
+          newSegments.push(repl)
         end
       else
         newSegments.push(segments[i])

@@ -3,6 +3,7 @@
 require 'unicode/emoji'
 
 require_relative 'custom_emoji'
+require_relative 'custom_face'
 require_relative 'face'
 require_relative 'twemoji/absolute_twemoji'
 require_relative '../helpers/error'

@@ -33,6 +33,16 @@ RSpec.describe Face do
       )
     end
 
+    it 'ignores blank layer names' do
+      layers = { 0 => '', 1 => 'head', 2 => 'eyes' }
+      features = described_class.layers_to_features(layers)
+
+      expect(features).to eq(
+        head: [1],
+        eyes: [2]
+      )
+    end
+
     it 'returns nil for nil layers' do
       expect(described_class.layers_to_features(nil)).to be_nil
     end

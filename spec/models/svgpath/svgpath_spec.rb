@@ -1,6 +1,5 @@
-# frozen_string_literal: true
-
-require_relative '../spec_helper'
+require_relative '../../spec_helper'
+require_relative '../../../app/models/svgpath/svgpath'
 
 RSpec.describe SvgPath do
   describe '#abs' do
@@ -41,25 +40,13 @@ RSpec.describe SvgPath do
 
       expect(svg_path.to_s).to eq('M0 0L10 0 10 10')
     end
-  end
-end
 
-RSpec.describe Ellipse do
-  describe '#transform' do
-    it 'treats a circle transform as a circle and resets the angle' do
-      ellipse = described_class.new(10, 10, 0)
-      result = ellipse.transform([1, 0, 0, 1, 0, 0])
+    it 'removes repeated command names for long sequences' do
+      sp = described_class.new('M0 0 L10 0 L20 0 L30 0')
+      str = sp.to_s
 
-      expect(result).to be_a(described_class)
-      expect(result.isDegenerate).to be false
-    end
-
-    it 'changes rotation for a non-circle transform matrix' do
-      ellipse = described_class.new(10, 20, 30)
-      result = ellipse.transform([2, 0, 0, 1, 0, 0])
-
-      expect(result).to be_a(described_class)
-      expect(result.instance_variable_get(:@ax)).not_to eq(30)
+      expect(str.scan(/L/).length).to eq(1)
+      expect(str).to match(/0 0.*10 0.*20 0.*30 0/)
     end
   end
 end

@@ -12,6 +12,8 @@ TORAD = Math::PI / 180
 # Class constructor :
 #  an ellipse centred at 0 with radii rx,ry and x - axis - angle ax.
 class Ellipse
+  attr_reader :rx, :ry, :ax
+
   def initialize(rx, ry, ax)
     return Ellipse.new(rx, ry, ax) unless self.instance_of? Ellipse
     @rx = rx

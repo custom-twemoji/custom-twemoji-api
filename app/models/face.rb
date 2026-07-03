@@ -30,6 +30,8 @@ class Face
 
     layers.each_with_object({}) do |(key, value), out|
       value = value['name'] if value.is_a?(Hash)
+      next if value.nil? || value.to_s.strip.empty?
+
       out[value.to_sym] ||= []
       out[value.to_sym] << key
     end

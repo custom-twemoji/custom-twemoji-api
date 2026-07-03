@@ -160,7 +160,7 @@ class CustomFacesController < Sinatra::Base
   end
 
   def png(resource)
-    renderer = @params[:renderer].presence || @output == 'image' ? 'canvg' : 'imagemagick'
+    renderer = (@params[:renderer].presence || (@output == 'image' ? 'canvg' : 'imagemagick'))
     nonce = SecureRandom.hex(32) + DateTime.now.new_offset(0).strftime('%s')
 
     if renderer == 'canvg'

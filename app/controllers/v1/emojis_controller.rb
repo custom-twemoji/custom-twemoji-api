@@ -27,7 +27,8 @@ class EmojisController < Sinatra::Base
   ].freeze
 
   before do
-    @request_payload = JSON.parse(request.body.read) unless request.body.read.empty?
+    body = request.body&.read.to_s
+    @request_payload = body.empty? ? {} : JSON.parse(body)
   end
 
   post '/v1/emojis', '/v1/emojis/' do
@@ -55,7 +56,7 @@ class EmojisController < Sinatra::Base
       "Endpoint not found: #{request.request_method} #{request.path_info} " \
       '| Valid endpoints: POST /emojis, GET /emojis/{emoji_id}, ' \
       'GET/emojis/{emoji_id}/layers, GET /emojis/random'
-    error 404, { error: message }.to_json
+    halt 404, { error: message }.to_json
   end
 
   private
@@ -142,7 +143,7 @@ class EmojisController < Sinatra::Base
   end
 
   def png(resource)
-    renderer = @params[:renderer].presence || @output == 'image' ? 'canvg' : 'imagemagick'
+    renderer = @params[:renderer].presence || (@output == 'image' ? 'canvg' : 'imagemagick')
 
     if @output == 'json'
       content_type 'text/html' if renderer == 'canvg'

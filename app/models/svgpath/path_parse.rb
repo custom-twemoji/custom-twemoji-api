@@ -42,7 +42,7 @@ def pathParse(svgPath)
   if state.err.length > 0
     state.result = []
   elsif state.result.length > 0
-    if 'mM'.index(state.result[0][0]) < 0
+    if 'mM'.index(state.result[0][0]).nil?
       state.err = 'SvgPath: string should start with `M` or `m`'
       state.result = []
     else
