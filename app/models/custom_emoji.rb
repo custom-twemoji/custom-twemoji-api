@@ -49,12 +49,11 @@ class CustomEmoji
       # Source: https://dev.to/ohbarye/convert-emoji-and-codepoints-each-other-in-ruby-27j
       emoji_input = emoji_input.each_codepoint.map { |n| n.to_s(16) }
       emoji_input = emoji_input.join('-') if emoji_input.is_a?(Array)
-    elsif emoji_input.scan(Unicode::Emoji::REGEX).length > 1
+    elsif emoji_input.scan(Unicode::Emoji::REGEX).length > 1 ||
+          !emoji_input.match?(/\A[0-9a-f]+(-[0-9a-f]+)*\z/i)
       emoji_input = nil
-    elsif emoji_input.match?(/\A[0-9a-f]+(-[0-9a-f]+)*\z/i)
-      emoji_input = emoji_input.downcase
     else
-      emoji_input = nil
+      emoji_input = emoji_input.downcase
     end
 
     message = "Emoji is not valid: #{emoji_input}"
@@ -87,10 +86,10 @@ class CustomEmoji
     renderer = @renderer.presence || renderer
 
     svg_xml = if @xml.respond_to?(:at)
-      @xml
-    else
-      Nokogiri::XML(@xml)
-    end
+                @xml
+              else
+                Nokogiri::XML(@xml)
+              end
 
     svg_root = svg_xml.at('svg') || svg_xml
     raise CustomTwemojiApiError, 'SVG root not found' if svg_root.nil?

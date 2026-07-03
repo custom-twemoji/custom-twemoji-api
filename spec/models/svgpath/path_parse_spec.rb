@@ -31,9 +31,9 @@ RSpec.describe 'pathParse' do
 
     expect(result[:err]).to eq('')
     expect(result[:segments]).to eq([
-      ['M', 10.0, 10.0],
-      ['L', 20.0, 20.0]
-    ])
+                                      ['M', 10.0, 10.0],
+                                      ['L', 20.0, 20.0]
+                                    ])
   end
 
   it 'parses lowercase move and expands to relative lineto' do
@@ -41,9 +41,9 @@ RSpec.describe 'pathParse' do
 
     expect(result[:err]).to eq('')
     expect(result[:segments]).to eq([
-      ['M', 10.0, 10.0],
-      ['l', 20.0, 20.0]
-    ])
+                                      ['M', 10.0, 10.0],
+                                      ['l', 20.0, 20.0]
+                                    ])
   end
 
   it 'parses a closepath command' do

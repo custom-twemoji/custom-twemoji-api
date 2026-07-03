@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../../spec_helper'
 require_relative '../../../app/models/svgpath/svgpath'
 
@@ -9,7 +11,7 @@ RSpec.describe 'SvgPath matrix_proc branches' do
 
     svg.send(:evaluateStack)
 
-    expect(svg.segments[1][0]).to satisfy { |v| v == 'l' || v == 'L' }
+    expect(svg.segments[1][0]).to(satisfy { |v| %w[l L].include?(v) })
     expect(svg.segments[1][1]).to be_within(0.01).of(10.0)
     expect(svg.segments[1][2]).to be_within(0.01).of(10.0)
   end
@@ -23,7 +25,7 @@ RSpec.describe 'SvgPath matrix_proc branches' do
 
     svg.send(:evaluateStack)
 
-    expect(svg.segments[1][0]).to satisfy { |v| v == 'l' || v == 'L' }
+    expect(svg.segments[1][0]).to(satisfy { |v| %w[l L].include?(v) })
     expect(svg.segments[1][1]).to be_within(0.01).of(10.0).or be_within(0.01).of(10.0)
   end
 
@@ -36,7 +38,7 @@ RSpec.describe 'SvgPath matrix_proc branches' do
 
     # arc should have been replaced with line
     seg = svg.segments[1]
-    expect(seg[0]).to satisfy { |v| v == 'l' || v == 'L' }
+    expect(seg[0]).to(satisfy { |v| %w[l L].include?(v) })
     expect(seg[1]).to be_a(Numeric)
     expect(seg[2]).to be_a(Numeric)
   end

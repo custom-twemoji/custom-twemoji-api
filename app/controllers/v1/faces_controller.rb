@@ -84,7 +84,7 @@ class FacesController < Sinatra::Base
   end
 
   def initialize_params(params)
-    params.select { |key, _| VALID_PARAMS.include?(key) }
+    params.slice(*VALID_PARAMS)
 
     # Add time parameter to track request
     params[:time] = Time.now.getutc.to_i
@@ -122,15 +122,13 @@ class FacesController < Sinatra::Base
   def filter_by_layers(layers, faces)
     return if layers.nil?
 
-    # rubocop:disable Style/RescueModifier
-    layers = layers.split(',').select { |value| Integer(value) rescue nil }.map(&:to_i)
-    # rubocop:enable Style/RescueModifier
+    layers = layers.split(',').select { |value| Integer(value, exception: false) }.map(&:to_i)
     return if layers.empty?
 
     faces.transform_values! do |value|
       {
         'glyph' => value['glyph'],
-        'layers' => value['layers'].select { |key2, _value2| layers.include?(key2) }
+        'layers' => value['layers'].slice(*layers)
       }
     end
   end

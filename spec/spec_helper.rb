@@ -13,13 +13,13 @@ require 'webmock/rspec'
 
 $LOAD_PATH.unshift(File.expand_path('../..', __dir__))
 
-LOGGER ||= Logger.new($stdout)
+LOGGER = Logger.new($stdout)
 LOGGER.level = Logger::WARN
 
 require 'nokogiri'
 require 'yaml'
 
-Dir[File.expand_path('../app/models/**/*.rb', __dir__)].sort.each do |file|
+Dir[File.expand_path('../app/models/**/*.rb', __dir__)].each do |file|
   require_relative "../#{file.sub(%r{^.+/app/models/}, 'app/models/')}"
 end
 

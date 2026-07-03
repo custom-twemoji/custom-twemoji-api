@@ -56,7 +56,8 @@ RSpec.describe CustomFace do
       allow(Face).to receive(:find_with_layers).and_return('layers' => { 0 => 'head' })
       allow(AbsoluteTwemoji).to receive(:new).and_return(double(xml: Nokogiri::XML('<svg><path d="M0 0 L10 0"/></svg>').at('svg')))
 
-      emoji = described_class.new(params.merge(emoji_id: '1f921', head: '1f600', cheeks: 'false', mouth: '', eyewear: '1f576'))
+      emoji = described_class.new(params.merge(emoji_id: '1f921', head: '1f600', cheeks: 'false', mouth: '',
+                                               eyewear: '1f576'))
 
       expect(emoji.unique_string).to include('base-1f921')
       expect(emoji.unique_string).to include('head-1f600')

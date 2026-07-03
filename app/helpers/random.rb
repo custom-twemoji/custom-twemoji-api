@@ -7,7 +7,7 @@ require_relative 'hash'
 class Random
   def self.from_hash(hash)
     hash.keys[
-      rand(0..hash.length - 1)
+      rand(0..(hash.length - 1))
     ]
   end
 

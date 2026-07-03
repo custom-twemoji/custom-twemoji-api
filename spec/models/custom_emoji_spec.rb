@@ -82,7 +82,7 @@ RSpec.describe CustomEmoji do
       allow(convert_double).to receive(:<<) do |arg|
         # when called with the output path, write sample PNG bytes
         if arg.to_s.end_with?('.png')
-          File.write(arg, "PNG-BYTES")
+          File.write(arg, 'PNG-BYTES')
         end
       end
 
@@ -114,5 +114,5 @@ RSpec.describe CustomEmoji do
       expect(xml.attributes['width'].value).to include('32')
       expect(xml.css('rect').first.attributes['fill'].value).to eq('#010203')
     end
-    end
   end
+end

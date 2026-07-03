@@ -1,13 +1,19 @@
 AllCops:
   NewCops: enable
   Exclude:
-    - 'app/models/svgpath/**/*'
+    - "app/models/svgpath/**/*"
 
 Metrics/ClassLength:
   Enabled: false
 
 Metrics/BlockLength:
-  CountAsOne: ['array', 'hash', 'heredoc']
+  CountAsOne: ["array", "hash", "heredoc"]
+  Exclude:
+    - "spec/**/*.rb"
+
+Layout/LineLength:
+  Exclude:
+    - "spec/**/*.rb"
 
 Metrics/MethodLength:
   Enabled: false

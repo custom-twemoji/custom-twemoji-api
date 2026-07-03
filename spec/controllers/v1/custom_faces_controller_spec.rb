@@ -95,10 +95,12 @@ RSpec.describe CustomFacesController do
   end
 
   it 'returns svg download when file_format=svg and output=download' do
-    mash = double('MashupCustomFace', xml: '<svg></svg>', svg: '<svg></svg>', description: 'mash', url: 'mash', unique_string: 'mash')
+    mash = double('MashupCustomFace', xml: '<svg></svg>', svg: '<svg></svg>', description: 'mash', url: 'mash',
+                                      unique_string: 'mash')
     expect(MashupCustomFace).to receive(:new).and_return(mash)
 
-    get '/v1/custom_faces/mashup', file_format: 'svg', output: 'download', emojis: '1,2', amount: '2', filename: 'myfile'
+    get '/v1/custom_faces/mashup', file_format: 'svg', output: 'download', emojis: '1,2', amount: '2',
+                                   filename: 'myfile'
 
     expect(last_response.status).to eq(200)
     expect(last_response.headers['Content-Disposition']).to include('myfile.svg')

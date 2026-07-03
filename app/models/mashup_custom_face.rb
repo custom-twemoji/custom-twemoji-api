@@ -51,7 +51,7 @@ class MashupCustomFace < CustomFace
       elsif difference.negative?
         difference.abs.times do
           # Remove emojis to bring down the count to match amount
-          emojis.delete_at(rand(0..emojis.length - 1))
+          emojis.delete_at(rand(0..(emojis.length - 1)))
         end
       end
     end
@@ -81,7 +81,7 @@ class MashupCustomFace < CustomFace
 
       include_feature = true if rand < chance
 
-      @params[feature_name] = feature_count[rand(0..feature_count.length - 1)] if include_feature
+      @params[feature_name] = feature_count[rand(0..(feature_count.length - 1))] if include_feature
     end
 
     super

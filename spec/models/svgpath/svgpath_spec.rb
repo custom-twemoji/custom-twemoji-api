@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../../spec_helper'
 require_relative '../../../app/models/svgpath/svgpath'
 
@@ -45,7 +47,7 @@ RSpec.describe SvgPath do
       sp = described_class.new('M0 0 L10 0 L20 0 L30 0')
       str = sp.to_s
 
-      expect(str.scan(/L/).length).to eq(1)
+      expect(str.scan('L').length).to eq(1)
       expect(str).to match(/0 0.*10 0.*20 0.*30 0/)
     end
   end

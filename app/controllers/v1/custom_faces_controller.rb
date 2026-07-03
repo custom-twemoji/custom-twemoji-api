@@ -134,7 +134,7 @@ class CustomFacesController < Sinatra::Base
   end
 
   def validate_params(params, valid_params = VALID_PARAMS)
-    params.select { |key, _| valid_params.include?(key) }
+    params.slice(*valid_params)
 
     # Add time parameter to track request
     params[:time] = Time.now.getutc.to_i
@@ -160,7 +160,7 @@ class CustomFacesController < Sinatra::Base
   end
 
   def png(resource)
-    renderer = (@params[:renderer].presence || (@output == 'image' ? 'canvg' : 'imagemagick'))
+    renderer = @params[:renderer].presence || (@output == 'image' ? 'canvg' : 'imagemagick')
     nonce = SecureRandom.hex(32) + DateTime.now.new_offset(0).strftime('%s')
 
     if renderer == 'canvg'
