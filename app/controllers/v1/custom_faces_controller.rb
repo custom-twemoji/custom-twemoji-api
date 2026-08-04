@@ -2,6 +2,7 @@
 
 require 'base64'
 require 'date'
+require 'digest/md5'
 require 'securerandom'
 require 'sinatra/base'
 require 'sinatra/multi_route'
@@ -37,9 +38,11 @@ class CustomFacesController < Sinatra::Base
   ].flatten.freeze
 
   BASE_ENDPOINT = '/v1/custom_faces'
+  CACHE_MAX_AGE = 60 * 60 * 24 * 365 # one year, since a given twemoji_version's data never changes
 
   get "#{BASE_ENDPOINT}/random" do
     validate(BUILDING_PARAMS)
+    disable_caching
     face = RandomCustomFace.new(params)
     process_valid_request(face, face_url(face, CustomFace::DEFAULT_FEATURE_STACKING_ORDER))
   rescue StandardError => e
@@ -54,6 +57,7 @@ class CustomFacesController < Sinatra::Base
     ]
 
     validate([BUILDING_PARAMS, endpoint_specific_params].flatten.freeze)
+    disable_caching
     face = MashupCustomFace.new(params)
 
     process_valid_request(face, face_url(face, endpoint_specific_params))
@@ -67,6 +71,7 @@ class CustomFacesController < Sinatra::Base
     ]
 
     validate([BUILDING_PARAMS, endpoint_specific_params].flatten.freeze)
+    enable_caching
     process_valid_request(CustomFace.new(params))
   rescue StandardError => e
     handle_error(e)
@@ -86,6 +91,15 @@ class CustomFacesController < Sinatra::Base
     status_code = error.respond_to?(:status_code) ? error.status_code : 500
 
     error status_code, response.to_json
+  end
+
+  def enable_caching
+    cache_control :public, max_age: CACHE_MAX_AGE, immutable: true
+    etag Digest::MD5.hexdigest(request.url)
+  end
+
+  def disable_caching
+    cache_control :no_store
   end
 
   def validate_output

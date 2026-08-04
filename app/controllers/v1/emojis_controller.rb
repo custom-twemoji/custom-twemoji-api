@@ -33,6 +33,7 @@ class EmojisController < Sinatra::Base
 
   post '/v1/emojis', '/v1/emojis/' do
     validate
+    cache_control :no_store
     process_valid_request(CustomLayersEmoji.new(params))
   rescue StandardError => e
     runtime_error(e)

@@ -2,6 +2,7 @@
 
 require 'base64'
 require 'date'
+require 'digest/md5'
 require 'securerandom'
 require 'sinatra/base'
 require 'sinatra/multi_route'
@@ -28,9 +29,11 @@ class FacesController < Sinatra::Base
   ].freeze
 
   BASE_ENDPOINT = '/v1/faces'
+  CACHE_MAX_AGE = 60 * 60 * 24 * 365 # One year
 
   get BASE_ENDPOINT do
     validate
+    enable_caching
 
     faces = Face.all(@twemoji_version)
     apply_filters(params, faces)
@@ -42,6 +45,7 @@ class FacesController < Sinatra::Base
 
   get "#{BASE_ENDPOINT}/random" do
     validate
+    disable_caching
 
     face = Face.random(@twemoji_version)
     apply_filters(params, face)
@@ -54,6 +58,7 @@ class FacesController < Sinatra::Base
 
   get "#{BASE_ENDPOINT}/", "#{BASE_ENDPOINT}/:emoji_id" do
     validate
+    enable_caching
     @emoji_id = params[:emoji_id]
 
     message = "Parameter 'emoji_id' is required"
@@ -81,6 +86,15 @@ class FacesController < Sinatra::Base
     status_code = error.respond_to?(:status_code) ? error.status_code : 500
 
     error status_code, response.to_json
+  end
+
+  def enable_caching
+    cache_control :public, max_age: CACHE_MAX_AGE, immutable: true
+    etag Digest::MD5.hexdigest(request.url)
+  end
+
+  def disable_caching
+    cache_control :no_store
   end
 
   def initialize_params(params)
