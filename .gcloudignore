@@ -1,0 +1,21 @@
+# Files not uploaded to App Engine on deploy.
+# Syntax: https://cloud.google.com/sdk/gcloud/reference/topic/gcloudignore
+#
+# Without this file gcloud falls back to .gitignore, which does not cover
+# artifacts that only exist inside CI.
+
+#!include:.gitignore
+
+.gcloudignore
+.git/
+.github/
+
+# Credentials written into the workspace by google-github-actions/auth.
+# These were previously uploaded with the app. Never deploy them.
+gha-creds-*.json
+
+# Dev- and test-only; not loaded by config.ru at runtime.
+/spec/
+/.ruby-lsp/
+/.vscode/
+.rubocop.yml
