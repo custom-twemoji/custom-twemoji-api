@@ -64,3 +64,5 @@ build-iPhoneSimulator/
 /*.env
 
 .vscode
+
+.gcloud/
