@@ -19,8 +19,14 @@ jobs:
         uses: google-github-actions/auth@v2
         with:
           credentials_json: ${{ secrets.GCP_SA_KEY }}
+      - name: Add origin secret to deploy config
+        env:
+          CLOUDFLARE_ORIGIN_SECRET: ${{ secrets.CLOUDFLARE_ORIGIN_SECRET }}
+        run: |
+          cp app.yaml app.secret.yaml
+          printf 'env_variables:\n  CLOUDFLARE_ORIGIN_SECRET: "%s"\n' "$CLOUDFLARE_ORIGIN_SECRET" >> app.secret.yaml
       - name: Deploy to App Engine
-        uses: google-github-actions/deploy-appengine@v2
+        run: gcloud app deploy app.secret.yaml --quiet
       - name: Delete old versions in App Engine
         run: |
           INSTANCE_TYPE="default"
