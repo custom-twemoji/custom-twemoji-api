@@ -24,12 +24,24 @@ RSpec.describe CustomEmoji do
         emoji.validate_emoji_input('invalid')
       end.to raise_error(CustomTwemojiApiError)
     end
+
+    it 'converts an emoji glyph into its codepoint string' do
+      expect(emoji.validate_emoji_input('🤡')).to eq('1f921')
+    end
   end
 
   describe '#get_resource_in_file_format' do
     it 'returns svg path when format is svg' do
       emoji = described_class.new(params.merge(size: 64))
       expect(emoji.get_resource_in_file_format('svg')).to be_a(Tempfile)
+    end
+
+    it 'returns png output when file format is png' do
+      emoji = described_class.new(params)
+      allow(emoji).to receive(:png).and_return('PNGDATA')
+      emoji.instance_variable_set(:@file_format, 'png')
+
+      expect(emoji.get_resource_in_file_format(double('resource'))).to eq('PNGDATA')
     end
   end
 
@@ -44,10 +56,47 @@ RSpec.describe CustomEmoji do
         emoji.send(:update_padding, emoji.instance_variable_get(:@xml_template), 20)
       end.to raise_error(CustomTwemojiApiError, /Padding must be less than half of the size/)
     end
+
+    it 'shrinks the emoji square by the padding on each side' do
+      emoji = described_class.allocate
+      emoji.instance_variable_set(:@size, 128)
+      emoji.instance_variable_set(:@padding, 10)
+      xml = Nokogiri::XML(File.read('assets/template.svg')).at(:svg)
+
+      emoji.send(:update_padding, xml, '100%')
+
+      emoji_svg = xml.css('#emoji').first
+      expect(emoji_svg.attributes['width'].value).to eq('108px')
+      expect(emoji_svg.attributes['height'].value).to eq('108px')
+      expect(emoji_svg.attributes['x'].value).to eq('10px')
+      expect(emoji_svg.attributes['y'].value).to eq('10px')
+    end
+
+    it 'keeps a percentage size expression when no size param is set' do
+      emoji = described_class.allocate
+      emoji.instance_variable_set(:@size, nil)
+      emoji.instance_variable_set(:@padding, 10)
+      xml = Nokogiri::XML(File.read('assets/template.svg')).at(:svg)
+
+      emoji.send(:update_padding, xml, '100%')
+
+      emoji_svg = xml.css('#emoji').first
+      expect(emoji_svg.attributes['width'].value).to eq('100% - 20px')
+    end
   end
 
   describe '#png' do
     let(:png_params) { params.merge(size: 32, renderer: 'canvg') }
+
+    it 'parses xml from a string when @xml is not a Nokogiri document' do
+      emoji = described_class.new(png_params)
+      emoji.instance_variable_set(:@xml, '<svg><path d="M0 0 L10 0"/></svg>')
+
+      result = emoji.png('canvg', 'nonce123')
+
+      expect(result).to include('Canvg.fromString')
+      expect(result).to include('nonce123')
+    end
 
     it 'returns HTML content for canvg renderer' do
       emoji = described_class.new(png_params)

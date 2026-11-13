@@ -140,5 +140,55 @@ RSpec.describe CustomFace do
         emoji.send(:label_layers_by_feature, xml, layers, '1f921')
       end.to raise_error(RuntimeError, /the number of layers in the model/)
     end
+
+    it 'raises when layer data is missing for a child' do
+      emoji = described_class.new(params)
+      xml = Nokogiri::XML('<svg><path d="M0 0 L10 0"/><path d="M5 5 L15 5"/></svg>').at('svg')
+
+      expect do
+        emoji.send(:label_layers_by_feature, xml, { 0 => 'head' }, '1f921')
+      end.to raise_error(NameError, /Found missing layer data/)
+    end
+
+    it 'merges a subtract layer into the layer underneath it and removes the hole' do
+      emoji = described_class.new(params)
+      xml = Nokogiri::XML('<svg><path d="M0 0 L10 0"/><path d="M5 5 L15 5"/></svg>').at('svg')
+      layers = { 0 => 'head', 1 => 'subtract' }
+
+      result = emoji.send(:label_layers_by_feature, xml, layers, '1f921')
+
+      paths = result.css('path')
+      expect(paths.length).to eq(1)
+      expect(paths.first.attributes['d'].value).to eq('M0 0 L10 0 M5 5 L15 5')
+      expect(result.css("[class='hole']")).to be_empty
+    end
+
+    it 'raises when a subtract layer has no bottom layer to subtract from' do
+      emoji = described_class.new(params)
+      xml = Nokogiri::XML('<svg><path d="M0 0 L10 0"/></svg>').at('svg')
+
+      expect do
+        emoji.send(:label_layers_by_feature, xml, { 0 => 'subtract' }, '1f921')
+      end.to raise_error(RuntimeError, /No bottom layer to subtract/)
+    end
+  end
+
+  describe 'feature stacking order' do
+    it 'adds features in the given XML order when order is manual' do
+      emoji = described_class.new(params.merge(emoji_id: '1f921', head: '1f600', order: 'manual'))
+
+      expect(emoji.xml).to include('<svg')
+    end
+
+    it 'appends layers when the same feature is defined by multiple emojis' do
+      xml = Nokogiri::XML('<svg><path d="M0 0" class="1f600 head"/></svg>').at('svg')
+      allow(AbsoluteTwemoji).to receive(:new).and_return(double(xml: xml))
+      allow(Face).to receive(:find_with_layers).and_return('layers' => { 0 => 'head' })
+
+      emoji = described_class.new(params.merge(head: '1f600,1f603'))
+
+      expect(emoji.xml).to include('1f600')
+      expect(emoji.xml).to include('1f603')
+    end
   end
 end

@@ -43,5 +43,40 @@ RSpec.describe MashupCustomFace do
         described_class.new(params)
       end.not_to raise_error
     end
+
+    it 'raises when emojis has fewer than two entries and no amount is given' do
+      params.delete(:amount)
+      params[:emojis] = '1f600'
+
+      expect do
+        described_class.new(params)
+      end.to raise_error(CustomTwemojiApiError, /two or more emojis/)
+    end
+
+    it 'fills missing emojis up to the amount with random faces' do
+      params[:amount] = 3
+      expect(Face).to receive(:random).once.and_return('1f601' => {})
+
+      face = described_class.new(params)
+
+      expect(face).to be_a(described_class)
+    end
+
+    it 'trims emojis down to match the amount' do
+      params[:emojis] = '1f600,1f603,1f601'
+      params[:amount] = 2
+
+      face = described_class.new(params)
+
+      expect(face).to be_a(described_class)
+    end
+
+    it 'uses a float feature param as the inclusion chance' do
+      params[:head] = '1'
+
+      face = described_class.new(params)
+
+      expect(face.instance_variable_get(:@params)[:head]).not_to be_nil
+    end
   end
 end

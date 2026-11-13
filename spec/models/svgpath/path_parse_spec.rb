@@ -95,4 +95,48 @@ RSpec.describe 'pathParse' do
     expect(result[:err]).to include('numbers started with `0`')
     expect(result[:segments]).to eq([])
   end
+
+  it 'parses signed parameters' do
+    result = pathParse('M-1-2l3 4')
+
+    expect(result[:err]).to eq('')
+    expect(result[:segments].first).to eq(['M', -1.0, -2.0])
+    expect(result[:segments].last).to eq(['l', 3.0, 4.0])
+  end
+
+  it 'returns error when a param does not start with a digit or dot' do
+    result = pathParse('M0 0 Lx 1')
+
+    expect(result[:err]).to include('param should start with 0..9')
+    expect(result[:segments]).to eq([])
+  end
+
+  it 'parses exponents with signs' do
+    result = pathParse('M0 0 L1e-2 1')
+
+    expect(result[:err]).to eq('')
+    expect(result[:segments].last[1]).to eq(0.01)
+  end
+
+  it 'returns error for an exponent without digits' do
+    result = pathParse('M0 0 L1e 1')
+
+    expect(result[:err]).to include('invalid float exponent')
+    expect(result[:segments]).to eq([])
+  end
+
+  it 'treats a standalone z as a segment' do
+    result = pathParse('M0 0 l5 5 z')
+
+    expect(result[:err]).to eq('')
+    expect(result[:segments].last).to eq(['z'])
+  end
+
+  it 'parses comma separated parameters' do
+    result = pathParse('M0,0L10,0')
+
+    expect(result[:err]).to eq('')
+    expect(result[:segments].first).to eq(['M', 0.0, 0.0])
+    expect(result[:segments].last).to eq(['L', 10.0, 0.0])
+  end
 end

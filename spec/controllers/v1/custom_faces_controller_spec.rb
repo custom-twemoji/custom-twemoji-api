@@ -188,4 +188,13 @@ RSpec.describe CustomFacesController do
     expect(body['success']).to be false
     expect(body['error']).not_to be_nil
   end
+
+  it 'returns a 400 JSON error for the mashup endpoint when emojis are missing' do
+    get '/v1/custom_faces/mashup', emojis: '1f600'
+
+    expect(last_response.status).to eq(400)
+    body = JSON.parse(last_response.body)
+    expect(body['success']).to be false
+    expect(body['error']).to match(/two or more emojis/)
+  end
 end

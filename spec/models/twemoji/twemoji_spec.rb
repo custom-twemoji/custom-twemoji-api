@@ -47,6 +47,14 @@ RSpec.describe Twemoji do
 
       expect(described_class.new(version, emoji_id, false).xml.name).to eq('svg')
     end
+
+    it 'raises when every fetch attempt fails' do
+      stub_request(:get, %r{raw.githubusercontent.com/}).to_return(status: 404)
+
+      expect do
+        described_class.new(version, emoji_id, false)
+      end.to raise_error(RuntimeError, /Failed to access SVG from GitHub/)
+    end
   end
 
   describe '#break_down_groups' do

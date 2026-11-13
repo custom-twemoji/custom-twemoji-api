@@ -38,4 +38,26 @@ RSpec.describe AbsoluteTwemoji do
 
     expect(xml.css('path').size).to eq(2)
   end
+
+  it 'adds path nodes without a d attribute unchanged' do
+    instance = described_class.allocate
+    xml = Nokogiri::XML('<svg/>').at('svg')
+    node = Nokogiri::XML('<path/>').at('path')
+
+    result = instance.send(:get_absolute_d, nil, node, xml)
+
+    expect(result).to be_nil
+    expect(xml.at('path')).not_to be_nil
+  end
+
+  it 'keeps already-absolute paths as-is' do
+    instance = described_class.allocate
+    xml = Nokogiri::XML('<svg/>').at('svg')
+    node = Nokogiri::XML('<path d="M0 0L10 0"/>').at('path')
+
+    result = instance.send(:get_absolute_d, 'M0 0L10 0', node, xml)
+
+    expect(result).to be_nil
+    expect(xml.at('path')).not_to be_nil
+  end
 end

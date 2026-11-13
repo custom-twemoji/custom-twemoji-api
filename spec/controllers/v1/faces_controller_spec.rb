@@ -34,6 +34,17 @@ RSpec.describe FacesController do
     expect(body['links']['self']).to include('/v1/faces')
   end
 
+  it 'returns a JSON error when random face generation fails' do
+    allow(Face).to receive(:random).and_raise(StandardError.new('boom'))
+
+    get '/v1/faces/random'
+
+    expect(last_response.status).to eq(500)
+    body = JSON.parse(last_response.body)
+    expect(body['success']).to be false
+    expect(body['error']).to include('boom')
+  end
+
   it 'returns details for a specific face' do
     faces = Face.all(Twemoji.latest)
     emoji_id = faces.keys.first

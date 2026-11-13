@@ -100,6 +100,16 @@ RSpec.describe CustomLayersEmoji do
       expect(result[0].length).to eq(2)
     end
 
+    it 'uses AbsoluteTwemoji when the top-level param is not false' do
+      emoji = described_class.new(params.merge(absolute_paths: 'true'))
+      body_object = { emoji: 'U+1F600', layers: '0..1' }
+
+      xml, twemojis, = emoji.send(:get_xml_and_emoji_id, body_object, {})
+
+      expect(xml.length).to eq(2)
+      expect(twemojis.keys).to include('1f600-absolute')
+    end
+
     it 'raises a descriptive error when layer extraction fails' do
       emoji = described_class.new(params)
       body_object = { emoji: 'U+1F600', layers: 'bad', absolute_paths: 'false', remove_groups: 'false' }
