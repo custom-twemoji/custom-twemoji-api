@@ -78,5 +78,14 @@ RSpec.describe MashupCustomFace do
 
       expect(face.instance_variable_get(:@params)[:head]).not_to be_nil
     end
+
+    it 'drops a float param that loses the probability roll instead of failing validation' do
+      params[:head] = '0.9'
+      allow_any_instance_of(described_class).to receive(:rand).and_return(0.99)
+
+      face = described_class.new(params)
+
+      expect(face.instance_variable_get(:@params)[:head]).to be_nil
+    end
   end
 end

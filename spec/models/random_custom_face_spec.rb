@@ -47,6 +47,16 @@ RSpec.describe RandomCustomFace do
 
       expect(face.instance_variable_get(:@params)[:mouth]).not_to be_nil
     end
+
+    it 'drops a float param that loses the probability roll instead of failing validation' do
+      params[:mouth] = '0.2'
+      allow(Face).to receive(:find_with_features).and_return(head: [0], mouth: [13])
+      allow_any_instance_of(described_class).to receive(:rand).and_return(0.9)
+
+      face = described_class.new(params)
+
+      expect(face.instance_variable_get(:@params)[:mouth]).to be_nil
+    end
   end
 
   describe '#valid_float?' do

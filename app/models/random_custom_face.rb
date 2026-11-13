@@ -56,7 +56,13 @@ class RandomCustomFace < CustomFace
     else
       input_param = Random.check_float(param, feature_name)
       chance = input_param.presence || (feature_name == :head ? 1 : 0.5)
-      add_random_twemoji(feature_name) if rand < chance
+
+      if rand < chance
+        add_random_twemoji(feature_name)
+      elsif input_param
+        # The roll failed, so don't let the float param survive into emoji validation
+        @params[feature_name] = nil
+      end
     end
   end
 end

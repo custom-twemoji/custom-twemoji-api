@@ -22,7 +22,7 @@ RSpec.describe CustomEmoji do
     it 'rejects invalid emoji values' do
       expect do
         emoji.validate_emoji_input('invalid')
-      end.to raise_error(CustomTwemojiApiError)
+      end.to raise_error(CustomTwemojiApiError, /Emoji is not valid: invalid/)
     end
 
     it 'converts an emoji glyph into its codepoint string' do

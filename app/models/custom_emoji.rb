@@ -41,6 +41,7 @@ class CustomEmoji
   def validate_emoji_input(emoji_input)
     return false if emoji_input == 'false'
 
+    original_input = emoji_input
     emoji_input = emoji_input.downcase
 
     if emoji_input[0..1] == 'u+'
@@ -56,7 +57,7 @@ class CustomEmoji
       emoji_input = emoji_input.downcase
     end
 
-    message = "Emoji is not valid: #{emoji_input}"
+    message = "Emoji is not valid: #{original_input}"
     raise CustomTwemojiApiError.new(400), message if emoji_input.nil?
 
     emoji_input

@@ -78,9 +78,14 @@ class MashupCustomFace < CustomFace
           input_param
         end
 
-      include_feature = true if rand < chance
+      include_feature = rand < chance
 
-      @params[feature_name] = feature_count[rand(0..(feature_count.length - 1))] if include_feature
+      if include_feature
+        @params[feature_name] = feature_count[rand(0..(feature_count.length - 1))]
+      elsif input_param
+        # The roll failed, so don't let the float param survive into emoji validation
+        @params[feature_name] = nil
+      end
     end
 
     super
