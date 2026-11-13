@@ -4,10 +4,12 @@ on:
   push:
     paths:
       - 'app/**'
+      - 'spec/**'
   pull_request:
     branches: [ main ]
     paths:
       - 'app/**'
+      - 'spec/**'
   workflow_dispatch:
 
 jobs:
@@ -17,11 +19,12 @@ jobs:
       fail-fast: false
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 3.4.8
+        # '3.4' floats to the latest patch release available on the runner image
+        ruby-version: '3.4'
     - name: Install dependencies
       run: bundle install
     - name: Run Rubocop

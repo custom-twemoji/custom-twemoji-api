@@ -1,0 +1,35 @@
+name: RSpec
+
+on:
+  push:
+    paths:
+      - 'app/**'
+      - 'spec/**'
+      - 'Gemfile*'
+      - 'config.ru'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'app/**'
+      - 'spec/**'
+      - 'Gemfile*'
+      - 'config.ru'
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        # '3.4' floats to the latest patch release available on the runner image
+        ruby-version: '3.4'
+    - name: Install dependencies
+      run: bundle install
+    - name: Run tests
+      run: bundle exec rspec
